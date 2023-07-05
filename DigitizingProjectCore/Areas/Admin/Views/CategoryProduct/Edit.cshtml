@@ -1,0 +1,26 @@
+﻿@model DigitizingProjectCore.Areas.Admin.Dto.CreateUpdateCategoryDto
+@{
+}
+<form asp-controller="CategoryProduct" asp-action="Edit" method="POST">
+    <input type="hidden" asp-for="Id">
+    <div class="form-group">
+        <label for="NameEn">Name (English)</label>
+        <input type="text" class="form-control" id="NameEn" asp-for="NameEn">
+    </div>
+    <div class="form-group">
+        <label for="NameAr">Name (Arabic)</label>
+        <input type="text" class="form-control" id="NameAr" asp-for="NameAr">
+    </div>
+    <div class="form-group">
+        <label for="active">Active</label>
+        @if (Model.IsActive)
+        {
+            <input type="checkbox" id="active" checked asp-for="IsActive">
+        }
+        else
+        {
+            <input type="checkbox" id="active" asp-for="IsActive">
+        }
+    </div>
+    <input type="submit" class="btn btn-primary" value="Edit" />
+</form>

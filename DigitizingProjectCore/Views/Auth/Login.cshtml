@@ -1,0 +1,117 @@
+﻿@using DigitizingProjectCore.Dto
+@using System.Web.Optimization
+@model LoginDto
+@{
+    Layout = null;
+    string ReturnUrl = ViewData["ReturnUrl"] as string;
+}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>ForceLand</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="Preview page of Metronic Admin RTL Theme #1 for " name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet">
+    <link href="~/Content/MetronicRTL/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/MetronicRTL/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/MetronicRTL/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/MetronicRTL/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <link href="~/Content/MetronicRTL/assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/MetronicRTL/assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="~/Content/MetronicRTL/assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
+    <link href="~/Content/MetronicRTL/assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
+    <!-- END THEME GLOBAL STYLES -->
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link href="~/Content/MetronicRTL/assets/pages/css/login-5.min.css" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL STYLES -->
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    <!-- END THEME LAYOUT STYLES -->
+    <link rel="shortcut icon" href="~/Content/images/Icon.ico" />
+</head>
+<!-- END HEAD -->
+<body class=" login">
+    <!-- BEGIN : LOGIN PAGE 5-2 -->
+    <div class="user-login-5">
+        <div class="row bs-reset">
+            <div class="login-container bs-reset col-md-6">
+                <img width="400" class="login-logo login-6" src="~/Content/images/Logo.png" />
+                <div class="login-content">
+                    <h1>Login</h1>
+                    <p>
+                        Please enter your Username & Password
+                    </p>
+                    <form method="POST" asp-controller="Auth" asp-action="Login">
+                        <div asp-validation-summary="All"></div>
+                        <input type="hidden" asp-for="@ReturnUrl" />
+                        <div class="alert alert-danger display-hide">
+                            <button class="close" data-close="alert"></button>
+                            <span>Enter you email and password. </span>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                                <input asp-for="Email" type="email" class="form-control" placeholder="please write Email">
+                            </div>
+                            <div class="col-xs-6">
+                                <label for="exampleInputPassword1" class="form-label">Password</label>
+                                <input asp-for="Password" type="password" class="form-control mb-5" placeholder="please write Password">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <label class="rememberme mt-checkbox mt-checkbox-outline">
+                                    <input type="checkbox" checked />Remember me on this device
+                                    <span></span>
+                                </label>
+                            </div>
+                            <div class="col-sm-7 text-right">
+                                <button class="btn blue" type="submit">Sign In</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="login-footer">
+                    <div class="row bs-reset">
+                        <div class="col-xs-12 bs-reset">
+                            <div class="login-copyright text-right">
+                                <p>All rights reserved &copy; @DateTime.Now.Year - ForceLand</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6 bs-reset" style="width:49.99% !important">
+                <div class="login-bg"> </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+
+    <script src="~/Content/MetronicRTL/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
+
+    <script src="~/Content/MetronicRTL/assets/global/scripts/app.min.js" type="text/javascript"></script>
+
+    <script src="~/Content/MetronicRTL/assets/pages/scripts/login-5.js" type="text/javascript"></script>
+
+</body>
+</html>
