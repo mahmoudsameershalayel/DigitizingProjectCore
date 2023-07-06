@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DigitizingProjectCore.Areas.Admin.Dto;
+using DigitizingProjectCore.Models;
 using DigitizingProjectCore.Services.CategoryProductService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,8 +30,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         public async Task<IActionResult> Add(CreateUpdateCategoryDto dto) {
             if (ModelState.IsValid) { 
                 await _categoryProductService.Create(dto);
+                return Json(new { isValid = true, html = Helper.RenderViewToStringAsync(this, "Index" , _categoryProductService.GetAll()) });
             }
-            return RedirectToAction("Index");
+            return Json(new { isValid = false, html = Helper.RenderViewToStringAsync(this, "Add", _categoryProductService.GetById(dto.Id)) });
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -50,7 +52,7 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         }
         [HttpDelete]
         public async Task<IActionResult> Delete(int id) { 
-          await _categoryProductService.Delete(id);
+            await _categoryProductService.Delete(id);
             return Json(new { id = id, message = "Deleted Successfully" });
         }
     } 

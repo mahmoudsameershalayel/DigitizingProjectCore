@@ -65,9 +65,6 @@ namespace DigitizingProjectCore.Services.CategoryProductService
         public async Task<int> Delete(int id)
         {
             var _Category = await _context.CategoryForProducts.Where(x => x.Id == id).FirstOrDefaultAsync();
-            if (_Category == null) {
-                throw new Exception("Not Found!!");
-            }
             _context.CategoryForProducts.Remove(_Category);
             return await _context.SaveChangesAsync();            
         }

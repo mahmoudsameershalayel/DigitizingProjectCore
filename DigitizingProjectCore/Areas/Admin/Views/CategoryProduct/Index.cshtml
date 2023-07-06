@@ -19,7 +19,7 @@
                         <h2>Product Categories</h2>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a class="btn btn-success" asp-area="Admin" asp-controller="CategoryProduct" asp-action="Add">Add Product Category</a>
+                        <a class="btn btn-success" onclick="showInPopup('@Url.Action("Add" , "CategoryProduct" , null , Context.Request.Scheme)','Add Category')">Add Product Category</a>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                             <td>
                                 <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
                                 <a asp-area="Admin" asp-controller="CategoryProduct" asp-action="Edit" asp-route-id="@item.Id" class='btn btn-xs btn-info PopUp'><i class='glyphicon glyphicon-edit'></i></a>
-                                <a asp-area="Admin"  asp-controller="CategoryProduct" asp-action="Delete" asp-route-id="@item.Id" data-id="@item.Id" class='btn btn-xs btn-danger Confirm btn-delete'><i class='glyphicon glyphicon-trash'></i></a>
+                                <a asp-area="Admin" asp-controller="CategoryProduct" asp-action="Delete" asp-route-id="@item.Id" data-id="@item.Id" class='btn btn-xs btn-danger Confirm btn-delete'><i class='glyphicon glyphicon-trash'></i></a>
                             </td>
                         </tr>
                     }
@@ -98,6 +98,7 @@
                 })
                 e.preventDefault();
             });
+            
         })
 
     </script>
