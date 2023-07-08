@@ -17,6 +17,7 @@ namespace DigitizingProjectCore.Areas.Admin.Dto
         public IFormFile LogoImage { get; set; }
         public IFormFile PDFFile { get; set; }
         public IFormFile DocFile { get; set; }
+        public int SortId { get; set; }
         public bool IsActive { get; set; }
     }
     public class AddProductWithCategoryAndBrand : CreateUpdateProductDto

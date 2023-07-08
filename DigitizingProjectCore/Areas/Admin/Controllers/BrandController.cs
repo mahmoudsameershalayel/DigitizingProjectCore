@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using DigitizingProjectCore.Areas.Admin.Dto;
+using DigitizingProjectCore.Areas.Admin.ViewModel;
 using DigitizingProjectCore.Services.BrandServices;
 using DigitizingProjectCore.Services.CategoryProductService;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 
 namespace DigitizingProjectCore.Areas.Admin.Controllers
 {
@@ -21,7 +23,12 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             var _Brands = await _BrandService.GetAll();
             return View(_Brands);
         }
-
+        [HttpGet]
+        public async Task<IActionResult> GetByName(string key)
+        {
+            var _brands = await _BrandService.GetByName(key);
+            return PartialView("_SearchBrandsResultsPartial", _brands);
+        }
         [HttpGet]
         public IActionResult Add()
         {

@@ -25,6 +25,8 @@ namespace DigitizingProjectCore.AutoMapper
             CreateMap<Brand , CreateUpdateBrandDto>().ReverseMap();
             CreateMap<Brand , BrandViewModel>().ReverseMap();
 
+            //City
+            CreateMap<City , CityViewModel>().ReverseMap();
         }
     }
 }

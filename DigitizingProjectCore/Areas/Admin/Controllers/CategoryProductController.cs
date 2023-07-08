@@ -16,10 +16,20 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pg = 1)
         {
             var _Categories = await _categoryProductService.GetAll();
-            return View(_Categories);
+            const int pageSize = 7;
+            if (pg < 1)
+            {
+                pg = 1;
+            }
+            int _categoriesCount = _Categories.Count;
+            var pager = new Pager(_categoriesCount, pg, pageSize);
+            int _categorySkip = (pg - 1) * pageSize;
+            var data = _Categories.Skip(_categorySkip).Take(pager.PageSize).ToList();
+            ViewBag.Pager = pager;
+            return View(data);
         }
 
         [HttpGet]
@@ -30,9 +40,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         public async Task<IActionResult> Add(CreateUpdateCategoryDto dto) {
             if (ModelState.IsValid) { 
                 await _categoryProductService.Create(dto);
-                return Json(new { isValid = true, html = Helper.RenderViewToStringAsync(this, "Index" , _categoryProductService.GetAll()) });
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllProductCategory", _categoryProductService.GetAll()) });
             }
-            return Json(new { isValid = false, html = Helper.RenderViewToStringAsync(this, "Add", _categoryProductService.GetById(dto.Id)) });
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Add", _categoryProductService.GetById(dto.Id)) });
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)

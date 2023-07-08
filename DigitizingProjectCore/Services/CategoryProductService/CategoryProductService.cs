@@ -8,6 +8,7 @@ using DigitizingProjectCore.Models;
 using Humanizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Web.Mvc;
 
 namespace DigitizingProjectCore.Services.CategoryProductService
 {
@@ -17,7 +18,7 @@ namespace DigitizingProjectCore.Services.CategoryProductService
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMapper _mapper;
-        public CategoryProductService(ApplicationDbContext context, IMapper mapper , UserManager<ApplicationUser> userManager, IHttpContextAccessor contextAccessor)
+        public CategoryProductService(ApplicationDbContext context, IMapper mapper, UserManager<ApplicationUser> userManager, IHttpContextAccessor contextAccessor)
         {
             _context = context;
             _mapper = mapper;
@@ -36,7 +37,6 @@ namespace DigitizingProjectCore.Services.CategoryProductService
             var _Category = await _context.CategoryForProducts.Where(x => x.Id == id).FirstOrDefaultAsync();
             var _CategoryVM = _mapper.Map<CategoryViewModel>(_Category);
             return _CategoryVM;
-
         }
         public async Task<CreateUpdateCategoryDto> Create(CreateUpdateCategoryDto dto)
         {
@@ -53,20 +53,26 @@ namespace DigitizingProjectCore.Services.CategoryProductService
         public async Task<CreateUpdateCategoryDto> Update(CreateUpdateCategoryDto dto)
         {
             var _Category = await _context.CategoryForProducts.Where(x => x.Id == dto.Id).FirstOrDefaultAsync();
-            var _UpdateCategory = _mapper.Map(dto, _Category);
-            var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
-            _UpdateCategory.Updated_By = _UserId;
-            _UpdateCategory.Updated_At = DateTime.Now;
-            _context.CategoryForProducts.Update(_UpdateCategory);
-            await _context.SaveChangesAsync();
+            if (_Category != null)
+            {
+                var _UpdateCategory = _mapper.Map(dto, _Category);
+                var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
+                _UpdateCategory.Updated_By = _UserId;
+                _UpdateCategory.Updated_At = DateTime.Now;
+                _context.CategoryForProducts.Update(_UpdateCategory);
+                await _context.SaveChangesAsync();
+            }
             return dto;
         }
 
         public async Task<int> Delete(int id)
         {
             var _Category = await _context.CategoryForProducts.Where(x => x.Id == id).FirstOrDefaultAsync();
-            _context.CategoryForProducts.Remove(_Category);
-            return await _context.SaveChangesAsync();            
+            if (_Category != null)
+            {
+                _context.CategoryForProducts.Remove(_Category);
+            }
+            return await _context.SaveChangesAsync();
         }
     }
 }

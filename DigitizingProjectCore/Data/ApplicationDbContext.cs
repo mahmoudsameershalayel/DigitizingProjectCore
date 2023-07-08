@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DigitizingProjectCore.Data
 {
@@ -28,7 +29,7 @@ namespace DigitizingProjectCore.Data
                 ConcurrencyStamp = Admin_Role_Id
 
             });
-      
+
             //Add Admin User
             var adminUser = new ApplicationUser
             {
@@ -37,7 +38,7 @@ namespace DigitizingProjectCore.Data
                 Email = "Administrator@admin.com",
                 NormalizedEmail = "ADMINISTRATOR@ADMIN.COM",
                 UserName = "System_Administrator",
-                Phone= "97259000000"
+                Phone = "97259000000"
             };
 
             //Password Hasher
@@ -52,6 +53,7 @@ namespace DigitizingProjectCore.Data
                     UserId = Admin_User_Id
                 }
                 );
+
             base.OnModelCreating(Builder);
         }
         public DbSet<Brand> Brands { get; set; }
@@ -64,6 +66,8 @@ namespace DigitizingProjectCore.Data
         public DbSet<City> Cities { get; set; }
         public DbSet<Distributor> Distributors { get; set; }
         public DbSet<Solution> Solutions { get; set; }
+        public DbSet<Link> Links { get; set; }
+        public DbSet<AdminLinks> AdminLinks { get; set; }
         public DbSet<SolutionProducts> SolutionProducts { get; set; }
     }
 }

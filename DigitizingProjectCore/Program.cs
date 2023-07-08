@@ -5,6 +5,8 @@ using DigitizingProjectCore.Models;
 using DigitizingProjectCore.Services.Auth;
 using DigitizingProjectCore.Services.BrandServices;
 using DigitizingProjectCore.Services.CategoryProductService;
+using DigitizingProjectCore.Services.CityService;
+using DigitizingProjectCore.Services.DistributorService;
 using DigitizingProjectCore.Services.ProductService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -51,6 +53,8 @@ builder.Services.AddAutoMapper(typeof(ApplicationProfile).Assembly);
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryProductService, CategoryProductService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
+builder.Services.AddScoped<ICityService, CityService>();
+builder.Services.AddScoped<IDistributorService, DistributorService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 

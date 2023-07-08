@@ -3,6 +3,7 @@ using DigitizingProjectCore.Areas.Admin.Dto;
 using DigitizingProjectCore.Areas.Admin.ViewModel;
 using DigitizingProjectCore.Data;
 using DigitizingProjectCore.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Web.Mvc;
 
@@ -11,17 +12,22 @@ namespace DigitizingProjectCore.Services.ProductService
     public class ProductService : IProductService
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _hostEnvironment;
-        public ProductService(ApplicationDbContext context, IWebHostEnvironment hostEnvironment, IMapper mapper)
+        private readonly IHttpContextAccessor _contextAccessor;
+
+        public ProductService(ApplicationDbContext context, IWebHostEnvironment hostEnvironment, IMapper mapper, UserManager<ApplicationUser> userManager, IHttpContextAccessor contextAccessor)
         {
             _context = context;
             _hostEnvironment = hostEnvironment;
             _mapper = mapper;
+            _userManager = userManager;
+            _contextAccessor = contextAccessor;
         }
         public async Task<List<ProductViewModel>> GetAll()
         {
-            var _products = await _context.Products.ToListAsync();
+            var _products = await _context.Products.Include(c => c.Category).Include(b => b.Brand).ToListAsync();
             var _productsVM = _mapper.Map<List<ProductViewModel>>(_products);
             return _productsVM;
         }
@@ -42,6 +48,11 @@ namespace DigitizingProjectCore.Services.ProductService
                 dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
                 _product.LogoImage = uniqueName;
             }
+            var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
+            _product.Created_By = _UserId;
+            _product.Created_At = DateTime.Now;
+            _product.IsActive = true;
+            _product.IsDelete = false;
             await _context.Products.AddAsync(_product);
             await _context.SaveChangesAsync();
             return dto;

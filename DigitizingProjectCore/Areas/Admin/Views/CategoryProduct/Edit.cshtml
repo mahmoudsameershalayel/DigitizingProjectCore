@@ -1,7 +1,8 @@
 ﻿@model DigitizingProjectCore.Areas.Admin.Dto.CreateUpdateCategoryDto
 @{
+    Layout = null;
 }
-<form asp-controller="CategoryProduct" asp-action="Edit" method="POST">
+<form asp-controller="CategoryProduct" asp-action="Edit" onsubmit="return jQueryAjaxPost(this);" method="POST">
     <input type="hidden" asp-for="Id">
     <div class="form-group">
         <label for="NameEn">Name (English)</label>

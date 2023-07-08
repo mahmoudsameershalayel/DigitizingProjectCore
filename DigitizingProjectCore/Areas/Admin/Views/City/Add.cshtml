@@ -1,8 +1,8 @@
-﻿@model DigitizingProjectCore.Areas.Admin.Dto.CreateUpdateCategoryDto
+﻿@model DigitizingProjectCore.Areas.Admin.ViewModel.CityViewModel
 @{
     Layout = null;
 }
-<form asp-controller="CategoryProduct" asp-action="Add" method="POST" onsubmit="return jQueryAjaxPost(this);">
+<form asp-controller="City" asp-action="Add" method="POST" onsubmit="return jQueryAjaxPost(this);">
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -30,17 +30,3 @@
         </div>
     </div>
 </form>
-@section scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('.btn-create').click(function () {
-                Swal.fire(
-                    'Good job!',
-                    'You clicked the button!',
-                    'success'
-                )
-            });
-        });
-    </script>
-}

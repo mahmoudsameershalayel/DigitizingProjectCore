@@ -71,6 +71,11 @@ namespace DigitizingProjectCore.Services.BrandServices
 
         }
 
-        
+        public async Task<List<BrandViewModel>> GetByName(string name)
+        {
+            var _brands = await _context.Brands.Where(x => x.NameEn.Contains(name) || x.NameAr.Contains(name)).ToListAsync();
+            var _brandVM = _mapper.Map<List<BrandViewModel>>(_brands);
+            return _brandVM;
+        }
     }
 }

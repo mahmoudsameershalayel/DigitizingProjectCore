@@ -4,6 +4,7 @@ using DigitizingProjectCore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DigitizingProjectCore.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230707034723_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,30 +24,6 @@ namespace DigitizingProjectCore.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("DigitizingProjectCore.Models.AdminLinks", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AdminId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("LinkId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdminId");
-
-                    b.HasIndex("LinkId");
-
-                    b.ToTable("AdminLinks");
-                });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.ApplicationUser", b =>
                 {
@@ -144,8 +123,8 @@ namespace DigitizingProjectCore.Data.Migrations
                         {
                             Id = "f1446937-109c-4e1a-97ce-0560442484f5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6ce69326-d4cc-427e-843e-ec7d64d73d84",
-                            Created_At = new DateTime(2023, 7, 8, 1, 12, 33, 951, DateTimeKind.Local).AddTicks(8465),
+                            ConcurrencyStamp = "9017f86f-8582-4a63-b3b7-4a6722842347",
+                            Created_At = new DateTime(2023, 7, 7, 6, 47, 23, 474, DateTimeKind.Local).AddTicks(5013),
                             Email = "Administrator@admin.com",
                             EmailConfirmed = false,
                             FullName = "System Administrator",
@@ -154,12 +133,12 @@ namespace DigitizingProjectCore.Data.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMINISTRATOR@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEttAWIz9VzhNGAvYYCUTLrHutqaJ5Pk+6mfMdgID8hr2MnOW4t1EgBGw17EgViiHQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAUG6UtlSxqHJc+bTqki3Suc0AEkA3btLtWnpnF3vUVPUlDAPY8Ytc7rCv2VBDL5LQ==",
                             Phone = "97259000000",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "67105bee-d809-4bde-b70a-9b38f76f1155",
+                            SecurityStamp = "18aa01c1-35dd-4ea3-a6b3-254daae0586d",
                             TwoFactorEnabled = false,
-                            Updated_at = new DateTime(2023, 7, 8, 1, 12, 33, 951, DateTimeKind.Local).AddTicks(8800),
+                            Updated_at = new DateTime(2023, 7, 7, 6, 47, 23, 474, DateTimeKind.Local).AddTicks(5064),
                             UserName = "System_Administrator"
                         });
                 });
@@ -443,47 +422,6 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.ToTable("Distributors");
                 });
 
-            modelBuilder.Entity("DigitizingProjectCore.Models.Link", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Icon")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ParentIdForBar")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("ShowInMenu")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TitleAr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("URL")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Links");
-                });
-
             modelBuilder.Entity("DigitizingProjectCore.Models.News", b =>
                 {
                     b.Property<int>("Id")
@@ -572,7 +510,7 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.Property<int?>("BrandId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int?>("CategoryForProductId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Created_At")
@@ -625,7 +563,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasIndex("BrandId");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryForProductId");
 
                     b.ToTable("Products");
                 });
@@ -958,25 +896,6 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("DigitizingProjectCore.Models.AdminLinks", b =>
-                {
-                    b.HasOne("DigitizingProjectCore.Models.ApplicationUser", "Admin")
-                        .WithMany("AdminLinks")
-                        .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DigitizingProjectCore.Models.Link", "Link")
-                        .WithMany("AdminLinks")
-                        .HasForeignKey("LinkId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Admin");
-
-                    b.Navigation("Link");
-                });
-
             modelBuilder.Entity("DigitizingProjectCore.Models.Distributor", b =>
                 {
                     b.HasOne("DigitizingProjectCore.Models.City", "City")
@@ -999,17 +918,13 @@ namespace DigitizingProjectCore.Data.Migrations
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Product", b =>
                 {
-                    b.HasOne("DigitizingProjectCore.Models.Brand", "Brand")
+                    b.HasOne("DigitizingProjectCore.Models.Brand", null)
                         .WithMany("_Products")
                         .HasForeignKey("BrandId");
 
-                    b.HasOne("DigitizingProjectCore.Models.CategoryForProduct", "Category")
+                    b.HasOne("DigitizingProjectCore.Models.CategoryForProduct", null)
                         .WithMany("_Products")
-                        .HasForeignKey("CategoryId");
-
-                    b.Navigation("Brand");
-
-                    b.Navigation("Category");
+                        .HasForeignKey("CategoryForProductId");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Service", b =>
@@ -1106,11 +1021,6 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DigitizingProjectCore.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("AdminLinks");
-                });
-
             modelBuilder.Entity("DigitizingProjectCore.Models.Brand", b =>
                 {
                     b.Navigation("_Products");
@@ -1134,11 +1044,6 @@ namespace DigitizingProjectCore.Data.Migrations
             modelBuilder.Entity("DigitizingProjectCore.Models.City", b =>
                 {
                     b.Navigation("_Distributors");
-                });
-
-            modelBuilder.Entity("DigitizingProjectCore.Models.Link", b =>
-                {
-                    b.Navigation("AdminLinks");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Product", b =>

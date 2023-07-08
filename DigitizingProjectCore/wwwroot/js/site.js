@@ -7,9 +7,9 @@ showInPopup = (url, title) => {
         type: "GET",
         url: url,
         success: function (res) {
-            $("#form-modal .modal-body").html(res);
-            $("#form-modal .modal-title").html(title);
-            $("#form-modal").modal('show');
+            $("#createCategoryProductModal .modal-body").html(res);
+            $("#createCategoryProductModal .modal-title").html(title);
+            $("#createCategoryProductModal").modal("show");
         }
     })
 }
@@ -17,22 +17,24 @@ showInPopup = (url, title) => {
 jQueryAjaxPost = form => {
     try {
         $.ajax({
-            type: "POST",
+            type: 'POST',
             url: form.action,
             data: new FormData(form),
-            contentType: false,
-            processData: false,
-            success: function (res) {
-                if (res.isValid) {
-                } else {
-                    $("#form-modal .modal-body").html(res.html);
-                }
+            contentType: "application/json; charset=utf-8",
+            dataType: "json", 
+            success: function () {
+                location.reload();
+                $("#createCategoryProductModal .modal-body").html("");
+                $("#createCategoryProductModal .modal-title").html("");
+                $("#createCategoryProductModal").modal("hide");
             },
-            error: function (err , status) {
-                console.log(status)
+            error: function (err) {
+                console.log(err)
             }
         })
-    } catch (e) {
+        //to prevent default form submit event
+        return false;
+    } catch (ex) {
+        console.log(ex)
     }
-    return false;
 }

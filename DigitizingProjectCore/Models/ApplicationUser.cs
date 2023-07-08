@@ -19,5 +19,6 @@ namespace DigitizingProjectCore.Models
         public DateTime Updated_at { get; set; } = DateTime.Now;
         public string? Updated_by { get; set; }
         public bool IsDeleted { get; set; } = false;
+        public List<AdminLinks> AdminLinks { get; set; }
     }
 }

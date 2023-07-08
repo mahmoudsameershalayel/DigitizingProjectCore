@@ -1,15 +1,21 @@
 ﻿@model List<CategoryViewModel>
 @{
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
 }
-<!DOCTYPE html>
-<html lang="en">
-<head>
+@section css{
     <style>
         .table-responsive {
             overflow-x: hidden;
         }
     </style>
-</head>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+}
 <body>
     <div class="table-responsive">
         <div class="table-wrapper">
@@ -19,7 +25,7 @@
                         <h2>Product Categories</h2>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a class="btn btn-success" onclick="showInPopup('@Url.Action("Add" , "CategoryProduct" , null , Context.Request.Scheme)','Add Category')">Add Product Category</a>
+                        <a class="btn btn-success" onclick="showInPopup('@Url.Action("Add" , "CategoryProduct" ,null ,Context.Request.Scheme)' , 'Add Category Product');">Add Category Product</a>
                     </div>
                 </div>
             </div>
@@ -50,8 +56,8 @@
                             <td>@item.CreatedDate</td>
                             <td>
                                 <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
-                                <a asp-area="Admin" asp-controller="CategoryProduct" asp-action="Edit" asp-route-id="@item.Id" class='btn btn-xs btn-info PopUp'><i class='glyphicon glyphicon-edit'></i></a>
-                                <a asp-area="Admin" asp-controller="CategoryProduct" asp-action="Delete" asp-route-id="@item.Id" data-id="@item.Id" class='btn btn-xs btn-danger Confirm btn-delete'><i class='glyphicon glyphicon-trash'></i></a>
+                                <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "CategoryProduct" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Category Product');"><i class='glyphicon glyphicon-edit'></i></a>
+                                <button class="btn-delete btn btn-xs btn-danger Confirm" data-id="@item.Id"><i class='glyphicon glyphicon-trash'></i></button>
                             </td>
                         </tr>
                     }
@@ -60,46 +66,57 @@
 
         </div>
     </div>
+    <div>
+        @if (pager.TotalPages > 0)
+        {
+            <ul class="pagination justify-content-end">
+                @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                {
+                    <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                        <a class="page-link btn-pge" asp-area="Admin" asp-controller="CategoryProduct" asp-action="Index" asp-route-pg="@pge" data-pg="@pge">@pge</a>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
 </body>
-</html>
 @section scripts{
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.29/dist/sweetalert2.all.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
     <script>
         $(document).ready(function () {
-            $(".btn-delete").on("click", function (e) {
-                $this = $(this);
-                var id = $(this).attr("data-id");
+            $('.btn-delete').click(function () {
+                var itemId = $(this).data('id');
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
+                    text: 'You won\'t be able to revert this!',
                     icon: 'warning',
                     showCancelButton: true,
+
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: "@Url.Action("Delete","CategoryProduct", new { area = "Admin"})/" + id,
+                            url: '@Url.Action("Delete", "CategoryProduct")',
                             type: 'DELETE',
+                            data: { id: itemId },
                             success: function (result) {
                                 Swal.fire(
                                     'Deleted!',
-                                    'Your file has been deleted.',
+                                    'The item has been deleted.',
                                     'success'
-                                )
-                                console.log($this.closest("tr").remove());
+                                ).then(() => {
+                                    location.reload();
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                console.error(xhr.responseText);
                             }
                         });
                     }
-                })
-                e.preventDefault();
+                });
             });
-            
-        })
-
+        });
     </script>
 }

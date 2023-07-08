@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DigitizingProjectCore.Data.Constrains
 {
-    public class SolutionProductConstrains : IEntityTypeConfiguration<SolutionProducts>
+    public class SolutionProductsConstrains : IEntityTypeConfiguration<SolutionProducts>
     {
         public void Configure(EntityTypeBuilder<SolutionProducts> builder)
         {
             builder.HasOne(x => x.Product)
-                .WithMany(x => x._SolutionProducts)
-                .HasForeignKey(x => x.ProductId);
+               .WithMany(x => x._SolutionProducts)
+               .HasForeignKey(x => x.ProductId);
 
             builder.HasOne(x => x.Solution)
                 .WithMany(x => x._SolutionProducts)
