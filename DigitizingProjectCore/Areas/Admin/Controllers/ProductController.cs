@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using DigitizingProjectCore.Areas.Admin.Dto;
+using DigitizingProjectCore.Areas.Admin.ViewModel;
+using DigitizingProjectCore.Data;
+using DigitizingProjectCore.Models;
 using DigitizingProjectCore.Services.ProductService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,18 +10,21 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
 {
     public class ProductController : AdminBaseController
     {
+        private readonly ApplicationDbContext _context;
         private readonly IProductService _productService;
         private readonly IMapper _mapper;
 
-        public ProductController(IProductService productService, IMapper mapper)
+        public ProductController(IProductService productService, IMapper  mapper, ApplicationDbContext context)
         {
             _productService = productService;
+            _context = context;
             _mapper = mapper;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var _Products = await _productService.GetAll();
+            ViewBag.db = _context;
             return View(_Products);
         }
         [HttpGet]
@@ -40,8 +46,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var _Product = await _productService.GetById(id);
-            var _CreateUpdateProduct = _mapper.Map<CreateUpdateProductDto>(_Product);
-            return View(_CreateUpdateProduct);
+            var _AddProductWithCategoryAndBrand = await _productService.InjectCategoriesAndBrands();
+            _AddProductWithCategoryAndBrand = _mapper.Map(_Product, _AddProductWithCategoryAndBrand);
+            return View(_AddProductWithCategoryAndBrand);
         }
         [HttpPost]
         public async Task<IActionResult> Edit(CreateUpdateProductDto dto)

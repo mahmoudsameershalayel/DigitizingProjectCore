@@ -23,10 +23,16 @@ jQueryAjaxPost = form => {
             contentType: "application/json; charset=utf-8",
             dataType: "json", 
             success: function () {
+                if (res.isValid) {
+                    $('#view-all').html(res.html)
+                    $("#createCategoryProductModal .modal-body").html("");
+                    $("#createCategoryProductModal .modal-title").html("");
+                    $("#createCategoryProductModal").modal("hide");
+                }
+                else
+                    $('#createCategoryProductModal .modal-body').html(res.html);
                 location.reload();
-                $("#createCategoryProductModal .modal-body").html("");
-                $("#createCategoryProductModal .modal-title").html("");
-                $("#createCategoryProductModal").modal("hide");
+                
             },
             error: function (err) {
                 console.log(err)

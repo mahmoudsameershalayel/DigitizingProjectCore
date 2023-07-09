@@ -69,5 +69,6 @@ namespace DigitizingProjectCore.Data
         public DbSet<Link> Links { get; set; }
         public DbSet<AdminLinks> AdminLinks { get; set; }
         public DbSet<SolutionProducts> SolutionProducts { get; set; }
+        public DbSet<Setting> Settings { get; set; }
     }
 }

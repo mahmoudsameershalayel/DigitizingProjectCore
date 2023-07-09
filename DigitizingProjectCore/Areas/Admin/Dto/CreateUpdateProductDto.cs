@@ -17,6 +17,9 @@ namespace DigitizingProjectCore.Areas.Admin.Dto
         public IFormFile LogoImage { get; set; }
         public IFormFile PDFFile { get; set; }
         public IFormFile DocFile { get; set; }
+        public string? LogoImageName { get; set; }
+        public string? PDFFileName { get; set; }
+        public string? DocFileName { get; set; }
         public int SortId { get; set; }
         public bool IsActive { get; set; }
     }

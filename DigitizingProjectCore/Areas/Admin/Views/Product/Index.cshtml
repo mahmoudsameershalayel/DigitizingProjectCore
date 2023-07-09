@@ -11,11 +11,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <style>
-        .table-responsive {
-            overflow-x: hidden;
-        }
-    </style>
+  
 </head>
 <body>
     <div class="table-responsive">
@@ -26,7 +22,7 @@
                         <h2>Product</h2>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a class="btn btn-success" asp-area="Admin" asp-controller="Product" asp-action="Add">Add Product</a>
+                        <a class="btn btn-success" onclick="showInPopup('@Url.Action("Add" , "Product" ,null ,Context.Request.Scheme)' , 'Add Product');">Add Product</a>
                     </div>
                 </div>
             </div>
@@ -61,7 +57,7 @@
                             <td>@item.CreatedDate</td>
                             <td>
                                 <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
-                                <a asp-controller="CategoryProduct" asp-action="Edit" asp-route-id="@item.Id" class='btn btn-xs btn-info PopUp'><i class='glyphicon glyphicon-edit'></i></a>
+                                <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "Product" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Product');"><i class='glyphicon glyphicon-edit'></i></a>
                                 <button class="btn-delete btn btn-xs btn-danger Confirm" data-id="@item.Id"><i class='glyphicon glyphicon-trash'></i></button>
                             </td>
                         </tr>

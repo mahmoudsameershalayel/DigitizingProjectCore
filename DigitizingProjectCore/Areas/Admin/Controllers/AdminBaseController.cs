@@ -14,6 +14,6 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
 
     public class AdminBaseController : Controller
     {
-
+       
     }
 }

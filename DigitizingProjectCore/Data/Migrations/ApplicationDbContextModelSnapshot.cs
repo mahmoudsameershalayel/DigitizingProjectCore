@@ -144,8 +144,8 @@ namespace DigitizingProjectCore.Data.Migrations
                         {
                             Id = "f1446937-109c-4e1a-97ce-0560442484f5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6ce69326-d4cc-427e-843e-ec7d64d73d84",
-                            Created_At = new DateTime(2023, 7, 8, 1, 12, 33, 951, DateTimeKind.Local).AddTicks(8465),
+                            ConcurrencyStamp = "2b09a222-45e9-4cfd-a7e8-1a932de759fe",
+                            Created_At = new DateTime(2023, 7, 9, 11, 55, 42, 535, DateTimeKind.Local).AddTicks(1910),
                             Email = "Administrator@admin.com",
                             EmailConfirmed = false,
                             FullName = "System Administrator",
@@ -154,12 +154,12 @@ namespace DigitizingProjectCore.Data.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMINISTRATOR@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEttAWIz9VzhNGAvYYCUTLrHutqaJ5Pk+6mfMdgID8hr2MnOW4t1EgBGw17EgViiHQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEL8MjqrjTO3FJskRjLpA8QUrrKj3cf44g8c3gsqdd2/3Lrnv29W57uBTnlRSe5QkTw==",
                             Phone = "97259000000",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "67105bee-d809-4bde-b70a-9b38f76f1155",
+                            SecurityStamp = "ff2ed226-6761-4176-b79f-311ab3a75c43",
                             TwoFactorEnabled = false,
-                            Updated_at = new DateTime(2023, 7, 8, 1, 12, 33, 951, DateTimeKind.Local).AddTicks(8800),
+                            Updated_at = new DateTime(2023, 7, 9, 11, 55, 42, 535, DateTimeKind.Local).AddTicks(1963),
                             UserName = "System_Administrator"
                         });
                 });
@@ -172,20 +172,23 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Created_At")
+                    b.Property<DateTime?>("Created_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Created_By")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsPartner")
                         .HasColumnType("bit");
+
+                    b.Property<string>("LogoImageName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
@@ -195,14 +198,14 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SortId")
+                    b.Property<int?>("SortId")
                         .HasColumnType("int");
 
                     b.Property<string>("URL")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Updated_At")
+                    b.Property<DateTime?>("Updated_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Updated_By")
@@ -221,16 +224,16 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Created_At")
+                    b.Property<DateTime?>("Created_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Created_By")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("NameAr")
@@ -241,10 +244,10 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SortId")
+                    b.Property<int?>("SortId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Updated_At")
+                    b.Property<DateTime?>("Updated_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Updated_By")
@@ -263,16 +266,16 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Created_At")
+                    b.Property<DateTime?>("Created_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Created_By")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("NameAr")
@@ -283,10 +286,10 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SortId")
+                    b.Property<int?>("SortId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Updated_At")
+                    b.Property<DateTime?>("Updated_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Updated_By")
@@ -305,16 +308,16 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Created_At")
+                    b.Property<DateTime?>("Created_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Created_By")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("NameAr")
@@ -328,10 +331,10 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SortId")
+                    b.Property<int?>("SortId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Updated_At")
+                    b.Property<DateTime?>("Updated_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Updated_By")
@@ -350,16 +353,16 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Created_At")
+                    b.Property<DateTime?>("Created_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Created_By")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("NameAr")
@@ -370,10 +373,10 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SortId")
+                    b.Property<int?>("SortId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Updated_At")
+                    b.Property<DateTime?>("Updated_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Updated_By")
@@ -403,16 +406,16 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.Property<int?>("CityId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Created_At")
+                    b.Property<DateTime?>("Created_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Created_By")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("NameAr")
@@ -427,10 +430,10 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SortId")
+                    b.Property<int?>("SortId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Updated_At")
+                    b.Property<DateTime?>("Updated_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Updated_By")
@@ -492,7 +495,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Created_At")
+                    b.Property<DateTime?>("Created_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Created_By")
@@ -509,16 +512,16 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<int?>("NewsCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SortId")
+                    b.Property<int?>("SortId")
                         .HasColumnType("int");
 
                     b.Property<string>("SummaryAr")
@@ -545,7 +548,7 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Updated_At")
+                    b.Property<DateTime?>("Updated_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Updated_By")
@@ -575,22 +578,30 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Created_At")
+                    b.Property<DateTime?>("Created_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Created_By")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DocFile")
+                    b.Property<string>("DetailsAr")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<string>("DetailsEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DocFileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
-                    b.Property<string>("LogoImage")
+                    b.Property<string>("LogoImageName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NameAr")
@@ -601,10 +612,10 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PDFFile")
+                    b.Property<string>("PDFFileName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SortId")
+                    b.Property<int?>("SortId")
                         .HasColumnType("int");
 
                     b.Property<string>("SummaryAr")
@@ -615,7 +626,7 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Updated_At")
+                    b.Property<DateTime?>("Updated_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Updated_By")
@@ -638,7 +649,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Created_At")
+                    b.Property<DateTime?>("Created_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Created_By")
@@ -656,10 +667,10 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("LogoImage")
@@ -681,7 +692,7 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.Property<int?>("ServiceCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SortId")
+                    b.Property<int?>("SortId")
                         .HasColumnType("int");
 
                     b.Property<string>("SummaryAr")
@@ -692,7 +703,7 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Updated_At")
+                    b.Property<DateTime?>("Updated_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Updated_By")
@@ -708,6 +719,37 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.ToTable("Services");
                 });
 
+            modelBuilder.Entity("DigitizingProjectCore.Models.Setting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("key_name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("value_ar")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("value_en")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Settings");
+                });
+
             modelBuilder.Entity("DigitizingProjectCore.Models.Solution", b =>
                 {
                     b.Property<int>("Id")
@@ -719,7 +761,7 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.Property<int?>("BrandId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Created_At")
+                    b.Property<DateTime?>("Created_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Created_By")
@@ -737,10 +779,10 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("LogoImage")
@@ -762,10 +804,10 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.Property<int?>("ProductCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SortId")
+                    b.Property<int?>("SortId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Updated_At")
+                    b.Property<DateTime?>("Updated_At")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Updated_By")

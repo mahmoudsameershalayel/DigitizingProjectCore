@@ -12,7 +12,7 @@ namespace DigitizingProjectCore.AutoMapper
             //Product
             CreateMap<Product , CreateUpdateProductDto>().ReverseMap();
             CreateMap<Product , ProductViewModel>().ReverseMap();
-            CreateMap<ProductViewModel, CreateUpdateProductDto>().ReverseMap();
+            CreateMap<Product , AddProductWithCategoryAndBrand>().ReverseMap();
 
 
             //CategoryOfProduct
@@ -27,6 +27,10 @@ namespace DigitizingProjectCore.AutoMapper
 
             //City
             CreateMap<City , CityViewModel>().ReverseMap();
+
+            //Distributor
+            CreateMap<Distributor , DistributorViewModel>().ReverseMap();
+            CreateMap<Distributor , CreateUpdateDistributorDto>().ReverseMap();
         }
     }
 }

@@ -1,0 +1,65 @@
+﻿@model List<Product>
+@{
+    var lang = "en";
+}
+<!-- Start Page Title Area -->
+<div class="page-title-area page-title-style-two">
+    <div class="container">
+        <div class="page-title-content">
+            <h2>Products</h2>
+        </div>
+        <ul>
+            <li>
+                <a asp-controller="Home" asp-action="Index">
+                    Home
+                </a>
+            </li>
+            <li class="active">Products</li>
+        </ul>
+    </div>
+</div>
+<!-- End Page Title Area -->
+<!-- Start Blog Column Two Area -->
+<div class="product-area ptb-100">
+    <div class="container">
+        <div class="row">
+            @if (Model.Count() > 0)
+            {
+                foreach (var item in Model)
+                {
+
+                    <div class="col-lg-4 col-sm-6">
+                        <div style="position:relative" class="single-product">
+                            <a href="/Home/Product/@item.Id" class="product-img">
+                                <div class="imgProductContainer">
+                                    <img src="/Images/@item.LogoImageName" alt="@(item.NameEn)">
+                                </div>
+                            </a>
+                            <a href="/Home/Product/@item.Id">
+                                <h3>@item.NameEn</h3>
+                            </a>
+                            <div class="ProductBrandCategory">
+                                <a href="/Home/Products?categoryId=@item.CategoryId" class="btn btn-danger btn-sm">
+                                    @(lang == "ar" ? item.Category.NameAr : item.Category.NameEn)
+                                </a>
+                                @if (item.Brand != null)
+                                {
+                                    <a href="/@lang/Home/Products?brandId=@item.BrandId" class="btn btn-warning btn-sm">
+                                        <img src="~/Images/@item.Brand.LogoImageName" style="height:20px" />
+                                        @(lang == "ar" ? item.Brand.NameAr : item.Brand.NameEn)
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-sm-12">
+                    <div class="alert alert-info">ThereIsNoItemsToShow</div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

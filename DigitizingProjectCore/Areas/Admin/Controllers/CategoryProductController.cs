@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using DigitizingProjectCore.Areas.Admin.Dto;
+using DigitizingProjectCore.Data;
 using DigitizingProjectCore.Models;
 using DigitizingProjectCore.Services.CategoryProductService;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DigitizingProjectCore.Areas.Admin.Controllers
@@ -9,10 +11,12 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
     public class CategoryProductController : AdminBaseController
     {
         private readonly ICategoryProductService _categoryProductService;
+        private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public CategoryProductController(ICategoryProductService categoryProductService,IMapper mapper)
+        public CategoryProductController(ICategoryProductService categoryProductService,IMapper mapper , ApplicationDbContext context)
         {
             _categoryProductService = categoryProductService;
+            _context = context;
             _mapper = mapper;
         }
         [HttpGet]
@@ -29,6 +33,7 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             int _categorySkip = (pg - 1) * pageSize;
             var data = _Categories.Skip(_categorySkip).Take(pager.PageSize).ToList();
             ViewBag.Pager = pager;
+            ViewBag.db = _context;
             return View(data);
         }
 
@@ -40,9 +45,10 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         public async Task<IActionResult> Add(CreateUpdateCategoryDto dto) {
             if (ModelState.IsValid) { 
                 await _categoryProductService.Create(dto);
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllProductCategory", _categoryProductService.GetAll()) });
+                return RedirectToAction("Index");
             }
-            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Add", _categoryProductService.GetById(dto.Id)) });
+            return View();
+
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)

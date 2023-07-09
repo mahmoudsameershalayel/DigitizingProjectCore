@@ -57,6 +57,16 @@ builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IDistributorService, DistributorService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+//Set Context DB in Session
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = "aspNetCore";
+    options.IdleTimeout = TimeSpan.FromSeconds(5);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 
 var app = builder.Build();
 
@@ -74,6 +84,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession();
 
 app.UseRouting();
 

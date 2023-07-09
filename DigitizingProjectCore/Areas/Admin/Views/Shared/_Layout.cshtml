@@ -1,7 +1,8 @@
-﻿@using DigitizingProjectCore.Data;
+﻿@using DigitizingProjectCore.Areas.Admin.Controllers;
+@using DigitizingProjectCore.Data;
 @using Microsoft.AspNetCore.Mvc.Rendering
 @{
-    var links = new List<DigitizingProjectCore.Models.Link>();
+    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
     var action = ViewContext.RouteData.Values["action"].ToString().ToLower();
     var controller = ViewContext.RouteData.Values["controller"].ToString().ToLower();
     if (action == "index")
@@ -49,7 +50,7 @@
     <link href="/Content/MetronicRTL/assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css" />
     <link href="/Content/nprogress-master/nprogress.css" rel="stylesheet" />
     <link rel="shortcut icon" href="/Content/images/Icon.ico" />
-    
+
     <style>
         .lblBalance {
             font-size: 15px !important;
@@ -202,6 +203,7 @@
 </head>
 <!-- END HEAD -->
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white page-md">
+    <div>@ViewBag.ReferenceContext</div>
     <div class="page-wrapper">
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
@@ -263,17 +265,41 @@
                         </li>
 
                         @{
+
                             var i = 0;
+                            var links = db.Links.Where(x => x.ParentId == 0 && x.ShowInMenu == true).OrderBy(x => x.OrderId).ToList();
                             foreach (var link in links)
                             {
+                                var sublinks = db.Links.Where(x => x.ParentId == link.Id && x.ShowInMenu == true).OrderBy(x => x.OrderId).ToList();
                                 var isCurrent = link.URL.ToLower() == currentUrl;
                                 <li class="nav-item @(i++ == 0 ? "start" : "") ">
                                     <a href="@link.URL" class="nav-link nav-toggle">
                                         <i class="@link.Icon"></i>
                                         <span class="title">@link.Title</span>
+                                        @if (sublinks.Count > 0)
+                                        {
+                                            <span class="arrow"></span>
+                                        }
                                     </a>
+                                    @if (sublinks.Count > 0)
+                                    {
+                                        var j = 0;
+                                        <ul class="sub-menu">
+                                            @foreach (var sublink in sublinks)
+                                            {
+                                                isCurrent = sublink.URL.ToLower() == currentUrl;
+                                                <li class="nav-item @(j++ == 0 ? "start" : "") @(isCurrent ? "active" : "")">
+                                                    <a title="@sublink.Title" href="@sublink.URL" class="nav-link">
+                                                        <i class="@sublink.Icon"></i>
+                                                        <span class="title">@sublink.Title</span>
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
                                 </li>
                             }
+                        }
                         }
 
                     </ul>
@@ -356,13 +382,13 @@
             $.ajax({
                 url: '@Url.Action("GetAllLinks", "Home")',
                 type: 'GET',
-                success: function (data) {                   
+                success: function (data) {
                     console.log(data);
                 }
             });
         });
     </script>
-  
+
     <div class="modal" id="createCategoryProductModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

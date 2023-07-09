@@ -32,21 +32,25 @@ namespace DigitizingProjectCore.Services.ProductService
             return _productsVM;
         }
 
-        public async Task<ProductViewModel> GetById(int id)
+        public async Task<Product> GetById(int id)
         {
-            var _product = await _context.Products.Where(x => x.Id == id).FirstAsync();
-            var _productVM = _mapper.Map<ProductViewModel>(_product);
-            return _productVM;
+            var _product = await _context.Products.Where(x => x.Id == id).Include(c => c.Category).Include(b => b.Brand).FirstOrDefaultAsync();
+            if (_product == null)
+            {
+                throw new Exception("Not Found!!");
+            }
+            return _product;
         }
         public async Task<CreateUpdateProductDto> Create(CreateUpdateProductDto dto)
         {
             var _product = _mapper.Map<Product>(dto);
-            if (dto.LogoImage != null) {
+            if (dto.LogoImage != null)
+            {
                 var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
                 var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.LogoImage.FileName);
                 var filePath = Path.Combine(uploadFolder, uniqueName);
                 dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
-                _product.LogoImage = uniqueName;
+                _product.LogoImageName = uniqueName;
             }
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _product.Created_By = _UserId;
@@ -59,14 +63,14 @@ namespace DigitizingProjectCore.Services.ProductService
         }
         public async Task<CreateUpdateProductDto> Update(CreateUpdateProductDto dto)
         {
-            var _product = await _context.Products.Where(x => x.Id == dto.Id).FirstAsync();
+            var _product = await _context.Products.Where(x => x.Id == dto.Id).FirstOrDefaultAsync();
             if (dto.LogoImage != null)
             {
                 var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
                 var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.LogoImage.FileName);
                 var filePath = Path.Combine(uploadFolder, uniqueName);
                 dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
-                _product.LogoImage = uniqueName;
+                _product.LogoImageName = uniqueName;
             }
             var _Updateproduct = _mapper.Map(dto, _product);
             _context.Products.Update(_Updateproduct);
@@ -76,7 +80,7 @@ namespace DigitizingProjectCore.Services.ProductService
 
         public async Task<int> Delete(int id)
         {
-            var _product = await _context.Products.Where(x => x.Id == id).FirstAsync();
+            var _product = await _context.Products.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (_product == null)
             {
                 throw new Exception("Not Found!!");

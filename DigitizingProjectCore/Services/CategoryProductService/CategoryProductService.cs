@@ -27,16 +27,18 @@ namespace DigitizingProjectCore.Services.CategoryProductService
         }
         public async Task<List<CategoryViewModel>> GetAll()
         {
-            var _Categories = await _context.CategoryForProducts.ToListAsync();
+            var _Categories = await _context.CategoryForProducts.OrderBy(x => x.SortId).ToListAsync();
             var _CategoriesVM = _mapper.Map<List<CategoryViewModel>>(_Categories);
             return _CategoriesVM;
         }
 
-        public async Task<CategoryViewModel> GetById(int id)
+        public async Task<CategoryForProduct> GetById(int id)
         {
             var _Category = await _context.CategoryForProducts.Where(x => x.Id == id).FirstOrDefaultAsync();
-            var _CategoryVM = _mapper.Map<CategoryViewModel>(_Category);
-            return _CategoryVM;
+            if (_Category == null) {
+                throw new Exception("Not Found!!");
+            }
+            return _Category;
         }
         public async Task<CreateUpdateCategoryDto> Create(CreateUpdateCategoryDto dto)
         {
