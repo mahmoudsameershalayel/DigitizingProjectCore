@@ -1,13 +1,14 @@
-using AutoMapper;
 using DigitizingProjectCore.AutoMapper;
 using DigitizingProjectCore.Data;
 using DigitizingProjectCore.Models;
 using DigitizingProjectCore.Services.Auth;
 using DigitizingProjectCore.Services.BrandServices;
 using DigitizingProjectCore.Services.CategoryProductService;
+using DigitizingProjectCore.Services.CategoryServiceService;
 using DigitizingProjectCore.Services.CityService;
 using DigitizingProjectCore.Services.DistributorService;
 using DigitizingProjectCore.Services.ProductService;
+using DigitizingProjectCore.Services.ServiceService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,8 @@ builder.Services.AddScoped<ICategoryProductService, CategoryProductService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IDistributorService, DistributorService>();
+builder.Services.AddScoped<ICategoryServiceService , CategoryServiceService>();
+builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 //Set Context DB in Session
