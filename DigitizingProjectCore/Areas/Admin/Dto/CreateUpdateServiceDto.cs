@@ -28,6 +28,9 @@ namespace DigitizingProjectCore.Areas.Admin.Dto
         public IFormFile PDFFile { get; set; }
         [Required(ErrorMessage = "DOC File is required")]
         public IFormFile DOCFile { get; set; }
+        public string? LogoImageName { get; set; }
+        public string? PDFFileName { get; set; }
+        public string? DocFileName { get; set; }
         public bool  IsActive { get; set; }
 
     }

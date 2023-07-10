@@ -42,12 +42,12 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             return View();  
         }
         [HttpPost]
-        public async Task<IActionResult> Add(CreateUpdateCategoryDto dto) {
+        public async Task<JsonResult> Add(CreateUpdateCategoryDto dto) {
             if (ModelState.IsValid) { 
                 await _categoryProductService.Create(dto);
-                return RedirectToAction("Index");
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _categoryProductService.GetAll()) });
             }
-            return View();
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Add", dto) });
 
         }
         [HttpGet]
@@ -63,13 +63,21 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 await _categoryProductService.Update(dto);
-            }   
-            return RedirectToAction("Index");
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _categoryProductService.GetAll()) });
+            }
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", dto) });
         }
-        [HttpDelete]
-        public async Task<IActionResult> Delete(int id) { 
-            await _categoryProductService.Delete(id);
-            return Json(new { id = id, message = "Deleted Successfully" });
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var _category = await _categoryProductService.GetById(id);
+            var dto = _mapper.Map<CreateUpdateCategoryDto>(_category);
+            return View(dto);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(CreateUpdateCategoryDto dto) { 
+            await _categoryProductService.Delete(dto.Id);
+            return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", await _categoryProductService.GetAll()) });
         }
     } 
 }

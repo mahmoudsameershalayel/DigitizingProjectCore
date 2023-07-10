@@ -144,8 +144,8 @@ namespace DigitizingProjectCore.Data.Migrations
                         {
                             Id = "f1446937-109c-4e1a-97ce-0560442484f5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2b09a222-45e9-4cfd-a7e8-1a932de759fe",
-                            Created_At = new DateTime(2023, 7, 9, 11, 55, 42, 535, DateTimeKind.Local).AddTicks(1910),
+                            ConcurrencyStamp = "47bea095-719f-46b5-8a55-4fc9b4a02e55",
+                            Created_At = new DateTime(2023, 7, 10, 13, 33, 10, 392, DateTimeKind.Local).AddTicks(332),
                             Email = "Administrator@admin.com",
                             EmailConfirmed = false,
                             FullName = "System Administrator",
@@ -154,12 +154,12 @@ namespace DigitizingProjectCore.Data.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMINISTRATOR@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEL8MjqrjTO3FJskRjLpA8QUrrKj3cf44g8c3gsqdd2/3Lrnv29W57uBTnlRSe5QkTw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKj2mrnUJCD8cmceTu011779zGCZ5lJytBNXC0gfXJs8cNMsE7lpIKJrNnhefUdGgw==",
                             Phone = "97259000000",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ff2ed226-6761-4176-b79f-311ab3a75c43",
+                            SecurityStamp = "8d659bda-8c4f-435d-99d6-0874e5154dd6",
                             TwoFactorEnabled = false,
-                            Updated_at = new DateTime(2023, 7, 9, 11, 55, 42, 535, DateTimeKind.Local).AddTicks(1963),
+                            Updated_at = new DateTime(2023, 7, 10, 13, 33, 10, 392, DateTimeKind.Local).AddTicks(389),
                             UserName = "System_Administrator"
                         });
                 });
@@ -649,6 +649,9 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("Created_At")
                         .HasColumnType("datetime2");
 
@@ -663,7 +666,7 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DocFile")
+                    b.Property<string>("DocFileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -673,7 +676,7 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
-                    b.Property<string>("LogoImage")
+                    b.Property<string>("LogoImageName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -685,12 +688,9 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PDFFile")
+                    b.Property<string>("PDFFileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ServiceCategoryId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("SortId")
                         .HasColumnType("int");
@@ -709,12 +709,9 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.Property<string>("Updated_By")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("_CategoryId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("_CategoryId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Services");
                 });
@@ -761,6 +758,9 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.Property<int?>("BrandId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("Created_At")
                         .HasColumnType("datetime2");
 
@@ -775,7 +775,7 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DocFile")
+                    b.Property<string>("DocFileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -785,7 +785,7 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
-                    b.Property<string>("LogoImage")
+                    b.Property<string>("LogoImageName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -797,12 +797,9 @@ namespace DigitizingProjectCore.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PDFFile")
+                    b.Property<string>("PDFFileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProductCategoryId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("SortId")
                         .HasColumnType("int");
@@ -813,14 +810,11 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.Property<string>("Updated_By")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("_CategoryId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
 
-                    b.HasIndex("_CategoryId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Solutions");
                 });
@@ -1056,30 +1050,26 @@ namespace DigitizingProjectCore.Data.Migrations
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Service", b =>
                 {
-                    b.HasOne("DigitizingProjectCore.Models.CategoryForService", "_Category")
+                    b.HasOne("DigitizingProjectCore.Models.CategoryForService", "Category")
                         .WithMany("_Services")
-                        .HasForeignKey("_CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
-                    b.Navigation("_Category");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Solution", b =>
                 {
-                    b.HasOne("DigitizingProjectCore.Models.Brand", "_Brand")
+                    b.HasOne("DigitizingProjectCore.Models.Brand", "Brand")
                         .WithMany()
                         .HasForeignKey("BrandId");
 
-                    b.HasOne("DigitizingProjectCore.Models.CategoryForProduct", "_Category")
+                    b.HasOne("DigitizingProjectCore.Models.CategoryForProduct", "Category")
                         .WithMany()
-                        .HasForeignKey("_CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
-                    b.Navigation("_Brand");
+                    b.Navigation("Brand");
 
-                    b.Navigation("_Category");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.SolutionProducts", b =>

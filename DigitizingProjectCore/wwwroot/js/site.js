@@ -4,12 +4,16 @@
 // Write your JavaScript code.
 showInPopup = (url, title) => {
     $.ajax({
-        type: "GET",
+        type: 'GET',
         url: url,
         success: function (res) {
-            $("#createCategoryProductModal .modal-body").html(res);
-            $("#createCategoryProductModal .modal-title").html(title);
-            $("#createCategoryProductModal").modal("show");
+            $('#form-modal .modal-body').html(res);
+            $('#form-modal .modal-title').html(title);
+            $('#form-modal').modal('show');
+            // to make popup draggable
+            $('.modal-dialog').draggable({
+                handle: ".modal-header"
+            });
         }
     })
 }
@@ -20,19 +24,17 @@ jQueryAjaxPost = form => {
             type: 'POST',
             url: form.action,
             data: new FormData(form),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json", 
-            success: function () {
+            contentType: false,
+            processData: false,
+            success: function (res) {
                 if (res.isValid) {
                     $('#view-all').html(res.html)
-                    $("#createCategoryProductModal .modal-body").html("");
-                    $("#createCategoryProductModal .modal-title").html("");
-                    $("#createCategoryProductModal").modal("hide");
+                    $('#form-modal .modal-body').html('');
+                    $('#form-modal .modal-title').html('');
+                    $('#form-modal').modal('hide');
                 }
                 else
-                    $('#createCategoryProductModal .modal-body').html(res.html);
-                location.reload();
-                
+                    $('#form-modal .modal-body').html(res.html);
             },
             error: function (err) {
                 console.log(err)
@@ -43,4 +45,28 @@ jQueryAjaxPost = form => {
     } catch (ex) {
         console.log(ex)
     }
+}
+jQueryAjaxDelete = form => {
+        try {
+            $.ajax({
+                type: 'POST',
+                url: form.action,
+                data: new FormData(form),
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    $('#view-all').html(res.html);
+                    $('#form-modal .modal-body').html('');
+                    $('#form-modal .modal-title').html('');
+                    $('#form-modal').modal('hide');
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            })
+        } catch (ex) {
+            console.log(ex)
+        }
+    //prevent default form submit event
+    return false;
 }

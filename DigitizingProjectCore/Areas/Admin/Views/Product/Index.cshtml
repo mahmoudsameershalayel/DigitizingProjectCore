@@ -58,7 +58,7 @@
                             <td>
                                 <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
                                 <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "Product" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Product');"><i class='glyphicon glyphicon-edit'></i></a>
-                                <button class="btn-delete btn btn-xs btn-danger Confirm" data-id="@item.Id"><i class='glyphicon glyphicon-trash'></i></button>
+                                <a class="btn-delete btn btn-xs btn-danger" asp-area="Admin" asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id" data-id="@item.Id"><i class='glyphicon glyphicon-trash'></i></a>
                             </td>
                         </tr>
                     }
@@ -73,11 +73,12 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('.btn-delete').click(function () {
-                var itemId = $(this).data('id');
+            $(".btn-delete").on("click", function (e) {
+                $this = $(this);
+                var id = $(this).attr("data-id");
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: 'You won\'t be able to revert this!',
+                    text: "You won't be able to revert this!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -86,24 +87,20 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: '@Url.Action("Delete", "Product")',
+                            url: "@Url.Action("Delete","Product", new { area = "Admin"})?id=" + id,
                             type: 'DELETE',
-                            data: { id: itemId },
                             success: function (result) {
                                 Swal.fire(
                                     'Deleted!',
-                                    'The item has been deleted.',
+                                    'Your file has been deleted.',
                                     'success'
-                                ).then(() => {
-                                    location.reload();
-                                });
-                            },
-                            error: function (xhr, status, error) {
-                                console.error(xhr.responseText);
+                                )
+                                console.log($this.closest("tr").remove());
                             }
                         });
                     }
-                });
+                })
+                e.preventDefault();
             });
         });
     </script>

@@ -1,4 +1,5 @@
-﻿using DigitizingProjectCore.Areas.Admin.Dto;
+﻿using AutoMapper;
+using DigitizingProjectCore.Areas.Admin.Dto;
 using DigitizingProjectCore.Data;
 using DigitizingProjectCore.Services.DistributorService;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +10,11 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IDistributorService _distributorService;
-        public DistributorController(IDistributorService distributorService , ApplicationDbContext context)
+        private readonly IMapper _mapper;
+        public DistributorController(IDistributorService distributorService , ApplicationDbContext context , IMapper mapper)
         {
             _distributorService = distributorService;
+            _mapper = mapper;
             _context = context;
         }
         [HttpGet]
@@ -32,6 +35,29 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         {
             await _distributorService.Create(dto);
             return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var _Distributor = await _distributorService.GetById(id);
+            var _AddDistributorWithCity = await _distributorService.InjectCities();
+            _AddDistributorWithCity = _mapper.Map(_Distributor, _AddDistributorWithCity);
+            return View(_AddDistributorWithCity);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(CreateUpdateDistributorDto dto)
+        {
+            if (ModelState.IsValid)
+            {
+                await _distributorService.Update(dto);
+            }
+            return RedirectToAction("Index");
+        }
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _distributorService.Delete(id);
+            return Json(new { id = id, message = "Deleted Successfully" });
         }
     }
 }

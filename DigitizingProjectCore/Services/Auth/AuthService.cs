@@ -1,6 +1,7 @@
 ﻿using DigitizingProjectCore.Dto;
 using DigitizingProjectCore.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DigitizingProjectCore.Services.Auth
 {
@@ -30,6 +31,11 @@ namespace DigitizingProjectCore.Services.Auth
             {
                 return false;
             }
+        }
+        public async Task<bool> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return true;
         }
     }
 }

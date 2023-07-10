@@ -27,14 +27,24 @@ namespace DigitizingProjectCore.Services.ServiceService
         }
         public async Task<List<ServiceViewModel>> GetAll()
         {
-            var _Services = await _context.Services.Include(c => c._Category).ToListAsync();
+            var _Services = await _context.Services.Include(c => c.Category).ToListAsync();
             var _ServicesVM = _mapper.Map<List<ServiceViewModel>>(_Services);
             return _ServicesVM;
         }
 
-        public async Task<Service> GetById(int id)
+        public async Task<CreateUpdateServiceDto> GetDtoById(int id)
         {
-            var _Service = await _context.Services.Where(x => x.Id == id).Include(c => c._Category).FirstOrDefaultAsync();
+            var _Service = await _context.Services.Where(x => x.Id == id).Include(c => c.Category).FirstOrDefaultAsync();
+            if (_Service == null)
+            {
+                throw new Exception("Not Found!!");
+            }
+            var _ServiceDto = _mapper.Map<CreateUpdateServiceDto>(_Service);
+            return _ServiceDto;
+        }
+        public async Task<Service> GetServiceById(int id)
+        {
+            var _Service = await _context.Services.Where(x => x.Id == id).Include(c => c.Category).FirstOrDefaultAsync();
             if (_Service == null)
             {
                 throw new Exception("Not Found!!");
@@ -50,7 +60,7 @@ namespace DigitizingProjectCore.Services.ServiceService
                 var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.LogoImage.FileName);
                 var filePath = Path.Combine(uploadFolder, uniqueName);
                 dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
-                _Service.LogoImage = uniqueName;
+                _Service.LogoImageName = uniqueName;
             }
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _Service.Created_By = _UserId;
@@ -74,7 +84,7 @@ namespace DigitizingProjectCore.Services.ServiceService
                 var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.LogoImage.FileName);
                 var filePath = Path.Combine(uploadFolder, uniqueName);
                 dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
-                _Service.LogoImage = uniqueName;
+                _Service.LogoImageName = uniqueName;
             }
             var _UpdateService = _mapper.Map(dto, _Service);
             _context.Services.Update(_UpdateService);

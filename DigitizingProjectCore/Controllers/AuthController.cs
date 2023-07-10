@@ -1,5 +1,6 @@
 ﻿using DigitizingProjectCore.Dto;
 using DigitizingProjectCore.Services.Auth;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DigitizingProjectCore.Controllers
@@ -32,6 +33,12 @@ namespace DigitizingProjectCore.Controllers
                 return View(ex.Message);
             }
             return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _authService.Logout();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

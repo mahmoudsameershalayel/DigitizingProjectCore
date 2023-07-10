@@ -1,0 +1,71 @@
+﻿@model DigitizingProjectCore.Areas.Admin.Dto.AddServiceWithCategory
+@{
+    Layout = null;
+}
+
+<form asp-controller="Service" asp-action="Edit" method="POST" enctype="multipart/form-data" onsubmit="return jQueryAjaxPost(this);">
+    <input type="hidden" asp-for="Id">
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="nameAr">Name (Arabic)</label>
+            <input type="text" class="form-control" id="nameAr" asp-for="NameAr">
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="nameEn">Name (English)</label>
+            <input type="text" class="form-control" id="nameEn" asp-for="NameEn">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="category">Category</label>
+            <select class="form-control" id="category" asp-for="CategoryId" asp-items="Model._Categories"></select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="summaryAr">Summary (Arabic)</label>
+            <textarea type="text" class="form-control" id="summaryAr" cols="20" rows="3" asp-for="SummaryAr"></textarea>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="summaryEn">Summary (English)</label>
+            <textarea type="text" class="form-control" id="summaryEn" cols="20" rows="3" asp-for="SummaryEn"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="detailsAr">Details (Arabic)</label>
+            <textarea type="text" class="form-control" id="detailsAr" cols="20" rows="7" asp-for="DetailsAr"></textarea>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="detailsEn">Details (English)</label>
+            <textarea type="text" class="form-control" id="detailsEn" cols="20" rows="7" asp-for="DetailsEn"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="logo">Logo</label>
+            <img src="/Images/@Model.LogoImageName" alt="@(Model.NameEn)" width="250" height="250">
+            <input type="file" class="form-control" id="logo" asp-for="LogoImage">
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="sort">Sort(#)</label>
+            <input type="text" class="form-control" id="sort" asp-for="SortId">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="pdfFile">PDF File</label>
+            <input type="file" class="form-control" id="pdfFile" asp-for="PDFFile">
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="docFile">Doc File</label>
+            <input type="file" class="form-control" id="docFile" asp-for="DOCFile">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="active">Active</label>
+        <input type="checkbox" id="active" checked asp-for="IsActive">
+    </div>
+    <input type="submit" class="btn btn-warning" value="Edit" />
+</form>

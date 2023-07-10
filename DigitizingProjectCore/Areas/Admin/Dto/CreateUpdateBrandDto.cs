@@ -12,8 +12,9 @@ namespace DigitizingProjectCore.Areas.Admin.Dto
         public string NameEn { get; set; }
         [Required(ErrorMessage = "URL is required.")]
         public string URL { get; set; }
-        [Required(ErrorMessage = "IsPartner is required.")]
+        [Required(ErrorMessage = "LogoImage is required.")]
         public IFormFile? LogoImage { get; set; }
+        public string? LogoImageName { get; set; }
         public bool IsActive { get; set; }
         public bool IsPartner { get; set; }
         public int? SortId { get; set; }

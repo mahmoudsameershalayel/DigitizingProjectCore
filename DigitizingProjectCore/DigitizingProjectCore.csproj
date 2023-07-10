@@ -30,6 +30,8 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Images\" />
+    <Folder Include="wwwroot\DocFiles\" />
+    <Folder Include="wwwroot\PDFFiles\" />
   </ItemGroup>
 
 </Project>

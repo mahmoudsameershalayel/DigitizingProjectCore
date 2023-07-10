@@ -29,14 +29,15 @@ namespace DigitizingProjectCore.Services.CategoryServiceService
             return _CategoriesVM;
         }
 
-        public async Task<CategoryForService> GetById(int id)
+        public async Task<CreateUpdateCategoryDto> GetById(int id)
         {
             var _Category = await _context.CategoryForServices.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (_Category == null)
             {
                 throw new Exception("Not Found!!");
             }
-            return _Category;
+            var _CategoryDto = _mapper.Map<CreateUpdateCategoryDto>(_Category);
+            return _CategoryDto;
         }
         public async Task<CreateUpdateCategoryDto> Create(CreateUpdateCategoryDto dto)
         {
@@ -70,7 +71,8 @@ namespace DigitizingProjectCore.Services.CategoryServiceService
             var _Category = await _context.CategoryForServices.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (_Category != null)
             {
-                _context.CategoryForServices.Remove(_Category);
+                _Category.IsDelete = true;
+                _context.CategoryForServices.Update(_Category);
             }
             return await _context.SaveChangesAsync();
         }

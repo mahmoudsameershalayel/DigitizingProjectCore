@@ -9,6 +9,7 @@ using DigitizingProjectCore.Services.CityService;
 using DigitizingProjectCore.Services.DistributorService;
 using DigitizingProjectCore.Services.ProductService;
 using DigitizingProjectCore.Services.ServiceService;
+using DigitizingProjectCore.Services.SolutionService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -52,6 +53,7 @@ builder.Services.ConfigureApplicationCookie(Options =>
 
 builder.Services.AddAutoMapper(typeof(ApplicationProfile).Assembly);
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ISolutionService, SolutionService>();
 builder.Services.AddScoped<ICategoryProductService, CategoryProductService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<ICityService, CityService>();
@@ -69,6 +71,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+ 
 
 
 var app = builder.Build();

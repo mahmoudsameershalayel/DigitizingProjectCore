@@ -29,7 +29,7 @@ namespace DigitizingProjectCore.Services.ProductService
         {
             var _products = await _context.Products.Include(c => c.Category).Include(b => b.Brand).ToListAsync();
             var _productsVM = _mapper.Map<List<ProductViewModel>>(_products);
-            return _productsVM;
+            return _productsVM; 
         }
 
         public async Task<Product> GetById(int id)
@@ -52,6 +52,32 @@ namespace DigitizingProjectCore.Services.ProductService
                 dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
                 _product.LogoImageName = uniqueName;
             }
+            if (dto.PDFFile != null)
+            {
+                string ext = Path.GetExtension(dto.PDFFile.FileName);
+                if (ext.ToLower() != ".pdf")
+                {
+                    throw new Exception("Not File Type!!");
+                }
+                var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "PDFFiles");
+                var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.PDFFile.FileName);
+                var filePath = Path.Combine(uploadFolder, uniqueName);
+                dto.PDFFile.CopyTo(new FileStream(filePath, FileMode.Create));
+                _product.PDFFileName = uniqueName;
+            }
+            if (dto.DocFile != null)
+            {
+                string ext = Path.GetExtension(dto.DocFile.FileName);
+                if (ext.ToLower() != ".doc")
+                {
+                    throw new Exception("Not File Type!!");
+                }
+                var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "DocFiles");
+                var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.DocFile.FileName);
+                var filePath = Path.Combine(uploadFolder, uniqueName);
+                dto.DocFile.CopyTo(new FileStream(filePath, FileMode.Create));
+                _product.DocFileName = uniqueName;
+            }
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _product.Created_By = _UserId;
             _product.Created_At = DateTime.Now;
@@ -64,6 +90,9 @@ namespace DigitizingProjectCore.Services.ProductService
         public async Task<CreateUpdateProductDto> Update(CreateUpdateProductDto dto)
         {
             var _product = await _context.Products.Where(x => x.Id == dto.Id).FirstOrDefaultAsync();
+            if (_product == null) {
+                throw new Exception("Not Found!!");
+            }
             if (dto.LogoImage != null)
             {
                 var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
@@ -72,7 +101,35 @@ namespace DigitizingProjectCore.Services.ProductService
                 dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
                 _product.LogoImageName = uniqueName;
             }
+            if (dto.PDFFile != null)
+            {
+                string ext = Path.GetExtension(dto.PDFFile.FileName);
+                if (ext.ToLower() != ".pdf") {
+                    throw new Exception("Not File Type!!");
+                }
+                var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
+                var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.PDFFile.FileName);
+                var filePath = Path.Combine(uploadFolder, uniqueName);
+                dto.PDFFile.CopyTo(new FileStream(filePath, FileMode.Create));
+                _product.PDFFileName = uniqueName;
+            }
+            if (dto.DocFile != null)
+            {
+                string ext = Path.GetExtension(dto.DocFile.FileName);
+                if (ext.ToLower() != ".doc")
+                {
+                    throw new Exception("Not File Type!!");
+                }
+                var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "DocFiles");
+                var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.DocFile.FileName);
+                var filePath = Path.Combine(uploadFolder, uniqueName);
+                dto.DocFile.CopyTo(new FileStream(filePath, FileMode.Create));
+                _product.DocFileName = uniqueName;
+            }
             var _Updateproduct = _mapper.Map(dto, _product);
+            var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
+            _Updateproduct.Updated_By = _UserId;
+            _Updateproduct.Updated_At = DateTime.Now;
             _context.Products.Update(_Updateproduct);
             _context.SaveChanges();
             return dto;

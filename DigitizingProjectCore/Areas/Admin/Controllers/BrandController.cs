@@ -41,12 +41,13 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CreateUpdateBrandDto dto)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View();
+                await _BrandService.Create(dto);
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _BrandService.GetAll()) });
             }
-            await _BrandService.Create(dto);
-            return RedirectToAction("Index");
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Add", dto) });
+
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -61,14 +62,22 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 await _BrandService.Update(dto);
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _BrandService.GetAll()) });
             }
-            return RedirectToAction("Index");
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Add", dto) });
         }
-        [HttpDelete]
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            await _BrandService.Delete(id);
-            return Json(new { id = id, message = "Deleted Successfully" });
+            var _Brand = await _BrandService.GetById(id);
+            var dto = _mapper.Map<CreateUpdateBrandDto>(_Brand);
+            return View(dto);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(CreateUpdateCategoryDto dto)
+        {
+            await _BrandService.Delete(dto.Id);
+            return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", await _BrandService.GetAll()) });
         }
     }
 }

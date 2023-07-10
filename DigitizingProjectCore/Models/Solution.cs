@@ -7,15 +7,13 @@
         public string NameEN { get; set; }
         public string DetailsAr { get; set; }
         public string DetailsEn { get; set; }
-        public string PDFFile { get; set; }
-        public string DocFile { get; set; }
-        public string LogoImage { get; set; }
-        public int? ProductCategoryId { get; set; }
-        public CategoryForProduct _Category { get; set; }
+        public string PDFFileName { get; set; }
+        public string DocFileName { get; set; }
+        public string LogoImageName { get; set; }
+        public int? CategoryId { get; set; }
+        public CategoryForProduct Category { get; set; }
         public int? BrandId { get; set; }
-        public Brand _Brand { get; set; }
+        public Brand Brand { get; set; }
         public List<SolutionProducts> _SolutionProducts { get; set; }
-
-
     }
 }

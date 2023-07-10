@@ -12,11 +12,14 @@ namespace DigitizingProjectCore.AutoMapper
             //Service
             CreateMap<Service, CreateUpdateServiceDto>().ReverseMap();
             CreateMap<Service , ServiceViewModel>().ReverseMap();
+            CreateMap<Service, AddServiceWithCategory>().ReverseMap();
+
 
             //CategoryForService
             CreateMap<CategoryForService, CreateUpdateCategoryDto>().ReverseMap();
             CreateMap<CategoryForService, CategoryViewModel>().ReverseMap();
 
+            
             //Product
             CreateMap<Product , CreateUpdateProductDto>().ReverseMap();
             CreateMap<Product , ProductViewModel>().ReverseMap();
@@ -28,12 +31,18 @@ namespace DigitizingProjectCore.AutoMapper
             CreateMap<CategoryForProduct , CategoryViewModel>().ReverseMap();
             CreateMap<CategoryViewModel, CreateUpdateCategoryDto>().ReverseMap();
 
+            
+            //Solution 
+            CreateMap<Solution , CreateUpdateSolutionDto>().ReverseMap();
+            CreateMap<Solution , SolutionViewModel>().ReverseMap();
+            CreateMap<Solution, AddSolutionWithCategoryAndBrandAndProduct>().ReverseMap();
+
 
             //Brand
             CreateMap<Brand , CreateUpdateBrandDto>().ReverseMap();
             CreateMap<Brand , BrandViewModel>().ReverseMap();
 
-            
+
             //City
             CreateMap<City , CityViewModel>().ReverseMap();
 
@@ -41,6 +50,8 @@ namespace DigitizingProjectCore.AutoMapper
             //Distributor
             CreateMap<Distributor , DistributorViewModel>().ReverseMap();
             CreateMap<Distributor , CreateUpdateDistributorDto>().ReverseMap();
+            CreateMap<Distributor, AddDistibutorWithCity>().ReverseMap();
+
         }
     }
 }

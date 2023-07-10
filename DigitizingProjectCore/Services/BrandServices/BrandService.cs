@@ -26,16 +26,19 @@ namespace DigitizingProjectCore.Services.BrandServices
         }
         public async Task<List<BrandViewModel>> GetAll()
         {
-            var _Brands = await _context.Brands.ToListAsync();
+            var _Brands = await _context.Brands.Where(x => x.IsDelete == false).ToListAsync();
             var _BrandsVM = _mapper.Map<List<BrandViewModel>>(_Brands);
             return _BrandsVM;
         }
 
-        public async Task<BrandViewModel> GetById(int id)
+        public async Task<Brand> GetById(int id)
         {
             var _Brand = await _context.Brands.Where(x => x.Id == id).FirstOrDefaultAsync();
-            var _BrandVM = _mapper.Map<BrandViewModel>(_Brand);
-            return _BrandVM;
+            if (_Brand == null)
+            {
+                throw new Exception("Not Found!!");
+            }
+            return _Brand;
         }
         public async Task<CreateUpdateBrandDto> Create(CreateUpdateBrandDto dto)
         {
@@ -73,14 +76,12 @@ namespace DigitizingProjectCore.Services.BrandServices
         public async Task<int> Delete(int id)
         {
             var _Brand = await _context.Brands.Where(x => x.Id == id).FirstOrDefaultAsync();
-            if (_Brand == null)
+            if (_Brand != null)
             {
-                throw new Exception("Not Found!!");
+                _Brand.IsDelete = true;
+                _context.Brands.Update(_Brand);
             }
-            _context.Brands.Remove(_Brand);
             return await _context.SaveChangesAsync();
-            return 0;
-
         }
 
         public async Task<List<BrandViewModel>> GetByName(string name)

@@ -38,7 +38,13 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _productService.Create(dto);
+                try
+                {
+                    await _productService.Create(dto);
+                }catch(Exception ex)
+                {
+                    return View();
+                }
             }
             return RedirectToAction("Index");
         }
