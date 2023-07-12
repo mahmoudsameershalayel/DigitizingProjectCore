@@ -8,10 +8,12 @@
         <div class="col-md-6 form-group">
             <label for="nameAr">Name (Arabic)</label>
             <input type="text" class="form-control" id="nameAr" asp-for="NameAr">
+            <span asp-validation-for="NameAr" class="text-danger"></span>
         </div>
         <div class="col-md-6 form-group">
             <label for="nameEn">Name (English)</label>
             <input type="text" class="form-control" id="nameEn" asp-for="NameEn">
+            <span asp-validation-for="NameEn" class="text-danger"></span>
         </div>
     </div>
 
@@ -19,30 +21,36 @@
         <div class="col-md-6 form-group">
             <label for="category">Category</label>
             <select class="form-control" id="category" asp-for="CategoryId" asp-items="Model._Categories"></select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
         <div class="col-md-6 form-group">
             <label for="brand">Brand</label>
             <select class="form-control" id="brand" asp-for="BrandId" asp-items="Model._Brands"></select>
+            <span asp-validation-for="BrandId" class="text-danger"></span>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6 form-group">
             <label for="summaryAr">Summary (Arabic)</label>
             <textarea type="text" class="form-control" id="summaryAr" cols="20" rows="3" asp-for="SummaryAr"></textarea>
+            <span asp-validation-for="SummaryAr" class="text-danger"></span>
         </div>
         <div class="col-md-6 form-group">
             <label for="summaryEn">Summary (English)</label>
             <textarea type="text" class="form-control" id="summaryEn" cols="20" rows="3" asp-for="SummaryEn"></textarea>
+            <span asp-validation-for="SummaryEn" class="text-danger"></span>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6 form-group">
             <label for="detailsAr">Details (Arabic)</label>
             <textarea type="text" class="form-control" id="detailsAr" cols="20" rows="7" asp-for="DetailsAr"></textarea>
+            <span asp-validation-for="DetailsAr" class="text-danger"></span>
         </div>
         <div class="col-md-6 form-group">
             <label for="detailsEn">Details (English)</label>
             <textarea type="text" class="form-control" id="detailsEn" cols="20" rows="7" asp-for="DetailsEn"></textarea>
+            <span asp-validation-for="DetailsEn" class="text-danger"></span>
         </div>
     </div>
     <div class="row">

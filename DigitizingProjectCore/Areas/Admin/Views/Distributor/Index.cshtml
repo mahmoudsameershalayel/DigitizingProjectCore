@@ -6,104 +6,26 @@
             overflow-x: hidden;
         }
     </style>
-    <link rel="stylesheet" href="sweetalert2.min.css">
 }
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-</head>
-<body>
-    <div class="table-responsive">
-        <div class="table-wrapper">
-            <div class="table-title">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h2>Distributor</h2>
-                    </div>
-                    <div class="col-sm-6 text-right">
-                        <a class="btn btn-success" onclick="showInPopup('@Url.Action("Add" , "Distributor" ,null ,Context.Request.Scheme)' , 'Add Product');">Add Distributor</a>
-                    </div>
-                </div>
+<div id="view-all">
+    @await Html.PartialAsync("_ViewAll", Model)
+</div>
+<div class="modal" tabindex="-1" role="dialog" id="form-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>Name (English)</th>
-                        <th>City</th>
-                        <th>Address (English)</th>
-                        <th>Phone</th>
-                        <th>Is Active</th>
-                        <th>Created Date</th>
-                        <th width="15%"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@item.NameEn</td>
-                            <td>@item.City.NameEn</td>
-                            <td>@item.AddressEn</td>
-                            <td>@item.Phone</td>
-
-                            @if (item.IsActive)
-                            {
-                                <td><input type="checkbox" checked></td>
-                            }
-                            else
-                            {
-                                <td><input type="checkbox"></td>
-                            }
-
-                            <td>@item.CreatedDate</td>
-                            <td>
-                                <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
-                                <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "Distributor" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Product');"><i class='glyphicon glyphicon-edit'></i></a>
-                                <a class="btn-delete btn btn-xs btn-danger" asp-area="Admin" asp-controller="Distributor" asp-action="Delete" asp-route-id="@item.Id" data-id="@item.Id"><i class='glyphicon glyphicon-trash'></i></a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-
+            <div class="modal-body">
+            </div>
         </div>
     </div>
-</body>
-</html>
+</div>
 @section scripts{
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $(".btn-delete").on("click", function (e) {
-                $this = $(this);
-                var id = $(this).attr("data-id");
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: "@Url.Action("Delete","CategoryProduct", new { area = "Admin"})?id=" + id,
-                            type: 'DELETE',
-                            success: function (result) {
-                                Swal.fire(
-                                    'Deleted!',
-                                    'Your file has been deleted.',
-                                    'success'
-                                )
-                                console.log($this.closest("tr").remove());
-                            }
-                        });
-                    }
-                })
-                e.preventDefault();
-            });
-        });
-    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

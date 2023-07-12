@@ -3,10 +3,12 @@ using DigitizingProjectCore.Data;
 using DigitizingProjectCore.Models;
 using DigitizingProjectCore.Services.Auth;
 using DigitizingProjectCore.Services.BrandServices;
+using DigitizingProjectCore.Services.CategoryNewsService;
 using DigitizingProjectCore.Services.CategoryProductService;
 using DigitizingProjectCore.Services.CategoryServiceService;
 using DigitizingProjectCore.Services.CityService;
 using DigitizingProjectCore.Services.DistributorService;
+using DigitizingProjectCore.Services.NewsService;
 using DigitizingProjectCore.Services.ProductService;
 using DigitizingProjectCore.Services.ServiceService;
 using DigitizingProjectCore.Services.SolutionService;
@@ -60,6 +62,8 @@ builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IDistributorService, DistributorService>();
 builder.Services.AddScoped<ICategoryServiceService , CategoryServiceService>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
+builder.Services.AddScoped<ICategoryNewsService, CategoryNewsService>();
+builder.Services.AddScoped<INewsService, NewsService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 //Set Context DB in Session

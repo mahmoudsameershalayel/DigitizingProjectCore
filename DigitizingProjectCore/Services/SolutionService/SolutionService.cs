@@ -27,20 +27,27 @@ namespace DigitizingProjectCore.Services.SolutionService
         }
         public async Task<List<SolutionViewModel>> GetAll()
         {
-            var _Solutions = await _context.Solutions.Where(x => x.IsDelete == false).Include(c => c.Category).Include(b => b.Brand).Include(x => x._SolutionProducts).ToListAsync();
+            var _Solutions = await _context.Solutions.Where(x => x.IsDelete == false).OrderBy(x => x.SortId).Include(c => c.Category).Include(b => b.Brand).Include(x => x.SolutionProducts).ToListAsync();
             var _SolutionsVM = _mapper.Map<List<SolutionViewModel>>(_Solutions);
             return _SolutionsVM;
         }
 
         public async Task<Solution> GetById(int id)
-            {
-            var _Solution = await _context.Solutions.Where(x => x.Id == id).Include(c => c.Category).Include(b => b.Brand).Include(x => x._SolutionProducts).FirstOrDefaultAsync();
+        {
+            var _Solution = await _context.Solutions.Where(x => x.Id == id).Include(c => c.Category).Include(b => b.Brand).Include(x => x.SolutionProducts).FirstOrDefaultAsync();
             if (_Solution == null)
             {
                 throw new Exception("Not Found!!");
             }
             return _Solution;
         }
+        public async Task<List<Product>> GetAllProducts()
+        {
+            var _Products = await _context.Products.ToListAsync();
+            return _Products;
+        }
+
+
         public async Task<CreateUpdateSolutionDto> Create(CreateUpdateSolutionDto dto)
         {
             var _Solution = _mapper.Map<Solution>(dto);
@@ -84,6 +91,15 @@ namespace DigitizingProjectCore.Services.SolutionService
             _Solution.IsActive = true;
             _Solution.IsDelete = false;
             await _context.Solutions.AddAsync(_Solution);
+            await _context.SaveChangesAsync();
+            foreach (var id in dto.ProductsId)
+            {
+                await _context.SolutionProducts.AddAsync(new SolutionProducts
+                {
+                    SolutionId = _Solution.Id,
+                    ProductId = id
+                });
+            }
             await _context.SaveChangesAsync();
             return dto;
         }
@@ -143,15 +159,16 @@ namespace DigitizingProjectCore.Services.SolutionService
             {
                 throw new Exception("Not Found!!");
             }
+            _Solution.IsActive = false;
             _Solution.IsDelete = true;
             _context.Solutions.Update(_Solution);
             return await _context.SaveChangesAsync();
         }
         public async Task<AddSolutionWithCategoryAndBrandAndProduct> InjectCategoriesAndBrandsAndProducts()
         {
-            var _Categories = await _context.CategoryForProducts.ToListAsync();
-            var _Brands = await _context.Brands.ToListAsync();
-            var _Products = await _context.Products.ToListAsync();
+            var _Categories = await _context.CategoryForProducts.Where(x => x.IsDelete == false).ToListAsync();
+            var _Brands = await _context.Brands.Where(x => x.IsDelete == false).ToListAsync();
+            var _Products = await _context.Products.Where(x => x.IsDelete == false).ToListAsync();
             var dto = new AddSolutionWithCategoryAndBrandAndProduct();
             dto.InjectCategories(_Categories);
             dto.InjectBrands(_Brands);

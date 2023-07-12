@@ -24,7 +24,7 @@ namespace DigitizingProjectCore.Services.DistributorService
         }
         public async Task<List<DistributorViewModel>> GetAll()
         {
-            var _Distributors = await _context.Distributors.Include(x => x.City).ToListAsync();
+            var _Distributors = await _context.Distributors.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).Include(x => x.City).ToListAsync();
             var _DistributorsVM = _mapper.Map<List<DistributorViewModel>>(_Distributors);
             return _DistributorsVM;
         }
@@ -66,16 +66,17 @@ namespace DigitizingProjectCore.Services.DistributorService
         public async Task<int> Delete(int id)
         {
             var _Distributor = await _context.Distributors.Where(x => x.Id == id).FirstAsync();
-            if (_Distributor == null)
+            if (_Distributor != null)
             {
-                throw new Exception("Not Found!!");
+                _Distributor.IsActive = false;
+                _Distributor.IsDelete = true;
+                _context.Distributors.Update(_Distributor);
             }
-            _context.Distributors.Remove(_Distributor);
             return await _context.SaveChangesAsync();
         }
         public async Task<CreateUpdateDistributorDto> InjectCities()
         {
-            var _Cities = await _context.Cities.ToListAsync();
+            var _Cities = await _context.Cities.Where(x => x.IsDelete == false).ToListAsync();
             var dto = new AddDistibutorWithCity();
             dto.InjectCities(_Cities);
             return dto;

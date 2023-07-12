@@ -27,7 +27,7 @@ namespace DigitizingProjectCore.Services.CategoryProductService
         }
         public async Task<List<CategoryViewModel>> GetAll()
         {
-            var _Categories = await _context.CategoryForProducts.OrderBy(x => x.SortId).ToListAsync();
+            var _Categories = await _context.CategoryForProducts.Where(x => x.IsDelete == false).OrderBy(x => x.SortId).ToListAsync();
             var _CategoriesVM = _mapper.Map<List<CategoryViewModel>>(_Categories);
             return _CategoriesVM;
         }
@@ -72,7 +72,8 @@ namespace DigitizingProjectCore.Services.CategoryProductService
             var _Category = await _context.CategoryForProducts.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (_Category != null)
             {
-                _context.CategoryForProducts.Remove(_Category);
+                _Category.IsDelete = true;
+                _context.CategoryForProducts.Update(_Category);
             }
             return await _context.SaveChangesAsync();
         }

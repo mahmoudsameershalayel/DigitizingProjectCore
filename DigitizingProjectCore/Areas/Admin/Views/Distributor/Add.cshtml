@@ -8,26 +8,31 @@
         <div class="col-md-6 form-group">
             <label for="nameAr">Name (Arabic)</label>
             <input type="text" class="form-control" id="nameAr" asp-for="NameAr">
+            <span asp-validation-for="NameAr" class="text-danger"></span>
         </div>
         <div class="col-md-6 form-group">
             <label for="nameEn">Name (English)</label>
             <input type="text" class="form-control" id="nameEn" asp-for="NameEn">
+            <span asp-validation-for="NameEn" class="text-danger"></span>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6 form-group">
             <label for="addressAr">Address (Arabic)</label>
             <textarea type="text" class="form-control" id="addressAr" cols="20" rows="3" asp-for="AddressAr"></textarea>
+            <span asp-validation-for="AddressAr" class="text-danger"></span>
         </div>
         <div class="col-md-6 form-group">
             <label for="addressEn">Address (English)</label>
             <textarea type="text" class="form-control" id="addressEn" cols="20" rows="3" asp-for="AddressEn"></textarea>
+            <span asp-validation-for="AddressEn" class="text-danger"></span>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6 form-group">
             <label for="city">City</label>
             <select class="form-control" id="city" asp-for="CityId" asp-items="Model._Cities"></select>
+            <span asp-validation-for="CityId" class="text-danger"></span>
         </div>
         <div class="col-md-6 form-group">
             <label for="sort">Sort(#)</label>
@@ -42,6 +47,7 @@
         <div class="col-md-6 form-group">
             <label for="phone">Phone</label>
             <input type="text" class="form-control" id="phone" asp-for="Phone">
+            <span asp-validation-for="Phone" class="text-danger"></span>
         </div>
     </div>
     

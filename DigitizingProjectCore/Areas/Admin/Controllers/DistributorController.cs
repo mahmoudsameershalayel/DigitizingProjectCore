@@ -27,14 +27,20 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            var _CreateUpdateProduct = await _distributorService.InjectCities();
-            return View(_CreateUpdateProduct);
+            var _CreateUpdateDistributor = await _distributorService.InjectCities();
+            return View(_CreateUpdateDistributor);
         }
         [HttpPost]
         public async Task<IActionResult> Add(CreateUpdateDistributorDto dto)
         {
-            await _distributorService.Create(dto);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                await _distributorService.Create(dto);
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _distributorService.GetAll()) });
+            }
+
+            var _CreateUpdateDistributor = await _distributorService.InjectCities();
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Add", _CreateUpdateDistributor) });
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -50,14 +56,22 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 await _distributorService.Update(dto);
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _distributorService.GetAll()) });
             }
-            return RedirectToAction("Index");
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", dto) });
         }
-        [HttpDelete]
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            await _distributorService.Delete(id);
-            return Json(new { id = id, message = "Deleted Successfully" });
+            var _Distributor = await _distributorService.GetById(id);
+            var dto = _mapper.Map<CreateUpdateDistributorDto>(_Distributor);
+            return View(dto);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(CreateUpdateDistributorDto dto)
+        {
+            await _distributorService.Delete(dto.Id);
+            return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", await _distributorService.GetAll()) });
         }
     }
 }

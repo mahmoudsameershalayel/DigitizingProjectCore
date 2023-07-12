@@ -38,15 +38,11 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    await _productService.Create(dto);
-                }catch(Exception ex)
-                {
-                    return View();
-                }
+                await _productService.Create(dto);
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _productService.GetAll()) });
             }
-            return RedirectToAction("Index");
+            var _CreateUpdateProduct = await _productService.InjectCategoriesAndBrands();
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Add", _CreateUpdateProduct) });
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -62,14 +58,22 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 await _productService.Update(dto);
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _productService.GetAll()) });
             }
-            return RedirectToAction("Index");
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", dto) });
         }
-        [HttpDelete]
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            await _productService.Delete(id);
-            return Json(new { id = id, message = "Deleted Successfully" });
+            var _Product = await _productService.GetById(id);
+            var dto = _mapper.Map<CreateUpdateProductDto>(_Product);
+            return View(dto);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(CreateUpdateProductDto dto)
+        {
+            await _productService.Delete(dto.Id);
+            return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", await _productService.GetAll()) });
         }
     }
 }

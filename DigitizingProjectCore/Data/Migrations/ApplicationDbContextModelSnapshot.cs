@@ -144,8 +144,8 @@ namespace DigitizingProjectCore.Data.Migrations
                         {
                             Id = "f1446937-109c-4e1a-97ce-0560442484f5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "47bea095-719f-46b5-8a55-4fc9b4a02e55",
-                            Created_At = new DateTime(2023, 7, 10, 13, 33, 10, 392, DateTimeKind.Local).AddTicks(332),
+                            ConcurrencyStamp = "5995385c-c1d9-49cf-97a5-aceac5a5ebae",
+                            Created_At = new DateTime(2023, 7, 11, 7, 36, 15, 279, DateTimeKind.Local).AddTicks(9635),
                             Email = "Administrator@admin.com",
                             EmailConfirmed = false,
                             FullName = "System Administrator",
@@ -154,12 +154,12 @@ namespace DigitizingProjectCore.Data.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMINISTRATOR@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKj2mrnUJCD8cmceTu011779zGCZ5lJytBNXC0gfXJs8cNMsE7lpIKJrNnhefUdGgw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBwUnNH49xYPwQOhUdm6mkYNSy/f27zAmpk7ib+DqS7KUVlNRkRK2DEf6bX70H6OTA==",
                             Phone = "97259000000",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8d659bda-8c4f-435d-99d6-0874e5154dd6",
+                            SecurityStamp = "6095bb55-ca0a-480e-b001-9f8ce10930d1",
                             TwoFactorEnabled = false,
-                            Updated_at = new DateTime(2023, 7, 10, 13, 33, 10, 392, DateTimeKind.Local).AddTicks(389),
+                            Updated_at = new DateTime(2023, 7, 11, 7, 36, 15, 279, DateTimeKind.Local).AddTicks(9699),
                             UserName = "System_Administrator"
                         });
                 });
@@ -495,6 +495,9 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("Created_At")
                         .HasColumnType("datetime2");
 
@@ -518,8 +521,8 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("NewsCategoryId")
-                        .HasColumnType("int");
+                    b.Property<string>("LogoImageName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SortId")
                         .HasColumnType("int");
@@ -533,11 +536,9 @@ namespace DigitizingProjectCore.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TagsAr")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TagsEn")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TitleAr")
@@ -554,12 +555,9 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.Property<string>("Updated_By")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("_CategoryId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("_CategoryId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("News");
                 });
@@ -828,9 +826,11 @@ namespace DigitizingProjectCore.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("ProductId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("SolutionId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("SortId")
@@ -1024,13 +1024,11 @@ namespace DigitizingProjectCore.Data.Migrations
 
             modelBuilder.Entity("DigitizingProjectCore.Models.News", b =>
                 {
-                    b.HasOne("DigitizingProjectCore.Models.CategoryForNews", "_Category")
+                    b.HasOne("DigitizingProjectCore.Models.CategoryForNews", "Category")
                         .WithMany("_News")
-                        .HasForeignKey("_CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
-                    b.Navigation("_Category");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Product", b =>
@@ -1075,12 +1073,16 @@ namespace DigitizingProjectCore.Data.Migrations
             modelBuilder.Entity("DigitizingProjectCore.Models.SolutionProducts", b =>
                 {
                     b.HasOne("DigitizingProjectCore.Models.Product", "Product")
-                        .WithMany("_SolutionProducts")
-                        .HasForeignKey("ProductId");
+                        .WithMany("SolutionProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DigitizingProjectCore.Models.Solution", "Solution")
-                        .WithMany("_SolutionProducts")
-                        .HasForeignKey("SolutionId");
+                        .WithMany("SolutionProducts")
+                        .HasForeignKey("SolutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Product");
 
@@ -1175,12 +1177,12 @@ namespace DigitizingProjectCore.Data.Migrations
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Product", b =>
                 {
-                    b.Navigation("_SolutionProducts");
+                    b.Navigation("SolutionProducts");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Solution", b =>
                 {
-                    b.Navigation("_SolutionProducts");
+                    b.Navigation("SolutionProducts");
                 });
 #pragma warning restore 612, 618
         }

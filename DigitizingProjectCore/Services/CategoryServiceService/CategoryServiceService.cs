@@ -24,7 +24,7 @@ namespace DigitizingProjectCore.Services.CategoryServiceService
         public async Task<List<CategoryViewModel>> GetAll()
         {
 
-            var _Categories = await _context.CategoryForServices.OrderBy(x => x.SortId).ToListAsync();
+            var _Categories = await _context.CategoryForServices.Where(x => x.IsDelete == false). OrderBy(x => x.SortId).ToListAsync();
             var _CategoriesVM = _mapper.Map<List<CategoryViewModel>>(_Categories);
             return _CategoriesVM;
         }

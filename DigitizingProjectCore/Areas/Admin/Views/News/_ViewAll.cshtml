@@ -1,0 +1,51 @@
+﻿@model List<NewsViewModel>
+<div class="table-responsive">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h2>News Categories</h2>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <a class="btn btn-success" onclick="showInPopup('@Url.Action("Add" , "News" ,null ,Context.Request.Scheme)' , 'Add News');">Add News</a>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Title (English)</th>
+                    <th>Title (Arabic)</th>
+                    <th>Category</th>
+                    <th>Active</th>
+                    <th>Created Date</th>
+                    <th width="15%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.TitleEn</td>
+                        <td>@item.TitleAr</td>
+                        <td>@item.Category.NameEn</td>
+                        @if (item.IsActive)
+                        {
+                            <td><input type="checkbox" checked></td>
+                        }
+                        else
+                        {
+                            <td><input type="checkbox"></td>
+                        }
+                        <td>@item.CreatedDate</td>
+                        <td>
+                            <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
+                            <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "News" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Category Service');"><i class='glyphicon glyphicon-edit'></i></a>
+                            <a class="btn btn-xs btn-danger PopUp" onclick="showInPopup('@Url.Action("Delete" , "News" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Delete Category Service');"><i class='glyphicon glyphicon-trash'></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

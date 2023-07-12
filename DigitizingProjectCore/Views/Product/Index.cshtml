@@ -1,6 +1,10 @@
 ﻿@model List<Product>
 @{
     var lang = "en";
+    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+    var _Solutions = db.Solutions.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).ToList();
+    var _Categories = db.CategoryForProducts.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).ToList();
+    var _Brands = db.Brands.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).ToList();
 }
 <!-- Start Page Title Area -->
 <div class="page-title-area page-title-style-two">
@@ -8,20 +12,56 @@
         <div class="page-title-content">
             <h2>Products</h2>
         </div>
-        <ul>
+        <ul class="d-flex justify-content-center">
             <li>
                 <a asp-controller="Home" asp-action="Index">
                     Home
                 </a>
             </li>
-            <li class="active">Products</li>
+            <li class="active" style="color:crimson"> / Products</li>
         </ul>
     </div>
 </div>
-<!-- End Page Title Area -->
-<!-- Start Blog Column Two Area -->
 <div class="product-area ptb-100">
     <div class="container">
+        <div class="showing-result">
+            <form class="row align-items-center">
+                <div class="col-lg-2 col-sm-2">
+                    <input type="text" name="key" placeholder="Enter Your Search" class="form-control" />
+                </div>
+                <div class="col-lg-3 col-sm-3">
+                    <select name="solutionId" class="form-control">
+                        <option value="null">Select Solution</option>
+                        @foreach (var item in _Solutions)
+                        {
+                            <option value="@item.Id">@item.NameEN</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-lg-3 col-sm-3">
+                    <select name="categoryId" class="form-control">
+                        <option value="null">Select Product Category</option>
+                        @foreach (var item in _Categories)
+                        {
+                            <option value="@item.Id">@item.NameEn</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-lg-3 col-sm-3">
+                    <select name="brandId" class="form-control">
+                        <option value="null">Select Brand</option>
+                        @foreach (var item in _Brands)
+                        {
+                            <option value="@item.Id">@item.NameEn</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-lg-1 col-sm-1">
+                    <button type="submit" class="btn btn-primary"><i class="bx bx-search"></i></button>
+                </div>
+            </form>
+        </div>
+
         <div class="row">
             @if (Model.Count() > 0)
             {
@@ -30,21 +70,22 @@
 
                     <div class="col-lg-4 col-sm-6">
                         <div style="position:relative" class="single-product">
-                            <a href="/Home/Product/@item.Id" class="product-img">
+                            <a href="/Product/Details/?id=@item.Id" class="product-img">
                                 <div class="imgProductContainer">
-                                    <img src="/Images/@item.LogoImageName" alt="@(item.NameEn)">
+                                    <img src="~/Images/@item.LogoImageName" width="500" alt="@(lang=="ar"?item.NameAr:item.NameEn)">
                                 </div>
                             </a>
-                            <a href="/Home/Product/@item.Id">
-                                <h3>@item.NameEn</h3>
+
+                            <a href="/Product/Details/?id=@item.Id" style="display:block">
+                                <h3>@(lang == "ar" ? item.NameAr : item.NameEn)</h3>
                             </a>
                             <div class="ProductBrandCategory">
-                                <a href="/Home/Products?categoryId=@item.CategoryId" class="btn btn-danger btn-sm">
+                                <a href="/Product/Index?categoryId=@item.Category.Id" class="btn btn-danger btn-sm">
                                     @(lang == "ar" ? item.Category.NameAr : item.Category.NameEn)
                                 </a>
                                 @if (item.Brand != null)
                                 {
-                                    <a href="/@lang/Home/Products?brandId=@item.BrandId" class="btn btn-warning btn-sm">
+                                    <a href="/Products/Index?brandId=@item.Brand.Id" class="btn btn-warning btn-sm">
                                         <img src="~/Images/@item.Brand.LogoImageName" style="height:20px" />
                                         @(lang == "ar" ? item.Brand.NameAr : item.Brand.NameEn)
                                     </a>
@@ -53,10 +94,13 @@
                         </div>
                     </div>
                 }
+                <div class="col-lg-12">
+                </div>
             }
             else
             {
                 <div class="col-sm-12">
+
                     <div class="alert alert-info">ThereIsNoItemsToShow</div>
                 </div>
             }

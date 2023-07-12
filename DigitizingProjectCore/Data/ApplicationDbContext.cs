@@ -1,4 +1,5 @@
-﻿using DigitizingProjectCore.Models;
+﻿using DigitizingProjectCore.Data.Constrains;
+using DigitizingProjectCore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,11 @@ namespace DigitizingProjectCore.Data
 
         protected override void OnModelCreating(ModelBuilder Builder)
         {
+            //Applay constrains
+            Builder.ApplyConfiguration(new SolutionProductsConstrains());
+            Builder.ApplyConfiguration(new AdminLinksConstrains());
+
+
             //GUID
             string Admin_Role_Id = "9a00de05-ab2c-4692-82b2-d33f0f50eb7e";
             string Admin_User_Id = "f1446937-109c-4e1a-97ce-0560442484f5";

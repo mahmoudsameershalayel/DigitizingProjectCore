@@ -14,6 +14,6 @@
         public CategoryForProduct Category { get; set; }
         public int? BrandId { get; set; }
         public Brand Brand { get; set; }
-        public List<SolutionProducts> _SolutionProducts { get; set; }
+        public List<SolutionProducts> SolutionProducts { get; set; }
     }
 }

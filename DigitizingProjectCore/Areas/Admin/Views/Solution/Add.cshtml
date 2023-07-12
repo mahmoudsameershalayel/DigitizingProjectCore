@@ -1,6 +1,4 @@
 ﻿@model DigitizingProjectCore.Areas.Admin.Dto.AddSolutionWithCategoryAndBrandAndProduct
-@{
-}
 @section css{
     <style>
         body {
@@ -8,7 +6,7 @@
         }
     </style>
 }
-<form asp-controller="Solution" asp-action="Add" method="POST">
+<form asp-controller="Solution" asp-action="Add" method="POST" enctype="multipart/form-data">
     <div class="row">
         <div class="col-md-6 form-group">
             <label for="nameEn">Name (English)</label>

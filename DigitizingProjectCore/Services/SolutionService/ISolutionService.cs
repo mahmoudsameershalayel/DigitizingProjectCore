@@ -8,6 +8,7 @@ namespace DigitizingProjectCore.Services.SolutionService
     {
         public Task<List<SolutionViewModel>> GetAll();
         public Task<Solution> GetById(int id);
+        public Task<List<Product>> GetAllProducts();
         public Task<CreateUpdateSolutionDto> Create(CreateUpdateSolutionDto dto);
         public Task<CreateUpdateSolutionDto> Update(CreateUpdateSolutionDto dto);
         public Task<AddSolutionWithCategoryAndBrandAndProduct> InjectCategoriesAndBrandsAndProducts();

@@ -1,0 +1,44 @@
+﻿@model DigitizingProjectCore.Areas.Admin.Dto.CreateUpdateCategoryDto
+@{
+    Layout = null;
+}
+<form asp-controller="CategoryNews" asp-action="Add" method="POST" onsubmit="return jQueryAjaxPost(this);">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="nameEn">Name (English)</label>
+                <input type="text" class="form-control" id="nameEn" asp-for="NameEn">
+                <span asp-validation-for="NameEn" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="nameAr">Name (Arabic)</label>
+                <input type="text" class="form-control" id="nameAr" asp-for="NameAr">
+                <span asp-validation-for="NameAr" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="active">Active</label>
+                <input type="checkbox" id="active" checked asp-for="IsActive">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="sortId">#Sort Id</label>
+                <input type="number" class="form-control" id="sortId" asp-for="SortId">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary btn-create">Create</button>
+        </div>
+        <div class="col-md-2">
+            <input type="reset" class="btn" value="Rest">
+        </div>
+    </div>
+</form>

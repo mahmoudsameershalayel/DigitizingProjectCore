@@ -27,7 +27,7 @@ namespace DigitizingProjectCore.Services.ServiceService
         }
         public async Task<List<ServiceViewModel>> GetAll()
         {
-            var _Services = await _context.Services.Include(c => c.Category).ToListAsync();
+            var _Services = await _context.Services.Where(x => x.IsDelete == false).OrderBy(x => x.SortId).Include(c => c.Category).ToListAsync();
             var _ServicesVM = _mapper.Map<List<ServiceViewModel>>(_Services);
             return _ServicesVM;
         }
@@ -87,6 +87,9 @@ namespace DigitizingProjectCore.Services.ServiceService
                 _Service.LogoImageName = uniqueName;
             }
             var _UpdateService = _mapper.Map(dto, _Service);
+            var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
+            _UpdateService.Updated_By = _UserId;
+            _UpdateService.Updated_At = DateTime.Now;
             _context.Services.Update(_UpdateService);
             _context.SaveChanges();
             return dto;
@@ -94,16 +97,16 @@ namespace DigitizingProjectCore.Services.ServiceService
         public async Task<int> Delete(int id)
         {
             var _Service = await _context.Services.Where(x => x.Id == id).FirstOrDefaultAsync();
-            if (_Service == null)
+            if (_Service != null)
             {
-                throw new Exception("Not Found!!");
+                _Service.IsDelete = true;
+                _context.Services.Update(_Service);
             }
-            _context.Services.Remove(_Service);
             return await _context.SaveChangesAsync();
         }
         public async Task<CreateUpdateServiceDto> InjectCategories()
         {
-            var _Categories = await _context.CategoryForServices.ToListAsync();
+            var _Categories = await _context.CategoryForServices.Where(x => x.IsDelete == false). ToListAsync();
             var dto = new AddServiceWithCategory();
             dto.InjectCategories(_Categories);
             return dto;

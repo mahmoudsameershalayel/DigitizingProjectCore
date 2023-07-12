@@ -9,8 +9,8 @@ namespace DigitizingProjectCore.Areas.Admin.ViewModel
         public string? NameEn { get; set; }
         public CategoryForProduct Category { get; set; }
         public Brand Brand { get; set; }
-        public List<SolutionProducts> _SolutionProducts { get; set; }
+        public List<SolutionProducts> SolutionProducts { get; set; }
         public bool IsActive { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.Now;   
+        public DateTime CreatedDate { get; set; }
     }
 }

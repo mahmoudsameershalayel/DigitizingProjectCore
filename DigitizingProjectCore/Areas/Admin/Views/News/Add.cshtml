@@ -1,0 +1,81 @@
+﻿@model DigitizingProjectCore.Areas.Admin.Dto.AddNewsWithCategory
+@{
+    Layout = null;
+}
+<form asp-controller="News" asp-action="Add" method="POST" enctype="multipart/form-data" onsubmit="return jQueryAjaxPost(this);">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="titleEn">Title (English)</label>
+                <input type="text" class="form-control" id="titleEn" asp-for="TitleEn">
+                <span asp-validation-for="TitleEn" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="titleAr">Title (Arabic)</label>
+                <input type="text" class="form-control" id="titleAr" asp-for="TitleAr">
+                <span asp-validation-for="TitleAr" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="category">Category</label>
+            <select class="form-control" id="category" asp-for="CategoryId" asp-items="Model._Categories"></select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="sortId">#Sort Id</label>
+                <input type="number" class="form-control" id="sortId" asp-for="SortId">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="summaryAr">Summary (Arabic)</label>
+            <textarea type="text" class="form-control" id="summaryAr" cols="20" rows="3" asp-for="SummaryAr"></textarea>
+            <span asp-validation-for="SummaryAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="summaryEn">Summary (English)</label>
+            <textarea type="text" class="form-control" id="summaryEn" cols="20" rows="3" asp-for="SummaryEn"></textarea>
+            <span asp-validation-for="SummaryEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="detailsAr">Details (Arabic)</label>
+            <textarea type="text" class="form-control" id="detailsAr" cols="20" rows="7" asp-for="DetailsAr"></textarea>
+            <span asp-validation-for="DetailsAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="detailsEn">Details (English)</label>
+            <textarea type="text" class="form-control" id="detailsEn" cols="20" rows="7" asp-for="DetailsEn"></textarea>
+            <span asp-validation-for="DetailsEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="logo">Logo</label>
+            <input type="file" class="form-control" id="logo" asp-for="LogoImage">
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="date">Date</label>
+            <input type="date" class="form-control" id="date" asp-for="Date">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="active">Active</label>
+        <input type="checkbox" id="active" checked asp-for="IsActive">
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary btn-create">Create</button>
+        </div>
+        <div class="col-md-2">
+            <input type="reset" class="btn" value="Rest">
+        </div>
+    </div>
+</form>

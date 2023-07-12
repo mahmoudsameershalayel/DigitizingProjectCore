@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Abp.Domain.Entities;
+using AutoMapper;
 using DigitizingProjectCore.Areas.Admin.Dto;
 using DigitizingProjectCore.Areas.Admin.ViewModel;
 using DigitizingProjectCore.Data;
@@ -27,7 +28,7 @@ namespace DigitizingProjectCore.Services.ProductService
         }
         public async Task<List<ProductViewModel>> GetAll()
         {
-            var _products = await _context.Products.Include(c => c.Category).Include(b => b.Brand).ToListAsync();
+            var _products = await _context.Products.Where(x => x.IsDelete == false).OrderBy(x => x.SortId).Include(c => c.Category).Include(b => b.Brand).ToListAsync();
             var _productsVM = _mapper.Map<List<ProductViewModel>>(_products);
             return _productsVM; 
         }
@@ -93,13 +94,20 @@ namespace DigitizingProjectCore.Services.ProductService
             if (_product == null) {
                 throw new Exception("Not Found!!");
             }
+            var LogoImageName = _product.LogoImageName;
+            var PDFFileName = _product.PDFFileName;
+            var DocFileName = _product.DocFileName;
+            var _Updateproduct = _mapper.Map(dto, _product);
+            _Updateproduct.LogoImageName = LogoImageName;
+            _Updateproduct.PDFFileName = PDFFileName;   
+            _Updateproduct.DocFileName = DocFileName;
             if (dto.LogoImage != null)
             {
                 var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
                 var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.LogoImage.FileName);
                 var filePath = Path.Combine(uploadFolder, uniqueName);
                 dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
-                _product.LogoImageName = uniqueName;
+                _Updateproduct.LogoImageName = uniqueName;
             }
             if (dto.PDFFile != null)
             {
@@ -111,7 +119,7 @@ namespace DigitizingProjectCore.Services.ProductService
                 var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.PDFFile.FileName);
                 var filePath = Path.Combine(uploadFolder, uniqueName);
                 dto.PDFFile.CopyTo(new FileStream(filePath, FileMode.Create));
-                _product.PDFFileName = uniqueName;
+                _Updateproduct.PDFFileName = uniqueName;
             }
             if (dto.DocFile != null)
             {
@@ -124,9 +132,8 @@ namespace DigitizingProjectCore.Services.ProductService
                 var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.DocFile.FileName);
                 var filePath = Path.Combine(uploadFolder, uniqueName);
                 dto.DocFile.CopyTo(new FileStream(filePath, FileMode.Create));
-                _product.DocFileName = uniqueName;
+                _Updateproduct.DocFileName = uniqueName;
             }
-            var _Updateproduct = _mapper.Map(dto, _product);
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _Updateproduct.Updated_By = _UserId;
             _Updateproduct.Updated_At = DateTime.Now;
@@ -138,18 +145,29 @@ namespace DigitizingProjectCore.Services.ProductService
         public async Task<int> Delete(int id)
         {
             var _product = await _context.Products.Where(x => x.Id == id).FirstOrDefaultAsync();
-            if (_product == null)
+            if (_product != null)
             {
-                throw new Exception("Not Found!!");
+                if (!string.IsNullOrEmpty(_product.LogoImageName))
+                {
+                    string filePath = Path.Combine(_hostEnvironment.WebRootPath, "Images",  _product.LogoImageName);
+                    FileInfo fi = new FileInfo(filePath);
+                    if (fi != null)
+                    {
+                        System.IO.File.Delete(filePath);
+                        fi.Delete();
+                    }
+                }
+                _product.IsActive = false;
+                _product.IsDelete = true;
+                _context.Products.Update(_product);
             }
-            _context.Products.Remove(_product);
             return await _context.SaveChangesAsync();
         }
 
         public async Task<CreateUpdateProductDto> InjectCategoriesAndBrands()
         {
-            var _Categories = await _context.CategoryForProducts.ToListAsync();
-            var _Brands = await _context.Brands.ToListAsync();
+            var _Categories = await _context.CategoryForProducts.Where(x => x.IsDelete == false).ToListAsync();
+            var _Brands = await _context.Brands.Where(x => x.IsDelete == false).ToListAsync();
             var dto = new AddProductWithCategoryAndBrand();
             dto.InjectCategories(_Categories);
             dto.InjectBrands(_Brands);

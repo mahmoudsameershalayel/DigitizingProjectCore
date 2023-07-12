@@ -9,11 +9,11 @@ namespace DigitizingProjectCore.Data.Constrains
         public void Configure(EntityTypeBuilder<SolutionProducts> builder)
         {
             builder.HasOne(x => x.Product)
-               .WithMany(x => x._SolutionProducts)
+               .WithMany(x => x.SolutionProducts)
                .HasForeignKey(x => x.ProductId);
 
             builder.HasOne(x => x.Solution)
-                .WithMany(x => x._SolutionProducts)
+                .WithMany(x => x.SolutionProducts)
                 .HasForeignKey(x => x.SolutionId);
         }
     }

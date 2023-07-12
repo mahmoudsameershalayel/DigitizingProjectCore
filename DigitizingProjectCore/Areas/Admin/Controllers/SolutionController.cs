@@ -32,6 +32,7 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         {
             var _CreateUpdateSolution = await _solutionService.InjectCategoriesAndBrandsAndProducts();
             ViewBag.db = _context;
+            ViewBag.Products = _solutionService.GetAllProducts();
             return View(_CreateUpdateSolution);
         }
         [HttpPost]
@@ -39,7 +40,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                var _CreateUpdateSolution = await _solutionService.InjectCategoriesAndBrandsAndProducts();
+                ViewBag.db = _context;
+                return View(_CreateUpdateSolution);
             }
             await _solutionService.Create(dto);
             return RedirectToAction("Index");
@@ -49,9 +52,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var _Solution = await _solutionService.GetById(id);
-            var _AddSolutionWithCategoryAndBrandAndProduct = await _solutionService.InjectCategoriesAndBrandsAndProducts();
-            _AddSolutionWithCategoryAndBrandAndProduct = _mapper.Map(_Solution, _AddSolutionWithCategoryAndBrandAndProduct);
-            return View(_AddSolutionWithCategoryAndBrandAndProduct);
+            var _AddSolutionWithCBP = await _solutionService.InjectCategoriesAndBrandsAndProducts();
+            _AddSolutionWithCBP = _mapper.Map(_Solution, _AddSolutionWithCBP);
+            return View(_AddSolutionWithCBP);
         }
         [HttpPost]
         public async Task<IActionResult> Edit(CreateUpdateSolutionDto dto)
