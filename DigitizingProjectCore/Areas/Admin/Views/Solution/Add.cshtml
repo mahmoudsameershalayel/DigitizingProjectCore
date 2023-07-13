@@ -1,0 +1,105 @@
+﻿@model DigitizingProjectCore.Areas.Admin.Dto.AddSolutionWithCategoryAndBrandAndProduct
+@section css{
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+    </style>
+}
+<form asp-controller="Solution" asp-action="Add" method="POST" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="nameEn">Name (English)</label>
+            <input type="text" class="form-control" id="nameEn" asp-for="NameEn">
+            <span asp-validation-for="NameEn" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="nameAr">Name (Arabic)</label>
+            <input type="text" class="form-control" id="nameAr" asp-for="NameAr">
+            <span asp-validation-for="NameAr" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="category">Category</label>
+            <select class="form-control" id="category" asp-for="CategoryId" asp-items="Model._Categories"></select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="brand">Brand</label>
+            <select class="form-control" id="brand" asp-for="BrandId" asp-items="Model._Brands"></select>
+            <span asp-validation-for="BrandId" class="text-danger"></span>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="product">Products</label>
+        <select class="form-control" id="product" asp-for="ProductsId" asp-items="Model._Products"></select>
+        <span asp-validation-for="ProductsId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="detailsAr">Details (Arabic)</label>
+        <textarea type="text" class="form-control" id="detailsAr" asp-for="DetailsAr"></textarea>
+        <span asp-validation-for="DetailsAr" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="detailsEn">Details (English)</label>
+        <textarea type="text" class="form-control" id="detailsEn" asp-for="DetailsEn"></textarea>
+        <span asp-validation-for="DetailsEn" class="text-danger"></span>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="logo">Logo</label>
+            <input type="file" class="form-control" id="logo" asp-for="LogoImage">
+            <span asp-validation-for="LogoImage" class="text-danger"></span>
+
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="sort">Sort(#)</label>
+            <input type="text" class="form-control" id="sort" asp-for="SortId">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="pdfFile">PDF File</label>
+            <input type="file" class="form-control" id="pdfFile" asp-for="PDFFile">
+            <span asp-validation-for="PDFFile" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="docFile">Doc File</label>
+            <input type="file" class="form-control" id="docFile" asp-for="DocFile">
+            <span asp-validation-for="DocFile" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="active">Active</label>
+        <input type="checkbox" id="active" checked asp-for="IsActive">
+    </div>
+    <div class="d-flex">
+        <div>
+            <button type="submit" class="btn btn-primary btn-create">Create</button>
+        </div>
+        <div>
+            <input type="reset" class="btn" value="Rest">
+        </div>
+    </div>
+</form>
+
+
+@section scripts{
+    <script src="~/ckeditor5-build-classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor.create(document.querySelector('#detailsAr'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+        ClassicEditor.create(document.querySelector('#detailsEn'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+    </script>
+}

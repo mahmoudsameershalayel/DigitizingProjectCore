@@ -1,0 +1,53 @@
+﻿@model DigitizingProjectCore.Areas.Admin.Dto.AddDistibutorWithCity
+@{
+    Layout = null;
+}
+
+<form asp-controller="Distributor" asp-action="Edit" method="POST" enctype="multipart/form-data" onsubmit="return jQueryAjaxPost(this);">
+    <input type="hidden" asp-for="Id">
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="nameAr">Name (Arabic)</label>
+            <input type="text" class="form-control" id="nameAr" asp-for="NameAr">
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="nameEn">Name (English)</label>
+            <input type="text" class="form-control" id="nameEn" asp-for="NameEn">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="addressAr">Address (Arabic)</label>
+            <textarea type="text" class="form-control" id="addressAr" cols="20" rows="3" asp-for="AddressAr"></textarea>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="addressEn">Address (English)</label>
+            <textarea type="text" class="form-control" id="addressEn" cols="20" rows="3" asp-for="AddressEn"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="city">City</label>
+            <select class="form-control" id="city" asp-for="CityId" asp-items="Model._Cities"></select>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="sort">Sort(#)</label>
+            <input type="text" class="form-control" id="sort" asp-for="SortId">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="active">Active</label>
+            <input type="checkbox" id="active" checked asp-for="IsActive">
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="phone">Phone</label>
+            <input type="text" class="form-control" id="phone" asp-for="Phone">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-warning btn-create">Edit</button>
+        <input type="reset" class="btn" value="Rest">
+    </div>
+</form>

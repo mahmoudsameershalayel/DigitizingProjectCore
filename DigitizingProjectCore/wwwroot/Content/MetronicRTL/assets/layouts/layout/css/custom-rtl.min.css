@@ -1,0 +1,53 @@
+body, h1, h2, h3, h4, h5, h6,.dropdown-menu,.select2-container--bootstrap .select2-selection,.label, .table.table-light>thead>tr>th{
+    font-family: 'Cairo', sans-serif !important;
+
+}
+.select2-container{
+    width:100% !important;
+}
+.page-content-white .page-title{
+    margin-top:0px;
+}
+select.form-control{
+    padding:2px 12px !important;
+}
+.input-validation-error,.error,.error>span>span,.input-validation-error+.select2>span>span,.error+.select2>span>span
+,input[type=hidden].input-validation-error+.form-control{
+    border-color:red !important;
+}
+.relative{
+    position:relative;
+}
+.relative span{
+    position:absolute;
+    left:50px;
+    top:7px;
+    color:#999;
+}
+.select2-container .select2-search--inline{
+    float:right !important;
+}
+textarea{
+    resize:none !important;
+}
+#tblAjax .dropdown-menu{
+    left:-1px !important;
+}
+#PopUp .table{
+    margin-bottom:0px !important;
+}
+.NormalMode{
+    display:block;
+}
+.EditMode{
+    display:none;
+}
+.form-group label+label{
+    margin-right:20px;
+}
+.tblSearch td:hover{
+    cursor:pointer;
+}
+input[type=file]{
+    display:inline !important;
+}

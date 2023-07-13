@@ -1,0 +1,352 @@
+﻿@{
+    var db = ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+    var newsCount = db.News.Count(x => x.IsDelete == false && x.IsActive == true);
+    var productsCount = db.Products.Count(x => x.IsDelete == false && x.IsActive == true);
+    var servicesCount = db.Services.Count(x => x.IsDelete == false && x.IsActive == true);
+    var brandsCount = db.Brands.Count(x => x.IsDelete == false && x.IsActive == true);
+    var DistributorsCount = db.Distributors.Count(x => x.IsDelete == false && x.IsActive == true);
+    var servicesByCategory = db.CategoryForServices.Where(x => x.IsDelete == false && x.IsActive == true)
+        .Select(x => new { Title = x.NameEn, Count = x._Services.Count(y => y.IsDelete == false && y.IsActive == true) }).ToList();
+    var productsByCategory = db.CategoryForProducts.Where(x => x.IsDelete == false && x.IsActive == true)
+        .Select(x => new { Title = x.NameEn, Count = x._Products.Count(y => y.IsDelete == false && y.IsActive == true) }).ToList();
+    var newsByCategory = db.CategoryForNews.Where(x => x.IsDelete == false && x.IsActive == true)
+        .Select(x => new { Title = x.NameEn, Count = x._News.Count(y => y.IsDelete == false && y.IsActive == true) }).ToList();
+
+}
+@section css{
+    <style>
+        .percentCount {
+            float: left;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .indicatorLink, .indicatorLink:hover {
+            display: block;
+            text-decoration: none;
+        }
+
+        .percent {
+            margin: auto;
+        }
+
+        .cellData {
+            text-align: center !important;
+            color: #027f83;
+            font-weight: bold;
+            font-size: 35px !important;
+            height: 80px;
+        }
+
+        .table th {
+            background-color: #d0cecf !important;
+            color: #44526c;
+            font-weight: bold !important;
+            font-size: 15px !important;
+            text-align: center !important;
+            height: 60px;
+        }
+
+        .vertical {
+            writing-mode: vertical-rl;
+            text-align: center;
+            color: #027f83;
+            direction: rtl;
+            font-weight: bold;
+            font-size: 20px !important;
+        }
+
+        .table td, .table th {
+            vertical-align: middle !important;
+        }
+
+        .redColor {
+            color: #ff0000 !important;
+        }
+
+        .orangeColor {
+            color: #ff6a00 !important;
+        }
+
+        .hTitleNew, .hTitleNew2 {
+            background-color: #d8d9db;
+            color: #008183;
+            font-size: 17px;
+            text-align: center;
+            padding: 15px;
+            font-weight: bold;
+        }
+
+        .hTitleNew2 {
+            background-color: #44526c;
+            color: #fff;
+        }
+
+        .InnerTableContainer {
+            float: right;
+            width: 33%;
+        }
+
+            .hTitleNew2 + .InnerTableContainer, .InnerTableContainer + .InnerTableContainer {
+                margin-left: 1px;
+            }
+    </style>
+}
+<div class="row">
+    <div class="col-sm-6">
+        <h1 class="hTitleNew2">General Indicator</h1>
+        <div class="InnerTableContainer">
+            <table class="table InnerTable table-striped table-bordered">
+                <tbody>
+                    <tr>
+                        <th>News</th>
+                    </tr>
+                    <tr>
+                        <td class="cellData">@newsCount</td>
+                    </tr>
+                    <tr>
+                        <th>Services</th>
+                    </tr>
+                    <tr>
+                        <td class="cellData">@servicesCount</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="InnerTableContainer">
+            <table class="table InnerTable table-striped table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Products</th>
+                    </tr>
+                    <tr>
+                        <td class="cellData">@productsCount</td>
+                    </tr>
+                    <tr>
+                        <th>Distributors</th>
+                    </tr>
+                    <tr>
+                        <td class="cellData">@DistributorsCount</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="InnerTableContainer">
+            <table class="table InnerTable table-striped table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Partnerships</th>
+                    </tr>
+                    <tr>
+                        <td class="cellData">@brandsCount</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+    <div class="col-sm-6">
+        <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+        <h1 class="hTitleNew">Services By Category</h1>
+        <canvas id="cid_0" data-index="0" class="cchart chartjs-render-monitor" style="display: block; height: 301.6px; width: 606.4px; box-sizing: border-box;" width="758" height="377">
+        </canvas>
+        <span class="hidden values">
+            @Newtonsoft.Json.JsonConvert.SerializeObject(servicesByCategory)
+        </span>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+        <h1 class="hTitleNew">Products By Category</h1>
+        <canvas id="cid_1" data-index="0" class="cchart chartjs-render-monitor" style="display: block; height: 301.6px; width: 606.4px; box-sizing: border-box;" width="758" height="377">
+        </canvas>
+        <span class="hidden values">
+            @Newtonsoft.Json.JsonConvert.SerializeObject(productsByCategory)
+        </span>
+    </div>
+    <div class="col-sm-6">
+        <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+        <h1 class="hTitleNew">News By Category</h1>
+        <canvas id="cid_2" data-index="0" class="cchart chartjs-render-monitor" style="display: block; height: 301.6px; width: 606.4px; box-sizing: border-box;" width="758" height="377">
+        </canvas>
+        <span class="hidden values">
+            @Newtonsoft.Json.JsonConvert.SerializeObject(newsByCategory)
+        </span>
+    </div>
+</div>
+
+
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var colorArray = ['#a4c400',
+            '#60a917',
+            '#008a00',
+            '#00aba9',
+            '#1ba1e2',
+            '#3e65ff',
+            '#0050ef',
+            '#6a00ff',
+            '#aa00ff',
+            '#f472d0',
+            '#d80073',
+            '#a20025',
+            '#e51400',
+            '#fa6800',
+            '#f0a30a',
+            '#e3c800',
+            '#825a2c',
+            '#6d8764',
+            '#647687',
+            '#76608a',
+            '#87794e',
+            '#60a917',
+            '#008a00',
+            '#00aba9',
+            '#1ba1e2',
+            '#3e65ff',
+            '#0050ef',
+            '#6a00ff',
+            '#aa00ff',
+            '#f472d0',
+            '#d80073',
+            '#a20025',
+            '#e51400',
+            '#fa6800',
+            '#f0a30a',
+            '#e3c800',
+            '#825a2c',
+            '#6d8764',
+            '#647687',
+            '#76608a',
+            '#87794e',
+            '#60a917',
+            '#008a00',
+            '#00aba9',
+            '#1ba1e2',
+            '#3e65ff',
+            '#0050ef',
+            '#6a00ff',
+            '#aa00ff',
+            '#f472d0',
+            '#d80073',
+            '#a20025',
+            '#e51400',
+            '#fa6800',
+            '#f0a30a',
+            '#e3c800',
+            '#825a2c',
+            '#6d8764',
+            '#647687',
+            '#76608a',
+            '#87794e',
+            '#a0522d'];
+        var charts = Array();
+        $(".cbType").change(function () {
+            for (i = 0; i < charts.length; i++)
+                charts[i].destroy();
+            charts = [];
+            type = $(this).val();
+            BindCharts(type);
+        });
+
+        $(".pieCharts").each(function () {
+            var id = $(this).attr("id");
+            if ($(this).prev().text() != "") {
+                var data = JSON.parse($(this).prev().text());
+                console.log(data);
+                var labels = [];
+                var colors = [];
+                var numbers = [];
+                var i = 0;
+                data.forEach(function (item) {
+                    labels.push(item.Title);
+                    numbers.push(item.Count);
+                    colors.push(colorArray[i++]);
+                })
+                new Chart(document.getElementById(id), {
+                    "type": "doughnut", "data": {
+                        "labels": labels,
+                        "datasets": [{
+                            "label": "My First Dataset",
+                            "data": numbers,
+                            "backgroundColor": colors
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+            }
+        })
+        BindCharts('bar');
+        var j = 0;
+        function BindCharts(type) {
+            $(".cchart").each(function () {
+                var isY = $(this).data("isy") == true;
+                var id = $(this).attr("id");
+                var values = $(this).next().text();
+                if ($(this).next().text() != "") {
+                    var index = $(this).data("index");
+                    var data = JSON.parse(values);
+
+                    var labels = [];
+                    var colors = [];
+                    var numbers = [];
+                    var hints = [];
+                    var title = $(this).prev().text();
+                    var i = 0;
+                    data.forEach(function (item) {
+                        labels.push(item.Title);
+                        hints.push(item.notes);
+                        numbers.push(item.Count);
+                        colors.push(colorArray[i++]);
+                    });
+                    var ctx = document.getElementById(id).getContext("2d");
+                    var chart = new Chart(document.getElementById(id), {
+                        "type": type, "data":
+                        {
+                            "labels": labels,
+                            "datasets": [{
+                                "label": title,
+                                "data": numbers, "fill": false,
+                                borderColor: "#008081",
+                                "backgroundColor": ["rgba(255, 99, 132, 0.6)", "rgba(255, 159, 64, 0.6)", "rgba(255, 205, 86, 0.6)", "rgba(75, 192, 192, 0.6)", "rgba(54, 162, 235, 0.6)", "rgba(153, 102, 255, 0.6)", "rgba(201, 203, 207, 0.6)", "rgba(255, 99, 132, 0.6)", "rgba(255, 159, 64, 0.6)", "rgba(255, 205, 86, 0.6)", "rgba(75, 192, 192, 0.6)", "rgba(255, 99, 132, 0.6)", "rgba(255, 159, 64, 0.6)", "rgba(255, 205, 86, 0.6)", "rgba(75, 192, 192, 0.6)"],
+                                "borderWidth": 2
+                            }]
+                        },
+                        "options": {
+                            "scales": {
+                                "yAxes": [{ "ticks": { "beginAtZero": true, "stepSize": 10 } }]
+                            },
+                            showTooltips: false,
+                            onAnimationComplete: function () {
+
+                                var ctx = this.chart.ctx;
+                                ctx.font = this.scale.font;
+                                ctx.fillStyle = this.scale.textColor
+                                ctx.textAlign = "center";
+                                ctx.textBaseline = "bottom";
+
+                                this.datasets.forEach(function (dataset) {
+                                    dataset.bars.forEach(function (bar) {
+                                        ctx.fillText(bar.value, bar.x, bar.y - 5);
+                                    });
+                                })
+                            },
+                            indexAxis: isY ? 'y' : 'x',
+                        }
+                    });
+                    charts.push(chart);
+                }
+            })
+        }
+    </script>
+}

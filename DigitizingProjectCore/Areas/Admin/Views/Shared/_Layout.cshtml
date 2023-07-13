@@ -1,0 +1,402 @@
+﻿@using DigitizingProjectCore.Areas.Admin.Controllers;
+@using DigitizingProjectCore.Data;
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+    var action = ViewContext.RouteData.Values["action"].ToString().ToLower();
+    var controller = ViewContext.RouteData.Values["controller"].ToString().ToLower();
+    if (action == "index")
+    {
+        action = "";
+    }
+    var currentUrl = "/Admin/" + controller + "/" + action;
+}
+<!DOCTYPE html>
+<html lang="en" dir="ltr" ng-app="myApp">
+<head>
+    <meta charset="utf-8" />
+    <title>ForceLand | @ViewBag.Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="Preview page of Metronic Admin RTL Theme #1 for blank page layout" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet">
+
+    <link href="/Content/MetronicRTL/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/MetronicRTL/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/MetronicRTL/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/MetronicRTL/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="/Content/MetronicRTL/assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
+    <link href="/Content/MetronicRTL/assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
+    <!-- END THEME GLOBAL STYLES -->
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    <link href="/Content/MetronicRTL/assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/MetronicRTL/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
+    <link href="/Content/MetronicRTL/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <!-- عشان التاريخ-->
+    <link href="~/Content/MetronicRTL/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
+    <link href="/Content/MetronicRTL/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/MetronicRTL/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/MetronicRTL/assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/MetronicRTL/assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" />
+    <!-- عشان الداتاتيبل-->
+
+    <link href="/Content/MetronicRTL/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
+
+    <!-- عشان الرسائل الجميلة -->
+    <link href="/Content/MetronicRTL/assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/nprogress-master/nprogress.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="/Content/images/Icon.ico" />
+
+    <style>
+        .lblBalance {
+            font-size: 15px !important;
+            display: inline-block;
+            margin-top: 6px;
+        }
+
+        .table .dropdown-menu {
+            left: auto !important;
+            right: 0px !important;
+        }
+
+        table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after {
+            right: 14px;
+        }
+
+        .table-scrollable .dataTable td > .btn-group, .table-scrollable .dataTable th > .btn-group {
+            right: 30px;
+        }
+
+        .select2-container {
+            width: 100% !important;
+        }
+
+        .imgGallery li {
+            display: inline-block;
+            position: relative;
+            width: 170px;
+            overflow: hidden;
+        }
+
+            .imgGallery li img {
+                height: 170px;
+                margin-bottom: 5px;
+                display: block;
+            }
+
+
+
+        .mRed {
+            color: #b11d51;
+        }
+
+        .mBlue {
+            color: #07a0b1;
+        }
+
+        .rTable thead tr {
+            background-color: #b11d51;
+            color: #fff;
+        }
+
+        .rTable tbody tr:nth-child(2n) {
+            background-color: #ffcedf;
+        }
+
+        .bTable thead tr {
+            background-color: #07a0b1;
+            color: #fff;
+        }
+
+        .bTable tbody tr:nth-child(2n) {
+            background-color: #89edf8;
+        }
+
+        .gTable thead tr {
+            background-color: #01b43c;
+            color: #fff;
+        }
+
+        .gTable tbody tr:nth-child(2n) {
+            background-color: #8bf8af;
+        }
+
+        .centerAll table td, .centerAll table th {
+            text-align: center !important;
+        }
+
+        .centerAll .table {
+            margin-bottom: 0px !important
+        }
+
+        .by {
+            color: #c6cfda;
+            display: block;
+            float: right;
+            padding-top: 3px;
+            padding-left: 373px;
+            text-align: center;
+        }
+
+        @@media screen and (max-width:780px) {
+            .by {
+                width: 100%;
+                padding-left: 0px;
+            }
+        }
+    </style>
+    <style>
+        .dataTables_length {
+            display: none;
+        }
+
+        a {
+            color: #000000;
+        }
+
+        .redColor {
+            color: red;
+        }
+
+        [type=number] {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
+        body, h1, h2, h3, h4, h5, h6, .dropdown-menu, .page-title, .select2-container--bootstrap .select2-selection {
+            font-family: 'Noto Kufi Arabic', sans-serif;
+            font-weight: bold;
+        }
+
+        .control-label, label {
+            font-weight: bold;
+        }
+
+        .page-header.navbar .menu-toggler > span, .page-header.navbar .menu-toggler > span:after, .page-header.navbar .menu-toggler > span:before, .page-header.navbar .menu-toggler > span:hover, .page-header.navbar .menu-toggler > span:hover:after, .page-header.navbar .menu-toggler > span:hover:before {
+            background-color: #fff;
+        }
+
+        .bg_green, .bg_green:hover > td, .bg_green:hover {
+            background-color: #8bf8af !important;
+        }
+
+        .bg_red, .bg_red:hover > td, .bg_red:hover {
+            background-color: #ff6a00 !important;
+        }
+
+        .table-hover > tbody > tr.bg_red:hover, .table-hover > tbody > tr.bg_red:hover > td {
+            background-color: #ff6a00 !important;
+        }
+
+        .table-hover > tbody > tr.bg_green:hover, .table-hover > tbody > tr.bg_green:hover > td {
+            background-color: #8bf8af !important;
+        }
+
+        .input-validation-error {
+            border: solid 1px red !important;
+        }
+    </style>
+    @RenderSection("css", false)
+</head>
+<!-- END HEAD -->
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white page-md">
+    <div>@ViewBag.ReferenceContext</div>
+    <div class="page-wrapper">
+        <!-- BEGIN HEADER -->
+        <div class="page-header navbar navbar-fixed-top">
+            <!-- BEGIN HEADER INNER -->
+            <div class="page-header-inner ">
+                <!-- BEGIN LOGO -->
+                <div class="page-logo" style="background-color: #17C4BB">
+                    <a href="/Admin/Home/Index">
+                        <img src="/Content/images/Logo.png" style="margin-top:5px !important; width:170px" alt="logo" class="logo-default" />
+                    </a>
+                    <div class="menu-toggler sidebar-toggler">
+                        <span></span>
+                    </div>
+                </div>
+                <!-- END LOGO -->
+                <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+                <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span></span>
+                </a>
+                <!-- END RESPONSIVE MENU TOGGLER -->
+                <!-- BEGIN TOP NAVIGATION MENU -->
+                <div class="top-menu">
+                    <ul class="nav navbar-nav pull-right">
+                        <li class="dropdown dropdown-user">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                @*<img alt="" class="img-circle" src="/Content/MetronicRTL/assets/layouts/layout/img/avatar3_small.jpg" />*@
+                                <span class="username username-hide-on-mobile"> @ViewBag.adminName </span>
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-default">
+                                <li>
+                                    <a title="Update Password" class="PopUp" href="/AdminPanel/Home/ChangePassword">
+                                        <i class="icon-user"></i> Change Password
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/Account/LogOff">
+                                        <i class="icon-key"></i> Signout
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"> </div>
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <div class="page-sidebar-wrapper">
+                <div class="page-sidebar navbar-collapse collapse">
+                    <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+                        <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
+                        <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+                        <li class="sidebar-toggler-wrapper hide">
+                            <div class="sidebar-toggler">
+                                <span></span>
+                            </div>
+                        </li>
+
+                        @{
+
+                            var i = 0;
+                            var links = db.Links.Where(x => x.ParentId == 0 && x.ShowInMenu == true).OrderBy(x => x.OrderId).ToList();
+                            foreach (var link in links)
+                            {
+                                var sublinks = db.Links.Where(x => x.ParentId == link.Id && x.ShowInMenu == true).OrderBy(x => x.OrderId).ToList();
+                                var isCurrent = link.URL.ToLower() == currentUrl;
+                                <li class="nav-item @(i++ == 0 ? "start" : "") ">
+                                    <a href="@link.URL" class="nav-link nav-toggle">
+                                        <i class="@link.Icon"></i>
+                                        <span class="title">@link.Title</span>
+                                        @if (sublinks.Count > 0)
+                                        {
+                                            <span class="arrow"></span>
+                                        }
+                                    </a>
+                                    @if (sublinks.Count > 0)
+                                    {
+                                        var j = 0;
+                                        <ul class="sub-menu">
+                                            @foreach (var sublink in sublinks)
+                                            {
+                                                isCurrent = sublink.URL.ToLower() == currentUrl;
+                                                <li class="nav-item @(j++ == 0 ? "start" : "") @(isCurrent ? "active" : "")">
+                                                    <a title="@sublink.Title" href="@sublink.URL" class="nav-link">
+                                                        <i class="@sublink.Icon"></i>
+                                                        <span class="title">@sublink.Title</span>
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                </li>
+                            }
+                        }
+                        }
+
+                    </ul>
+                </div>
+            </div>
+            <div class="page-content-wrapper">
+                <div class="page-content">
+
+                    <div class="row hidden print">
+                        <div class="col-sm-6">
+                            <img height="80" src="~/Content/Images/NewLogo.png" />
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <img height="80" src="~/Content/Images/Logos.png" />
+                        </div>
+                    </div>
+                    <h1 class="page-title PageTitle">
+                        @ViewBag.Title
+                        <small>@ViewBag.SubTitle</small>
+                    </h1>
+                    <div class="RenderBody">
+                        @RenderBody()
+                    </div>
+                </div>
+                <!-- END CONTENT BODY -->
+            </div>
+        </div>
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div class="page-footer">
+            <div class="page-footer-inner">
+                Force Land
+                @DateTime.Now.Year &copy;
+                All rights reserved
+                <a href="http://visionplus.ps" style="color: #337ab7" target="_blank">Vision Plus</a>
+
+            </div>
+            <div class="scroll-to-top">
+                <i class="icon-arrow-up"></i>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+
+    <script src="~/Content/MetronicRTL/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN THEME GLOBAL SCRIPTS -->
+    <script src="~/Content/MetronicRTL/assets/global/scripts/app.min.js" type="text/javascript"></script>
+    <!-- END THEME GLOBAL SCRIPTS -->
+    <!-- BEGIN THEME LAYOUT SCRIPTS -->
+    <script src="~/Content/MetronicRTL/assets/layouts/layout/scripts/layout.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
+    <!-- END THEME LAYOUT SCRIPTS -->
+    <script src="~/Content/nprogress-master/nprogress.js"></script>
+    <!-- عشان موضوع التاريخ -->
+    <script src="~/Content/MetronicRTL/assets/global/plugins/moment.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+    <!-- عشان موضوع الداتاتيبل -->
+    <script src="~/Content/MetronicRTL/assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+    <!-- عشان موضوع الرسائل -->
+    <script src="~/Content/MetronicRTL/assets/global/plugins/bootstrap-toastr/toastr.min.js" type="text/javascript"></script>
+    <script src="~/Content/MetronicRTL/assets/global/plugins/select2/js/select2.min.js"></script>
+    <script src="~/Content/MetronicRTL/assets/pages/scripts/ui-toastr.min.js" type="text/javascript"></script>
+
+
+    <script src="~/Content/MetronicRTL/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script src="~/Scripts/jquery.form.min.js"></script>
+    <script src="~/js/site.js"></script>
+   
+    <div class="modal" tabindex="-1" role="dialog" id="form-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="loaderbody" id="loaderbody">
+        <div class="loader"></div>
+    </div>
+    @RenderSection("scripts", false)
+
+</body>
+</html>

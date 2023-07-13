@@ -1,0 +1,54 @@
+﻿@model DigitizingProjectCore.Areas.Admin.Dto.CreateUpdateBrandDto
+@{
+    Layout = null;
+}
+<form asp-controller="Brand" asp-action="Add" method="POST" onsubmit="return jQueryAjaxPost(this);" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="nameEn">Name (English)</label>
+                <input type="text" class="form-control" id="nameEn" asp-for="NameEn">
+                <span asp-validation-for="NameEn" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="nameAr">Name (Arabic)</label>
+                <input type="text" class="form-control" id="nameAr" asp-for="NameAr">
+                <span asp-validation-for="NameAr" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="logo">Logo</label>
+                <input type="file" class="form-control" id="logo" asp-for="LogoImage">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="url">URL</label>
+                <input type="text" class="form-control" id="url" asp-for="URL">
+                <span asp-validation-for="URL" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="active">Active</label>
+                <input type="checkbox" id="active" checked asp-for="IsActive">
+                <span asp-validation-for="IsActive" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="active">Partner</label>
+                <input type="checkbox" id="active" checked asp-for="IsPartner">
+                <span asp-validation-for="IsPartner" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-create">Create</button>
+</form>

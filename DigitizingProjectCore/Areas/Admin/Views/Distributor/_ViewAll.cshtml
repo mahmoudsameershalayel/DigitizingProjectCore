@@ -1,0 +1,56 @@
+﻿@model List<DigitizingProjectCore.Areas.Admin.ViewModel.DistributorViewModel>
+<div class="table-responsive">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h2>Distributor</h2>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <a class="btn btn-success" onclick="showInPopup('@Url.Action("Add" , "Distributor" ,null ,Context.Request.Scheme)' , 'Add Distributor');">Add Distributor</a>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Name (English)</th>
+                    <th>City</th>
+                    <th>Address (English)</th>
+                    <th>Phone</th>
+                    <th>Is Active</th>
+                    <th>Created Date</th>
+                    <th width="15%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.NameEn</td>
+                        <td>@item.City.NameEn</td>
+                        <td>@item.AddressEn</td>
+                        <td>@item.Phone</td>
+
+                        @if (item.IsActive)
+                        {
+                            <td><input type="checkbox" checked></td>
+                        }
+                        else
+                        {
+                            <td><input type="checkbox"></td>
+                        }
+
+                        <td>@item.CreatedDate</td>
+                        <td>
+                            <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
+                            <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "Distributor" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Distributor');"><i class='glyphicon glyphicon-edit'></i></a>
+                            <a class="btn btn-xs btn-danger PopUp" onclick="showInPopup('@Url.Action("Delete" , "Distributor" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Delete Distributor');"><i class='glyphicon glyphicon-trash'></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
