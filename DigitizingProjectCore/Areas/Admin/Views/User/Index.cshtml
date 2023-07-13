@@ -1,4 +1,4 @@
-﻿@model List<DigitizingProjectCore.Areas.Admin.ViewModel.DistributorViewModel>
+﻿@model List<DigitizingProjectCore.Areas.Admin.ViewModel.UserViewModel>
 
 @section css{
     <style>
@@ -9,7 +9,7 @@
 }
 <div class="panel panel-default">
     <div class="panel-heading">
-        <form class="form-inline" id="search-form" asp-controller="CategoryService" asp-action="search" method="POST" onsubmit="return search(this);">
+        <form class="form-inline" id="search-form" asp-controller="User" asp-action="search" method="POST" onsubmit="return search(this);">
             <div class="form-group">
                 <input type="text" placeholder="search ..." name="term" class="form-control" />
             </div>

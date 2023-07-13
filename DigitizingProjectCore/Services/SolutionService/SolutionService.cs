@@ -110,13 +110,20 @@ namespace DigitizingProjectCore.Services.SolutionService
             {
                 throw new Exception("Not Found!!");
             }
+            var LogoImageName = _Solution.LogoImageName;
+            var PDFFileName = _Solution.PDFFileName;
+            var DocFileName = _Solution.DocFileName;
+            var _UpdateSolution = _mapper.Map(dto, _Solution);
+            _UpdateSolution.LogoImageName = LogoImageName;
+            _UpdateSolution.PDFFileName = PDFFileName;
+            _UpdateSolution.DocFileName = DocFileName;
             if (dto.LogoImage != null)
             {
                 var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
                 var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.LogoImage.FileName);
                 var filePath = Path.Combine(uploadFolder, uniqueName);
                 dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
-                _Solution.LogoImageName = uniqueName;
+                _UpdateSolution.LogoImageName = uniqueName;
             }
             if (dto.PDFFile != null)
             {
@@ -129,7 +136,7 @@ namespace DigitizingProjectCore.Services.SolutionService
                 var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.PDFFile.FileName);
                 var filePath = Path.Combine(uploadFolder, uniqueName);
                 dto.PDFFile.CopyTo(new FileStream(filePath, FileMode.Create));
-                _Solution.PDFFileName = uniqueName;
+                _UpdateSolution.PDFFileName = uniqueName;
             }
             if (dto.DocFile != null)
             {
@@ -142,9 +149,8 @@ namespace DigitizingProjectCore.Services.SolutionService
                 var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.DocFile.FileName);
                 var filePath = Path.Combine(uploadFolder, uniqueName);
                 dto.DocFile.CopyTo(new FileStream(filePath, FileMode.Create));
-                _Solution.DocFileName = uniqueName;
+                _UpdateSolution.DocFileName = uniqueName;
             }
-            var _UpdateSolution = _mapper.Map(dto, _Solution);
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _UpdateSolution.Updated_By = _UserId;
             _UpdateSolution.Updated_At = DateTime.Now;

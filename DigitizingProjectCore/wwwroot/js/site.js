@@ -47,26 +47,26 @@ jQueryAjaxPost = form => {
     }
 }
 jQueryAjaxDelete = form => {
-        try {
-            $.ajax({
-                type: 'POST',
-                url: form.action,
-                data: new FormData(form),
-                contentType: false,
-                processData: false,
-                success: function (res) {
-                    $('#view-all').html(res.html);
-                    $('#form-modal .modal-body').html('');
-                    $('#form-modal .modal-title').html('');
-                    $('#form-modal').modal('hide');
-                },
-                error: function (err) {
-                    console.log(err)
-                }
-            })
-        } catch (ex) {
-            console.log(ex)
-        }
+    try {
+        $.ajax({
+            type: 'POST',
+            url: form.action,
+            data: new FormData(form),
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                $('#view-all').html(res.html);
+                $('#form-modal .modal-body').html('');
+                $('#form-modal .modal-title').html('');
+                $('#form-modal').modal('hide');
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        })
+    } catch (ex) {
+        console.log(ex)
+    }
     //prevent default form submit event
     return false;
 }

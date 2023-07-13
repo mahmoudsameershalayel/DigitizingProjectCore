@@ -9,6 +9,11 @@ namespace DigitizingProjectCore.AutoMapper
     {
         public ApplicationProfile()
         {
+            //User
+            CreateMap<ApplicationUser, CreateUpdateUserDto>().ReverseMap();
+            CreateMap<ApplicationUser, UserViewModel>().ReverseMap();
+
+
             //Service
             CreateMap<Service, CreateUpdateServiceDto>().ReverseMap();
             CreateMap<Service , ServiceViewModel>().ReverseMap();

@@ -5,6 +5,8 @@ using DigitizingProjectCore.Data;
 using DigitizingProjectCore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using System.Linq;
 
 namespace DigitizingProjectCore.Services.CategoryServiceService
 {
@@ -38,6 +40,12 @@ namespace DigitizingProjectCore.Services.CategoryServiceService
             }
             var _CategoryDto = _mapper.Map<CreateUpdateCategoryDto>(_Category);
             return _CategoryDto;
+        }
+        public async Task<List<CategoryViewModel>> Search(string term)
+        {
+            var _Categories = await _context.CategoryForServices.Where(x => x.IsDelete == false && x.IsActive == true && (x.NameEn.ToLower().Contains(term) || x.NameAr.ToLower().Contains(term))).ToListAsync();       
+            var _CategoriesVM = _mapper.Map<List<CategoryViewModel>>(_Categories);
+            return _CategoriesVM;
         }
         public async Task<CreateUpdateCategoryDto> Create(CreateUpdateCategoryDto dto)
         {
@@ -77,5 +85,6 @@ namespace DigitizingProjectCore.Services.CategoryServiceService
             return await _context.SaveChangesAsync();
         }
 
+        
     }
 }

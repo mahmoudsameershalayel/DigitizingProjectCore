@@ -25,7 +25,13 @@ namespace DigitizingProjectCore.Controllers
                 var IsSuccess = await _authService.Login(dto);
                 if (IsSuccess)
                 {
-                    return LocalRedirect(dto.ReturnUrl);
+                    if (dto.ReturnUrl != null)
+                    {
+                        return LocalRedirect(dto.ReturnUrl);
+                    }
+                    else {
+                        return LocalRedirect("/Admin/Home/Index");
+                    }
                 }
             }
             catch (Exception ex)

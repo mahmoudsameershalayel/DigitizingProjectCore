@@ -12,6 +12,7 @@ using DigitizingProjectCore.Services.NewsService;
 using DigitizingProjectCore.Services.ProductService;
 using DigitizingProjectCore.Services.ServiceService;
 using DigitizingProjectCore.Services.SolutionService;
+using DigitizingProjectCore.Services.UserService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -64,6 +65,7 @@ builder.Services.AddScoped<ICategoryServiceService , CategoryServiceService>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<ICategoryNewsService, CategoryNewsService>();
 builder.Services.AddScoped<INewsService, NewsService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 //Set Context DB in Session
