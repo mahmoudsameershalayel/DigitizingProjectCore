@@ -16,7 +16,7 @@ namespace DigitizingProjectCore.Services.BrandServices
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMapper _mapper;
-        public BrandService(ApplicationDbContext context, IMapper mapper, UserManager<ApplicationUser> userManager, IWebHostEnvironment hostEnvironment,IHttpContextAccessor contextAccessor)
+        public BrandService(ApplicationDbContext context, IMapper mapper, UserManager<ApplicationUser> userManager, IWebHostEnvironment hostEnvironment, IHttpContextAccessor contextAccessor)
         {
             _context = context;
             _mapper = mapper;
@@ -26,7 +26,7 @@ namespace DigitizingProjectCore.Services.BrandServices
         }
         public async Task<List<BrandViewModel>> GetAll()
         {
-            var _Brands = await _context.Brands.Where(x => x.IsDelete == false).ToListAsync();
+            var _Brands = await _context.Brands.Where(x => x.IsDelete == false && x.IsActive == true).ToListAsync();
             var _BrandsVM = _mapper.Map<List<BrandViewModel>>(_Brands);
             return _BrandsVM;
         }
@@ -67,7 +67,17 @@ namespace DigitizingProjectCore.Services.BrandServices
             {
                 throw new Exception("Not Found!!");
             }
+            var LogoImageName = _Brand.LogoImageName;
             var _UpdatedBrand = _mapper.Map(dto, _Brand);
+            _UpdatedBrand.LogoImageName = LogoImageName;
+            if (dto.LogoImage != null)
+            {
+                var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
+                var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.LogoImage.FileName);
+                var filePath = Path.Combine(uploadFolder, uniqueName);
+                dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
+                _UpdatedBrand.LogoImageName = uniqueName;
+            }
             _context.Brands.Update(_UpdatedBrand);
             await _context.SaveChangesAsync();
             return dto;
@@ -78,6 +88,7 @@ namespace DigitizingProjectCore.Services.BrandServices
             var _Brand = await _context.Brands.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (_Brand != null)
             {
+                _Brand.IsActive = false;
                 _Brand.IsDelete = true;
                 _context.Brands.Update(_Brand);
             }

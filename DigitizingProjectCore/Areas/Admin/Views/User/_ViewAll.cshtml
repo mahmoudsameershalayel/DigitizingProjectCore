@@ -45,7 +45,7 @@
                                 </button>
                                 <ul class='dropdown-menu'>
                                     <li><a title='User Permission - " + row["FullName"] + "' href='/AdminPanel/Admin/Permission/" + row["Id"] + "' class='PopUp'><i class='glyphicon glyphicon-lock'></i> User Permission</a></li>
-                                    <li><a title='Reset Password' href='/AdminPanel/Admin/ResetPassword/" + row["Id"] + "' class='PopUp'><i class='fa fa-key'></i> Reset Password</a> </li>
+                                    <li><a class='PopUp' onclick="showInPopup('@Url.Action("ResetPassword" , "User" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Reset Password');"><i class='fa fa-key'></i> Reset Password</a>  </li>
                                     <li><a class='PopUp' onclick="showInPopup('@Url.Action("Edit" , "User" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit User');"><i class='glyphicon glyphicon-edit'></i> Edit User</a> </li>
                                     <li><a class='PopUp' onclick="showInPopup('@Url.Action("Delete" , "User" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit User');"><i class='glyphicon glyphicon-trash'></i> Delete</a> </li>
                                 </ul>

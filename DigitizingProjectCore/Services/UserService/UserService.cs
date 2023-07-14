@@ -5,6 +5,7 @@ using DigitizingProjectCore.Data;
 using DigitizingProjectCore.Models;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Azure.Documents;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
@@ -31,30 +32,57 @@ namespace DigitizingProjectCore.Services.UserService
             return _UsersVM;
         }
 
-        public async Task<CreateUpdateUserDto> GetById(string id)
+        public async Task<CreateUserDto> GetById(string id)
         {
             var _User = await _context.Users.Where(x => x.IsDeleted == false && x.IsActive == true && x.Id == id).FirstOrDefaultAsync();
             if (_User == null)
             {
                 throw new Exception("Not Found!!");
             }
-            var dto = _mapper.Map<CreateUpdateUserDto>(_User);
+            var dto = _mapper.Map<CreateUserDto>(_User);
             return dto;
         }
-        public async Task<CreateUpdateUserDto> Create(CreateUpdateUserDto dto)
+        public async Task<UpdateUserDto> GetByIdForEdit(string id)
         {
-            var _User = _mapper.Map<ApplicationUser>(dto);
+            var _User = await _context.Users.Where(x => x.IsDeleted == false && x.IsActive == true && x.Id == id).FirstOrDefaultAsync();
+            if (_User == null)
+            {
+                throw new Exception("Not Found!!");
+            }
+            var dto = _mapper.Map<UpdateUserDto>(_User);
+            return dto;
+        }
+        public async Task<ResetPasswordDto> GetByIdForReset(string id)
+        {
+            var _User = await _context.Users.Where(x => x.IsDeleted == false && x.IsActive == true && x.Id == id).FirstOrDefaultAsync();
+            if (_User == null)
+            {
+                throw new Exception("Not Found!!");
+            }
+            var dto = _mapper.Map<ResetPasswordDto>(_User);
+            return dto;
+        }
+        public async Task<CreateUserDto> Create(CreateUserDto dto)
+        {
+            ApplicationUser _User = new ApplicationUser();
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _User.Created_At = DateTime.Now;
             _User.Created_By = _UserId;
-            _User.IsActive = true;
+            _User.IsActive = dto.IsActive;
             _User.IsDeleted = false;
-            await _userManager.CreateAsync(_User, dto.Password);
+            _User.Email = dto.Email;
+            _User.UserName = dto.FullName;
+            _User.FullName = dto.FullName;
+            _User.Phone = dto.Phone;
+            var result = await _userManager.CreateAsync(_User, dto.Password);
+            if (!result.Succeeded)
+            {
+                throw new Exception("Username already exist!!");
+            }
             await _userManager.AddToRoleAsync(_User, "Administrator");
-           
             return dto;
         }
-        public async Task<CreateUpdateUserDto> Update(CreateUpdateUserDto dto)
+        public async Task<UpdateUserDto> Update(UpdateUserDto dto)
         {
             var _User = await _context.Users.Where(x => x.IsDeleted == false && x.IsActive == true && x.Id == dto.Id).FirstOrDefaultAsync();
             if (_User == null)
@@ -65,18 +93,31 @@ namespace DigitizingProjectCore.Services.UserService
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _UpdatedUser.Updated_at = DateTime.Now;
             _UpdatedUser.Updated_by = _UserId;
+            _UpdatedUser.UserName = dto.FullName;
             _context.Users.Update(_UpdatedUser);
             await _context.SaveChangesAsync();
             return dto;
+        }
+        public async Task<int> RestPassword(ResetPasswordDto dto)
+        {
+            if (dto.Password.Equals(dto.ConfirmPassword)) {
+                var _User = await _userManager.FindByIdAsync(dto.Id);
+                var token = await _userManager.GeneratePasswordResetTokenAsync(_User);
+                var result = await _userManager.ResetPasswordAsync(_User, token, dto.Password);
+                if (result.Succeeded)
+                {
+                    return await _context.SaveChangesAsync();
+                }
+            }
+            return 0;
+
         }
         public async Task<int> Delete(string id)
         {
             var _User = await _context.Users.Where(x => x.IsDeleted == false && x.IsActive == true && x.Id == id).FirstOrDefaultAsync();
             if (_User != null)
             {
-                _User.IsDeleted = true;
-                _User.IsActive = false;
-                _context.Users.Update(_User);
+                await _userManager.DeleteAsync(_User);
             }
             return await _context.SaveChangesAsync();
 

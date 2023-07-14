@@ -1,5 +1,7 @@
 ﻿using DigitizingProjectCore.Dto;
 using DigitizingProjectCore.Services.Auth;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,7 +42,7 @@ namespace DigitizingProjectCore.Controllers
             }
             return View();
         }
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _authService.Logout();

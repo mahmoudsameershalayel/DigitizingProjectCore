@@ -13,20 +13,18 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ICityService _cityService;
-        private readonly IMapper _mapper;
 
-        public CityController(ICityService cityService, IMapper mapper , ApplicationDbContext context)
+        public CityController(ICityService cityService, ApplicationDbContext context)
         {
             _cityService = cityService;
             _context = context;
-            _mapper = mapper;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var _Cities = await _cityService.GetAll();
+            var _Categories = await _cityService.GetAll();
             ViewBag.db = _context;
-            return View(_Cities);
+            return View(_Categories);
         }
         [HttpGet]
         public IActionResult Add()
@@ -34,35 +32,43 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Add(CityViewModel vm)
+        public async Task<IActionResult> Add(CityViewModel dto)
         {
             if (ModelState.IsValid)
             {
-                await _cityService.Create(vm);
+                await _cityService.Create(dto);
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _cityService.GetAll()) });
             }
-            return new JsonResult(Ok()); 
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Add", dto) });
         }
+
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var _City = await _cityService.GetById(id);
-            var _CityVM = _mapper.Map<CityViewModel>(_City);
-            return View(_CityVM);
+            var _category = await _cityService.GetById(id);
+            return View(_category);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(CityViewModel vm)
+        public async Task<IActionResult> Edit(CityViewModel dto)
         {
             if (ModelState.IsValid)
             {
-                await _cityService.Update(vm);
+                await _cityService.Update(dto);
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _cityService.GetAll()) });
             }
-            return RedirectToAction("Index");
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", dto) });
         }
-        [HttpDelete]
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            await _cityService.Delete(id);
-            return Json(new { id = id, message = "Deleted Successfully" });
+            var _category = await _cityService.GetById(id);
+            return View(_category);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(CityViewModel dto)
+        {
+            await _cityService.Delete(dto.Id);
+            return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", await _cityService.GetAll()) });
         }
     }
 }

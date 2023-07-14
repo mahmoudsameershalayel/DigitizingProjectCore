@@ -63,7 +63,8 @@ namespace DigitizingProjectCore.Services.CityService
         public async Task<int> Delete(int id)
         {
             var _City = await _context.Cities.Where(x => x.Id == id).FirstOrDefaultAsync();
-            if (_City != null) {
+            if (_City != null)
+            {
                 _context.Cities.Remove(_City);
             }
             return await _context.SaveChangesAsync();

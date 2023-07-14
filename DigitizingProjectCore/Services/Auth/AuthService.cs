@@ -2,6 +2,7 @@
 using DigitizingProjectCore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Documents;
 
 namespace DigitizingProjectCore.Services.Auth
 {
@@ -17,20 +18,28 @@ namespace DigitizingProjectCore.Services.Auth
         }
         public async Task<bool> Login(LoginDto dto)
         {
-            var _user = await _userManager.FindByEmailAsync(dto.Email);
-            if (_user == null)
+            var _UserUsername = await _userManager.FindByNameAsync(dto.Username);
+            if (_UserUsername == null)
             {
-                throw new Exception("Not Found!!");
+                var _UserEmail = await _userManager.FindByEmailAsync(dto.Username);
+                if (_UserEmail == null)
+                {
+                    throw new Exception("Not Found!!");
+                }
+                var result1 = await _signInManager.PasswordSignInAsync(_UserEmail, dto.Password, false, false);
+                if (result1.Succeeded)
+                {
+                    return true;
+                }
             }
-            var result = await _signInManager.PasswordSignInAsync(_user, dto.Password, false, false);
-            if (result.Succeeded)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            else {
+                var result = await _signInManager.PasswordSignInAsync(_UserUsername, dto.Password, false, false);
+                if (result.Succeeded)
+                {
+                    return true;
+                }
+            }  
+            return false;
         }
         public async Task<bool> Logout()
         {
