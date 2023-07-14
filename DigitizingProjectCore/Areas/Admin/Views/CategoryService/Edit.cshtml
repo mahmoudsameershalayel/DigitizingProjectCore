@@ -7,10 +7,12 @@
     <div class="form-group">
         <label for="NameEn">Name (English)</label>
         <input type="text" class="form-control" id="NameEn" asp-for="NameEn">
+        <span asp-validation-for="NameEn" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label for="NameAr">Name (Arabic)</label>
         <input type="text" class="form-control" id="NameAr" asp-for="NameAr">
+        <span asp-validation-for="NameEn" class="text-danger"></span>
     </div>
     <div class="row">
         <div class="col-md-6">

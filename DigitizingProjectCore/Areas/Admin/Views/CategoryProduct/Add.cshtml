@@ -8,12 +8,14 @@
             <div class="form-group">
                 <label for="nameEn">Name (English)</label>
                 <input type="text" class="form-control" id="nameEn" asp-for="NameEn">
+                <span asp-validation-for="NameEn" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 <label for="nameAr">Name (Arabic)</label>
                 <input type="text" class="form-control" id="nameAr" asp-for="NameAr">
+                <span asp-validation-for="NameEn" class="text-danger"></span>
             </div>
         </div>
     </div>

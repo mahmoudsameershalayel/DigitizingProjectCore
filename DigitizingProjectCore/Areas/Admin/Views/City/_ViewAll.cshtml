@@ -1,14 +1,13 @@
-﻿@model List<DigitizingProjectCore.Areas.Admin.ViewModel.BrandViewModel>
-
+﻿@model List<DigitizingProjectCore.Areas.Admin.ViewModel.CityViewModel>
 <div class="table-responsive">
     <div class="table-wrapper">
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-6">
-                    <h2>Brands</h2>
+                    <h2>Cities</h2>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <a class="btn btn-success" onclick="showInPopup('@Url.Action("Add" , "Brand" ,null ,Context.Request.Scheme)' , 'Add New Brand');">Add New Brand</a>
+                    <a class="btn btn-success" onclick="showInPopup('@Url.Action("Add" , "City" ,null ,Context.Request.Scheme)' , 'Add City');">Add City</a>
                 </div>
             </div>
         </div>
@@ -18,7 +17,6 @@
                     <th>Name (English)</th>
                     <th>Name (Arabic)</th>
                     <th>Active</th>
-                    <th>Partner</th>
                     <th>Created Date</th>
                     <th width="15%"></th>
                 </tr>
@@ -37,19 +35,11 @@
                         {
                             <td><input type="checkbox"></td>
                         }
-                        @if (item.IsPartner)
-                        {
-                            <td><input type="checkbox" checked></td>
-                        }
-                        else
-                        {
-                            <td><input type="checkbox"></td>
-                        }
                         <td>@item.CreatedDate</td>
                         <td>
                             <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
-                            <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "Brand" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Brand');"><i class='glyphicon glyphicon-edit'></i></a>
-                            <a class="btn btn-xs btn-danger PopUp" onclick="showInPopup('@Url.Action("Delete" , "Brand" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Delete Brand');"><i class='glyphicon glyphicon-trash'></i></a>
+                            <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "City" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit City');"><i class='glyphicon glyphicon-edit'></i></a>
+                            <a class="btn btn-xs btn-danger PopUp" onclick="showInPopup('@Url.Action("Delete" , "City" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Delete City');"><i class='glyphicon glyphicon-trash'></i></a>
                         </td>
                     </tr>
                 }
