@@ -67,6 +67,7 @@ namespace DigitizingProjectCore.Data
         public DbSet<CategoryForProduct> CategoryForProducts { get; set; }
         public DbSet<News> News { get; set; }
         public DbSet<CategoryForNews> CategoryForNews { get; set; }
+        public DbSet<PhotoGallery> PhotoGalleries { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<CategoryForService> CategoryForServices { get; set; }
         public DbSet<City> Cities { get; set; }
@@ -76,5 +77,8 @@ namespace DigitizingProjectCore.Data
         public DbSet<AdminLinks> AdminLinks { get; set; }
         public DbSet<SolutionProducts> SolutionProducts { get; set; }
         public DbSet<Setting> Settings { get; set; }
+        public DbSet<HomePageBanner> HomePageBanners { get; set; }
+        public DbSet<Configuration> Configurations { get; set; }
+
     }
 }

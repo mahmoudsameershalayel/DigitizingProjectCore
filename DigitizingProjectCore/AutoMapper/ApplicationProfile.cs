@@ -44,6 +44,12 @@ namespace DigitizingProjectCore.AutoMapper
             CreateMap<News, NewsViewModel>().ReverseMap();
             CreateMap<News, AddProductWithCategoryAndBrand>().ReverseMap();
 
+
+            //PhotoGallery
+            CreateMap<PhotoGallery, CreateUpdatePhotoGalleryDto>().ReverseMap();
+            CreateMap<PhotoGallery, PhotoGalleryViewModel>().ReverseMap();
+
+
             //CategoryForNews
             CreateMap<CategoryForNews, CreateUpdateCategoryDto>().ReverseMap();
             CreateMap<CategoryForNews, CategoryViewModel>().ReverseMap();
@@ -67,6 +73,14 @@ namespace DigitizingProjectCore.AutoMapper
             CreateMap<Distributor , CreateUpdateDistributorDto>().ReverseMap();
             CreateMap<Distributor, AddDistibutorWithCity>().ReverseMap();
 
+
+            //Configuration
+            CreateMap<Configuration, SaveConfigurationDto>().ReverseMap();
+
+
+            //HomePageBanner
+            CreateMap<HomePageBanner, CreateUpdateHomePageDto>().ReverseMap();
+            CreateMap<HomePageBanner, HomePageViewModel>().ReverseMap();
         }
     }
 }

@@ -144,8 +144,8 @@ namespace DigitizingProjectCore.Data.Migrations
                         {
                             Id = "f1446937-109c-4e1a-97ce-0560442484f5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5995385c-c1d9-49cf-97a5-aceac5a5ebae",
-                            Created_At = new DateTime(2023, 7, 11, 7, 36, 15, 279, DateTimeKind.Local).AddTicks(9635),
+                            ConcurrencyStamp = "080eb7d5-5f6f-486e-a918-2fd9698417c3",
+                            Created_At = new DateTime(2023, 7, 17, 11, 47, 23, 214, DateTimeKind.Local).AddTicks(6426),
                             Email = "Administrator@admin.com",
                             EmailConfirmed = false,
                             FullName = "System Administrator",
@@ -154,12 +154,12 @@ namespace DigitizingProjectCore.Data.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMINISTRATOR@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBwUnNH49xYPwQOhUdm6mkYNSy/f27zAmpk7ib+DqS7KUVlNRkRK2DEf6bX70H6OTA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHgYxx5LgH3BOvUJu9YLClPJuAqesGd71LD/xm00aYU4eta2eYTEbjNXGRL8TMQHNg==",
                             Phone = "97259000000",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6095bb55-ca0a-480e-b001-9f8ce10930d1",
+                            SecurityStamp = "313253a7-f4f3-4f59-9058-1eb7552d2ff5",
                             TwoFactorEnabled = false,
-                            Updated_at = new DateTime(2023, 7, 11, 7, 36, 15, 279, DateTimeKind.Local).AddTicks(9699),
+                            Updated_at = new DateTime(2023, 7, 17, 11, 47, 23, 214, DateTimeKind.Local).AddTicks(6510),
                             UserName = "System_Administrator"
                         });
                 });
@@ -387,6 +387,113 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.ToTable("Cities");
                 });
 
+            modelBuilder.Entity("DigitizingProjectCore.Models.Configuration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AddressAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactUsSloganAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactUsSloganEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FaceBook")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Instegram")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IntroAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IntroEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LinkedIn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewsSloganAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewsSloganEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductsSloganAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductsSloganEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrainingSloganAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrainingSloganEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Twitter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WhatsApp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Configurations");
+                });
+
             modelBuilder.Entity("DigitizingProjectCore.Models.Distributor", b =>
                 {
                     b.Property<int>("Id")
@@ -444,6 +551,82 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("Distributors");
+                });
+
+            modelBuilder.Entity("DigitizingProjectCore.Models.HomePageBanner", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BackgroundImageName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Created_At")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Created_By")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ShowText")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("SortId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubTitleAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubTitleEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SummaryAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SummaryEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("URLAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("URLEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Updated_At")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Updated_By")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VideoURL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HomePageBanners");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Link", b =>
@@ -562,6 +745,64 @@ namespace DigitizingProjectCore.Data.Migrations
                     b.ToTable("News");
                 });
 
+            modelBuilder.Entity("DigitizingProjectCore.Models.PhotoGallery", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("Created_At")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Created_By")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagesName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MainImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SortId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SummaryAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SummaryEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Updated_At")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Updated_By")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PhotoGalleries");
+                });
+
             modelBuilder.Entity("DigitizingProjectCore.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -665,7 +906,6 @@ namespace DigitizingProjectCore.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DocFileName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsActive")
@@ -675,7 +915,6 @@ namespace DigitizingProjectCore.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LogoImageName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NameAr")
@@ -687,7 +926,6 @@ namespace DigitizingProjectCore.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PDFFileName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SortId")

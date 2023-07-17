@@ -62,6 +62,32 @@ namespace DigitizingProjectCore.Services.ServiceService
                 dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
                 _Service.LogoImageName = uniqueName;
             }
+            if (dto.PDFFile != null)
+            {
+                string ext = Path.GetExtension(dto.PDFFile.FileName);
+                if (ext.ToLower() != ".pdf")
+                {
+                    throw new Exception("Not File Type!!");
+                }
+                var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "PDFFiles");
+                var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.PDFFile.FileName);
+                var filePath = Path.Combine(uploadFolder, uniqueName);
+                dto.PDFFile.CopyTo(new FileStream(filePath, FileMode.Create));
+                _Service.PDFFileName = uniqueName;
+            }
+            if (dto.DOCFile != null)
+            {
+                string ext = Path.GetExtension(dto.DOCFile.FileName);
+                if (ext.ToLower() != ".doc")
+                {
+                    throw new Exception("Not File Type!!");
+                }
+                var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "DocFiles");
+                var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.DOCFile.FileName);
+                var filePath = Path.Combine(uploadFolder, uniqueName);
+                dto.DOCFile.CopyTo(new FileStream(filePath, FileMode.Create));
+                _Service.DocFileName = uniqueName;
+            }
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _Service.Created_By = _UserId;
             _Service.Created_At = DateTime.Now;
@@ -78,15 +104,47 @@ namespace DigitizingProjectCore.Services.ServiceService
             {
                 throw new Exception("Not Found!!");
             }
+            var LogoImageName = _Service.LogoImageName;
+            var PDFFileName = _Service.PDFFileName;
+            var DocFileName = _Service.DocFileName;
+            var _UpdateService = _mapper.Map(dto, _Service);
+            _UpdateService.LogoImageName = LogoImageName;
+            _UpdateService.PDFFileName = PDFFileName;
+            _UpdateService.DocFileName = DocFileName;
             if (dto.LogoImage != null)
             {
                 var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
                 var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.LogoImage.FileName);
                 var filePath = Path.Combine(uploadFolder, uniqueName);
                 dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
-                _Service.LogoImageName = uniqueName;
+                _UpdateService.LogoImageName = uniqueName;
             }
-            var _UpdateService = _mapper.Map(dto, _Service);
+            if (dto.PDFFile != null)
+            {
+                string ext = Path.GetExtension(dto.PDFFile.FileName);
+                if (ext.ToLower() != ".pdf")
+                {
+                    throw new Exception("Not File Type!!");
+                }
+                var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
+                var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.PDFFile.FileName);
+                var filePath = Path.Combine(uploadFolder, uniqueName);
+                dto.PDFFile.CopyTo(new FileStream(filePath, FileMode.Create));
+                _UpdateService.PDFFileName = uniqueName;
+            }
+            if (dto.DOCFile != null)
+            {
+                string ext = Path.GetExtension(dto.DOCFile.FileName);
+                if (ext.ToLower() != ".doc")
+                {
+                    throw new Exception("Not File Type!!");
+                }
+                var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "DocFiles");
+                var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.DOCFile.FileName);
+                var filePath = Path.Combine(uploadFolder, uniqueName);
+                dto.DOCFile.CopyTo(new FileStream(filePath, FileMode.Create));
+                _UpdateService.DocFileName = uniqueName;
+            }
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _UpdateService.Updated_By = _UserId;
             _UpdateService.Updated_At = DateTime.Now;

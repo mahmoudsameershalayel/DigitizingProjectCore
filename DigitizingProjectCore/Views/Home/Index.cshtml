@@ -1,8 +1,11 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var lang = currentCulture.Name;
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@await Html.PartialAsync("../_home/slider")
+@await Html.PartialAsync("../_home/products")
+@await Html.PartialAsync("../_home/services")
+@await Html.PartialAsync("../_home/training")
+@await Html.PartialAsync("../_home/news")
+@await Html.PartialAsync("../_home/contact")
+@await Html.PartialAsync("../_home/partners")

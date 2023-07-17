@@ -1,0 +1,27 @@
+﻿@{
+    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var lang = currentCulture.Name;
+    var partners = db.Brands.Where(x => x.IsDelete == false && x.IsPartner == true && x.IsActive == true).OrderBy(x => x.Id)
+        .Take(5).ToList();
+}
+<section class="pt-100 pb-70 clients jarallax" data-jarallax='{"speed": 0.3}'>
+    <div class="container">
+        <div class="section-title">
+            <h2>@(lang == "ar" ? "الشراكات" : "Partnerships")</h2>
+        </div>
+
+        <div class="row">
+            @foreach (var i in partners)
+            {
+                <div class="col">
+                    <div class="single-challenges">
+                        <a href="@(string.IsNullOrEmpty(i.URL)?"":i.URL)" class="overly-two">
+                            <img title="@i.NameEn" src="~/Images/@i.LogoImageName" />
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

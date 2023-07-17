@@ -7,8 +7,11 @@ using DigitizingProjectCore.Services.CategoryNewsService;
 using DigitizingProjectCore.Services.CategoryProductService;
 using DigitizingProjectCore.Services.CategoryServiceService;
 using DigitizingProjectCore.Services.CityService;
+using DigitizingProjectCore.Services.ConfigurationService;
 using DigitizingProjectCore.Services.DistributorService;
+using DigitizingProjectCore.Services.HomeBageService;
 using DigitizingProjectCore.Services.NewsService;
+using DigitizingProjectCore.Services.PhotoGalleryService;
 using DigitizingProjectCore.Services.ProductService;
 using DigitizingProjectCore.Services.ServiceService;
 using DigitizingProjectCore.Services.SolutionService;
@@ -16,6 +19,9 @@ using DigitizingProjectCore.Services.UserService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +36,23 @@ builder.Services.AddLocalization();
 builder.Services.AddMvc()
     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
     .AddDataAnnotationsLocalization();
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+
+    var supportedCulture = new[]
+   {
+        new CultureInfo("en"),
+        new CultureInfo("ar"),
+
+    };
+        
+    options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(culture: "en", uiCulture: "en");
+    options.SupportedCultures = supportedCulture;
+    options.SupportedUICultures = supportedCulture;
+
+});
+
 
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -65,6 +88,9 @@ builder.Services.AddScoped<ICategoryServiceService , CategoryServiceService>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<ICategoryNewsService, CategoryNewsService>();
 builder.Services.AddScoped<INewsService, NewsService>();
+builder.Services.AddScoped<IPhotoGalleryService, PhotoGalleryService>();
+builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
+builder.Services.AddScoped<IHomePageService, HomePageService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
@@ -97,6 +123,10 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();
+
+var locOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
+app.UseRequestLocalization(locOptions.Value);
+
 
 app.UseRouting();
 

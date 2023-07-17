@@ -7,14 +7,7 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
 {
     public class HomeController : AdminBaseController
     {
-        private readonly ApplicationDbContext _context;
-
-        public HomeController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
-        public IActionResult Index()
+        public IActionResult Index([FromServices]ApplicationDbContext _context)
         {
             ViewBag.db = _context;   
             return View();

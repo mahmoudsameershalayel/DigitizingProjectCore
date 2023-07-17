@@ -92,7 +92,7 @@ namespace DigitizingProjectCore.Services.SolutionService
             _Solution.IsDelete = false;
             await _context.Solutions.AddAsync(_Solution);
             await _context.SaveChangesAsync();
-            foreach (var id in dto.ProductsId)
+            foreach (var id in dto.ProductIds)
             {
                 await _context.SolutionProducts.AddAsync(new SolutionProducts
                 {

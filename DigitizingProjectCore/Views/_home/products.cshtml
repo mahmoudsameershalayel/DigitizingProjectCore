@@ -1,0 +1,36 @@
+﻿@{
+    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var lang = currentCulture.Name;
+    var latestNews = db.Solutions.Where(x => x.IsDelete == false && x.IsActive == true)
+        .OrderBy(x => x.SortId)
+        .Take(4);
+}
+<section class="blog-area blog-area-four mt-5 pb-70">
+    <div class="container">
+        <div class="section-title">
+            <h2>@(lang == "ar" ? "الحلول" : "Solutions")</h2>
+        </div>
+        <div class="row">
+            @foreach (var item in latestNews)
+            {
+                <div class="col-lg-3 col-md-6">
+                    <div class="single-blog">
+                        <div class="imgProductContainerSm blog-img">
+                            <a href="/Home/Solution/@item.Id">
+                                <img src="~/Images/@item.LogoImageName" alt="@(lang=="ar"?item.NameAr:item.NameEN)">
+                            </a>
+                        </div>
+                        <div class="blog-content">
+                            <h3><a href="/Home/Solution/@item.Id">@(lang == "ar" ? item.NameAr : item.NameEN)</a></h3>
+                            <a href="/Home/Solution/@item.Id" class="read-more">
+                                @(lang == "ar" ? "اقرأ المزيد" : "Read More")
+                                <i class="flaticon-right-arrow"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

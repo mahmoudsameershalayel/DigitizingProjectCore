@@ -16,7 +16,7 @@ namespace DigitizingProjectCore.Areas.Admin.Dto
         [Required(ErrorMessage = "Brand is required.")]
         public int BrandId { get; set; }
         [Required(ErrorMessage = "Product is required.")]
-        public List<int> ProductsId { get; set; }
+        public List<int> ProductIds { get; set; }
         [Required(ErrorMessage = "Details (Arabic) is required.")]
         public string DetailsAr { get; set; }
         [Required(ErrorMessage = "Details (English) is required.")]

@@ -31,14 +31,15 @@ namespace DigitizingProjectCore.Services.BrandServices
             return _BrandsVM;
         }
 
-        public async Task<Brand> GetById(int id)
+        public async Task<CreateUpdateBrandDto> GetById(int id)
         {
             var _Brand = await _context.Brands.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (_Brand == null)
             {
                 throw new Exception("Not Found!!");
             }
-            return _Brand;
+            var dto = _mapper.Map<CreateUpdateBrandDto>(_Brand);
+            return dto;
         }
         public async Task<CreateUpdateBrandDto> Create(CreateUpdateBrandDto dto)
         {

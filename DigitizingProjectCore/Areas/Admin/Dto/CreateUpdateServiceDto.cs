@@ -22,12 +22,9 @@ namespace DigitizingProjectCore.Areas.Admin.Dto
         public string DetailsEn { get; set; }
         [Required(ErrorMessage = "Details (Arabic) is required")]
         public string DetailsAr { get; set; }
-        [Required(ErrorMessage = "Logo Image is required")]
-        public IFormFile LogoImage { get; set; }
-        [Required(ErrorMessage = "PDF File is required")]
-        public IFormFile PDFFile { get; set; }
-        [Required(ErrorMessage = "DOC File is required")]
-        public IFormFile DOCFile { get; set; }
+        public IFormFile? LogoImage { get; set; }
+        public IFormFile? PDFFile { get; set; }
+        public IFormFile? DOCFile { get; set; }
         public string? LogoImageName { get; set; }
         public string? PDFFileName { get; set; }
         public string? DocFileName { get; set; }

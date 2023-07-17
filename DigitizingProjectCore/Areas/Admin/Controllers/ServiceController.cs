@@ -10,16 +10,14 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
     public class ServiceController : AdminBaseController
     {
         private readonly IServiceService _ServiceService;
-        private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public ServiceController(IServiceService serviceService , ApplicationDbContext context , IMapper mapper)
+        public ServiceController(IServiceService serviceService , IMapper mapper)
         {
-            _context = context;
             _mapper = mapper;
             _ServiceService = serviceService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context)
         {
             var _Services = await _ServiceService.GetAll();
             ViewBag.db = _context;
@@ -37,9 +35,10 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 await _ServiceService.Create(dto);
-                return RedirectToAction("Index");
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _ServiceService.GetAll()) });
             }
-            return View();
+            var _CreateUpdateService = await _ServiceService.InjectCategories();
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Add", _CreateUpdateService) });
         }
 
         [HttpGet]
@@ -56,14 +55,22 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 await _ServiceService.Update(dto);
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _ServiceService.GetAll()) });
             }
-            return RedirectToAction("Index");
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", dto) });
         }
-        [HttpDelete]
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            await _ServiceService.Delete(id);
-            return Json(new { id = id, message = "Deleted Successfully" });
+            var _Service = await _ServiceService.GetServiceById(id);
+            var dto = _mapper.Map<CreateUpdateServiceDto>(_Service);
+            return View(dto);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(CreateUpdateProductDto dto)
+        {
+            await _ServiceService.Delete(dto.Id);
+            return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", await _ServiceService.GetAll()) });
         }
     }
 }

@@ -8,17 +8,15 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
 {
     public class DistributorController : AdminBaseController
     {
-        private readonly ApplicationDbContext _context;
         private readonly IDistributorService _distributorService;
         private readonly IMapper _mapper;
-        public DistributorController(IDistributorService distributorService , ApplicationDbContext context , IMapper mapper)
+        public DistributorController(IDistributorService distributorService , IMapper mapper)
         {
             _distributorService = distributorService;
             _mapper = mapper;
-            _context = context;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context)
         {
             var _Distributors = await _distributorService.GetAll();
             ViewBag.db = _context;

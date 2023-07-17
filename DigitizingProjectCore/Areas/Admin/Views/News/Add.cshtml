@@ -2,6 +2,7 @@
 @{
     Layout = null;
 }
+
 <form asp-controller="News" asp-action="Add" method="POST" enctype="multipart/form-data" onsubmit="return jQueryAjaxPost(this);">
     <div class="row">
         <div class="col-md-6">
@@ -63,7 +64,7 @@
         </div>
         <div class="col-md-6 form-group">
             <label for="date">Date</label>
-            <input type="date" class="form-control" id="date" asp-for="Date">
+            <input type="date" class="form-control" placeholder="Enter date" id="date" asp-for="Date">
         </div>
     </div>
     <div class="form-group">

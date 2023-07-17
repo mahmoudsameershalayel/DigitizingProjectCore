@@ -39,7 +39,7 @@
                         }
                         <td>@item.Category.NameEn</td>
                         <td>@item.Brand.NameEn</td>
-                        <td>@item.CreatedDate</td>
+                        <td>@item.Created_At</td>
                         <td>
                             <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
                             <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "Product" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Product');"><i class='glyphicon glyphicon-edit'></i></a>

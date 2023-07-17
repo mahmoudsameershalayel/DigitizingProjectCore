@@ -9,16 +9,14 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
     public class CategoryNewsController : AdminBaseController
     {
         private readonly ICategoryNewsService _categoryNewsService;
-        private readonly ApplicationDbContext _context;
-        public CategoryNewsController(ICategoryNewsService categoryNewsService, ApplicationDbContext context)
+        public CategoryNewsController(ICategoryNewsService categoryNewsService)
         {
             _categoryNewsService = categoryNewsService;
-            _context = context;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromServices]ApplicationDbContext _context , string key)
         {
-            var _Categories = await _categoryNewsService.GetAll();
+            var _Categories = await _categoryNewsService.GetAll(key);
             ViewBag.db = _context;
             return View(_Categories);
         }

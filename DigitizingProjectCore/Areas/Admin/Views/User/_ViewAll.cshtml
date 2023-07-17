@@ -37,14 +37,14 @@
                         {
                             <td><input type="checkbox"></td>
                         }
-                        <td>@item.CreatedDate</td>
+                        <td>@item.Created_At</td>
                         <td>
                             <div class='btn-group'>
                                 <button type='button' class='btn-xs btn btn-success dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                                     <i class='fa fa-cog'></i> Options <span class='caret'></span>
                                 </button>
                                 <ul class='dropdown-menu'>
-                                    <li><a title='User Permission - " + row["FullName"] + "' href='/AdminPanel/Admin/Permission/" + row["Id"] + "' class='PopUp'><i class='glyphicon glyphicon-lock'></i> User Permission</a></li>
+                                    <li><a class='PopUp' onclick="showInPopup('@Url.Action("UserPremissions" , "User" ,new{id = item.Id} ,Context.Request.Scheme)' , 'User Premissions');"><i class='glyphicon glyphicon-lock'></i> User Permission</a> </li>
                                     <li><a class='PopUp' onclick="showInPopup('@Url.Action("ResetPassword" , "User" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Reset Password');"><i class='fa fa-key'></i> Reset Password</a>  </li>
                                     <li><a class='PopUp' onclick="showInPopup('@Url.Action("Edit" , "User" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit User');"><i class='glyphicon glyphicon-edit'></i> Edit User</a> </li>
                                     <li><a class='PopUp' onclick="showInPopup('@Url.Action("Delete" , "User" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit User');"><i class='glyphicon glyphicon-trash'></i> Delete</a> </li>

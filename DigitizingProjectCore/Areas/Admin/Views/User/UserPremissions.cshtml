@@ -1,0 +1,43 @@
+﻿@model DigitizingProjectCore.Areas.Admin.Dto.CreateUpdatePremissionDto
+@{
+    Layout = null;
+}
+<form asp-controller="User" asp-action="UserPremissions" method="POST" onsubmit="return jQueryAjaxPost(this);">
+    @{
+        var i = 0;
+        var links = Model.Links.Where(x => x.ParentId == 0 && x.ShowInMenu == true).OrderBy(x => x.OrderId).ToList();
+        foreach (var link in links)
+        {
+            var sublinks = Model.Links.Where(x => x.ParentId == link.Id && x.ShowInMenu == true).OrderBy(x => x.OrderId).ToList();
+            <li class="nav-item @(i++ == 0 ? "start" : "")">
+                <a href="@link.URL" class="nav-link nav-toggle">
+                    <i class="@link.Icon"></i>
+                    <span class="title">@link.Title</span>
+                    @if (sublinks.Count > 0)
+                    {
+                        <span class="arrow"></span>
+                    }
+                </a>
+                @if (sublinks.Count > 0)
+                {
+                    var j = 0;
+                    <ul class="sub-menu">
+                        @foreach (var sublink in sublinks)
+                        {
+                            <li class="nav-item @(j++ == 0 ? "start" : "")">
+                                <div class="form-grpup">
+                                    <label>
+                                        <i class="@sublink.Icon"></i>
+                                        <span class="title">@sublink.Title</span>
+                                    </label>
+                                    <input type="checkbox" value="@sublink.Id" name="LinkIds">
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </li>
+        }
+
+    }
+</form>

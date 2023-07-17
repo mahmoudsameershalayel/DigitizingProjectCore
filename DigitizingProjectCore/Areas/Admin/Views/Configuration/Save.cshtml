@@ -1,0 +1,144 @@
+﻿@model DigitizingProjectCore.Areas.Admin.Dto.SaveConfigurationDto
+@section css{
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.css">
+}
+<form asp-controller="Configuration" asp-action="Save" method="POST" onsubmit="return jQueryAjaxPost(this);">
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="titleAr">Title (Arabic)</label>
+            <input type="text" class="form-control" id="titleAr" asp-for="TitleAr">
+            <span asp-validation-for="TitleAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="titleEn">Title (English)</label>
+            <input type="text" class="form-control" id="titleEn" asp-for="TitleEn">
+            <span asp-validation-for="TitleEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="introAr">Intro (Arabic)</label>
+            <input type="text" class="form-control" id="introAr" asp-for="IntroAr">
+            <span asp-validation-for="IntroAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="introEn">Intro (English)</label>
+            <input type="text" class="form-control" id="introEn" asp-for="IntroEn">
+            <span asp-validation-for="IntroEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="newsSloganAr">News Slogan (Arabic)</label>
+            <input type="text" class="form-control" id="newsSloganAr" asp-for="NewsSloganAr">
+            <span asp-validation-for="NewsSloganAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="newsSloganEn">News Slogan (English)</label>
+            <input type="text" class="form-control" id="newsSloganEn" asp-for="NewsSloganEn">
+            <span asp-validation-for="NewsSloganEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="productsSloganAr">Products Slogan (Arabic)</label>
+            <input type="text" class="form-control" id="productsSloganAr" asp-for="ProductsSloganAr">
+            <span asp-validation-for="ProductsSloganAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="productsSloganEn">Products Slogan (English)</label>
+            <input type="text" class="form-control" id="productsSloganEn" asp-for="ProductsSloganEn">
+            <span asp-validation-for="ProductsSloganEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="trainingSloganAr">Training Slogan (Arabic)</label>
+            <input type="text" class="form-control" id="trainingSloganAr" asp-for="TrainingSloganAr">
+            <span asp-validation-for="TrainingSloganAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="trainingSloganEn">Training Slogan (English)</label>
+            <input type="text" class="form-control" id="trainingSloganEn" asp-for="TrainingSloganEn">
+            <span asp-validation-for="TrainingSloganEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="contactSloganAr">Contact Slogan (Arabic)</label>
+            <input type="text" class="form-control" id="contactSloganAr" asp-for="ContactUsSloganAr">
+            <span asp-validation-for="ContactUsSloganAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="contactSloganEn">Contact Slogan (English)</label>
+            <input type="text" class="form-control" id="contactSloganEn" asp-for="ContactUsSloganEn">
+            <span asp-validation-for="ContactUsSloganEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="addressAr">Address (Arabic)</label>
+            <input type="text" class="form-control" id="addressAr" asp-for="AddressAr">
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="addressEn">Address (English)</label>
+            <input type="text" class="form-control" id="addressEn" asp-for="AddressEn">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="faceBook">FaceBook</label>
+            <input type="text" class="form-control" id="faceBook" asp-for="FaceBook">
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="twitter">Twitter</label>
+            <input type="text" class="form-control" id="twitter" asp-for="Twitter">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="instagram">Instagram</label>
+            <input type="text" class="form-control" id="instagram" asp-for="Instegram">
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="whatsApp">WhatsApp</label>
+            <input type="text" class="form-control" id="whatsApp" asp-for="WhatsApp">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="linkedIn">LinkedIn</label>
+            <input type="text" class="form-control" id="linkedIn" asp-for="LinkedIn">
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" asp-for="Email">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="phone">Phone</label>
+            <input type="text" class="form-control" id="phone" asp-for="Phone">
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="phone2">Phone 2</label>
+            <input type="text" class="form-control" id="phone2" asp-for="Phone2">
+        </div>
+    </div>
+    <input type="submit" id="btn-save" class="btn btn-primary" value="Save" />
+</form>
+@section scripts{
+   @* <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.all.min.js"></script>
+    <script>
+        const link = document.getElementById('btn-save');
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Saved!',
+                text: 'You saved the configuration.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        });
+    </script>*@
+}

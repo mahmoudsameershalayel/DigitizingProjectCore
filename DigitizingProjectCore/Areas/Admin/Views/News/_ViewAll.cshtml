@@ -4,7 +4,7 @@
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-6">
-                    <h2>News Categories</h2>
+                    <h2>News</h2>
                 </div>
                 <div class="col-sm-6 text-right">
                     <a class="btn btn-success" onclick="showInPopup('@Url.Action("Add" , "News" ,null ,Context.Request.Scheme)' , 'Add News');">Add News</a>
@@ -37,7 +37,7 @@
                         {
                             <td><input type="checkbox"></td>
                         }
-                        <td>@item.CreatedDate</td>
+                        <td>@item.Date</td>
                         <td>
                             <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
                             <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "News" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Category Service');"><i class='glyphicon glyphicon-edit'></i></a>

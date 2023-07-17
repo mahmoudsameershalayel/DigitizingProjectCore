@@ -28,9 +28,9 @@ namespace DigitizingProjectCore.Services.ProductService
         }
         public async Task<List<ProductViewModel>> GetAll()
         {
-            var _products = await _context.Products.Where(x => x.IsDelete == false).OrderBy(x => x.SortId).Include(c => c.Category).Include(b => b.Brand).ToListAsync();
+            var _products = await _context.Products.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).Include(c => c.Category).Include(b => b.Brand).ToListAsync();
             var _productsVM = _mapper.Map<List<ProductViewModel>>(_products);
-            return _productsVM; 
+            return _productsVM;
         }
 
         public async Task<Product> GetById(int id)
@@ -91,7 +91,8 @@ namespace DigitizingProjectCore.Services.ProductService
         public async Task<CreateUpdateProductDto> Update(CreateUpdateProductDto dto)
         {
             var _product = await _context.Products.Where(x => x.Id == dto.Id).FirstOrDefaultAsync();
-            if (_product == null) {
+            if (_product == null)
+            {
                 throw new Exception("Not Found!!");
             }
             var LogoImageName = _product.LogoImageName;
@@ -99,7 +100,7 @@ namespace DigitizingProjectCore.Services.ProductService
             var DocFileName = _product.DocFileName;
             var _Updateproduct = _mapper.Map(dto, _product);
             _Updateproduct.LogoImageName = LogoImageName;
-            _Updateproduct.PDFFileName = PDFFileName;   
+            _Updateproduct.PDFFileName = PDFFileName;
             _Updateproduct.DocFileName = DocFileName;
             if (dto.LogoImage != null)
             {
@@ -112,7 +113,8 @@ namespace DigitizingProjectCore.Services.ProductService
             if (dto.PDFFile != null)
             {
                 string ext = Path.GetExtension(dto.PDFFile.FileName);
-                if (ext.ToLower() != ".pdf") {
+                if (ext.ToLower() != ".pdf")
+                {
                     throw new Exception("Not File Type!!");
                 }
                 var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
@@ -138,7 +140,7 @@ namespace DigitizingProjectCore.Services.ProductService
             _Updateproduct.Updated_By = _UserId;
             _Updateproduct.Updated_At = DateTime.Now;
             _context.Products.Update(_Updateproduct);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return dto;
         }
 
@@ -147,16 +149,6 @@ namespace DigitizingProjectCore.Services.ProductService
             var _product = await _context.Products.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (_product != null)
             {
-                if (!string.IsNullOrEmpty(_product.LogoImageName))
-                {
-                    string filePath = Path.Combine(_hostEnvironment.WebRootPath, "Images",  _product.LogoImageName);
-                    FileInfo fi = new FileInfo(filePath);
-                    if (fi != null)
-                    {
-                        System.IO.File.Delete(filePath);
-                        fi.Delete();
-                    }
-                }
                 _product.IsActive = false;
                 _product.IsDelete = true;
                 _context.Products.Update(_product);

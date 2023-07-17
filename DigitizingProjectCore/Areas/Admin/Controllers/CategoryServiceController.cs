@@ -11,16 +11,13 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
     public class CategoryServiceController : AdminBaseController
     {
         private readonly ICategoryServiceService  _categoryServiceService;
-        private readonly ApplicationDbContext _context;
        
-        public CategoryServiceController(ICategoryServiceService categoryServiceService , ApplicationDbContext context)
+        public CategoryServiceController(ICategoryServiceService categoryServiceService)
         {
-            _categoryServiceService = categoryServiceService;
-            _context = context;
-           
+            _categoryServiceService = categoryServiceService;           
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context)
         {
             var _Categories = await _categoryServiceService.GetAll();
             ViewBag.db = _context;

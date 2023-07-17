@@ -10,6 +10,6 @@ namespace DigitizingProjectCore.Areas.Admin.ViewModel
         public CategoryForProduct Category { get; set; }
         public Brand Brand { get; set; }
         public bool IsActive { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime Created_At { get; set; }
     }
 }

@@ -10,18 +10,16 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
 {
     public class ProductController : AdminBaseController
     {
-        private readonly ApplicationDbContext _context;
         private readonly IProductService _productService;
         private readonly IMapper _mapper;
 
-        public ProductController(IProductService productService, IMapper  mapper, ApplicationDbContext context)
+        public ProductController(IProductService productService, IMapper  mapper)
         {
             _productService = productService;
-            _context = context;
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context)
         {
             var _Products = await _productService.GetAll();
             ViewBag.db = _context;

@@ -6,8 +6,20 @@
         }
     </style>
 }
-<div id="view-all">
-    @await Html.PartialAsync("_ViewAll", Model)
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <form class="form-inline" onsubmit="return jQueryAjaxGet(this);">
+            <div class="form-group">
+                <input type="text" placeholder="search ..." name="key" class="form-control" />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+    </div>
+    <div class="panel-body" id="view-all">
+        @await Html.PartialAsync("_ViewAll", Model)
+    </div>
 </div>
 
 <div class="modal" tabindex="-1" role="dialog" id="form-modal">

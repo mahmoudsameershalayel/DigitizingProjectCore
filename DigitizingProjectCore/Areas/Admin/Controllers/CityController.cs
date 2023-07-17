@@ -11,16 +11,14 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
 {
     public class CityController : AdminBaseController
     {
-        private readonly ApplicationDbContext _context;
         private readonly ICityService _cityService;
 
-        public CityController(ICityService cityService, ApplicationDbContext context)
+        public CityController(ICityService cityService)
         {
             _cityService = cityService;
-            _context = context;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context)
         {
             var _Categories = await _cityService.GetAll();
             ViewBag.db = _context;

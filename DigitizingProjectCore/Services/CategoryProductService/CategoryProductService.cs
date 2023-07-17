@@ -32,13 +32,14 @@ namespace DigitizingProjectCore.Services.CategoryProductService
             return _CategoriesVM;
         }
 
-        public async Task<CategoryForProduct> GetById(int id)
+        public async Task<CreateUpdateCategoryDto> GetById(int id)
         {
             var _Category = await _context.CategoryForProducts.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (_Category == null) {
                 throw new Exception("Not Found!!");
             }
-            return _Category;
+            var dto = _mapper.Map<CreateUpdateCategoryDto>(_Category);
+            return dto;
         }
         public async Task<CreateUpdateCategoryDto> Create(CreateUpdateCategoryDto dto)
         {

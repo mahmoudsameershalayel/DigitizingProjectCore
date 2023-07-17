@@ -10,25 +10,23 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
 {
     public class SolutionController : AdminBaseController
     {
-        private readonly ApplicationDbContext _context;
         private readonly ISolutionService _solutionService;
         private readonly IMapper _mapper;
 
-        public SolutionController(ISolutionService solutionService, IMapper mapper, ApplicationDbContext context)
+        public SolutionController(ISolutionService solutionService, IMapper mapper)
         {
             _solutionService = solutionService;
-            _context = context;
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context)
         {
             var _Solutions = await _solutionService.GetAll();
             ViewBag.db = _context;
             return View(_Solutions);
         }
         [HttpGet]
-        public async Task<IActionResult> Add()
+        public async Task<IActionResult> Add([FromServices] ApplicationDbContext _context)
         {
             var _CreateUpdateSolution = await _solutionService.InjectCategoriesAndBrandsAndProducts();
             ViewBag.db = _context;
@@ -36,7 +34,7 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             return View(_CreateUpdateSolution);
         }
         [HttpPost]
-        public async Task<IActionResult> Add(CreateUpdateSolutionDto dto)
+        public async Task<IActionResult> Add([FromServices] ApplicationDbContext _context,CreateUpdateSolutionDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -46,7 +44,7 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             }
             await _solutionService.Create(dto);
             return RedirectToAction("Index");
-        }
+            }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)

@@ -21,6 +21,7 @@ namespace DigitizingProjectCore.Services.CityService
             _userManager = userManager;
             _contextAccessor = contextAccessor;
         }
+
         public async Task<List<CityViewModel>> GetAll()
         {
             var _Cities = await _context.Cities.ToListAsync();

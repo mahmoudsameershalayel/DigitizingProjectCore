@@ -7,6 +7,6 @@
         public string NameEn { get; set; }
         public bool IsPartner { get; set; }
         public bool IsActive { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime Created_At { get; set; }
     }
 }

@@ -7,7 +7,7 @@ namespace DigitizingProjectCore.Services.BrandServices
     public interface IBrandService
     {
         public Task<List<BrandViewModel>> GetAll();
-        public Task<Brand> GetById(int id);
+        public Task<CreateUpdateBrandDto> GetById(int id);
         public Task<List<BrandViewModel>> GetByName(string name);
         public Task<CreateUpdateBrandDto> Create(CreateUpdateBrandDto dto);
         public Task<CreateUpdateBrandDto> Update(CreateUpdateBrandDto dto);

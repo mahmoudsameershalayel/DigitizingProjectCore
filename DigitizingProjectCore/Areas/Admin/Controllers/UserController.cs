@@ -9,15 +9,13 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
 {
     public class UserController : AdminBaseController
     {
-        private readonly ApplicationDbContext _context;
         private readonly IUserService _userService;
-        public UserController(IUserService userService, ApplicationDbContext context)
+        public UserController(IUserService userService)
         {
             _userService = userService;
-            _context = context;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context)
         {
             var _Users = await _userService.GetAll();
             ViewBag.db = _context;
@@ -63,6 +61,20 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         {
             await _userService.RestPassword(dto);
             return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", await _userService.GetAll()) });
+        }
+        [HttpGet]
+        public async Task<IActionResult> UserPremissions()
+        {
+            var _Links = await _userService.GetLinks();
+            var dto = new CreateUpdatePremissionDto();
+            dto.Links = _Links;
+            return View(dto);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UserPremissions(CreateUpdatePremissionDto dto)
+        {
+            var _Links = await _userService.GetLinks();
+            return View(_Links);
         }
         [HttpGet]
         public async Task<IActionResult> Delete(string id)

@@ -11,16 +11,12 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
     public class CategoryProductController : AdminBaseController
     {
         private readonly ICategoryProductService _categoryProductService;
-        private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
-        public CategoryProductController(ICategoryProductService categoryProductService,IMapper mapper , ApplicationDbContext context)
+        public CategoryProductController(ICategoryProductService categoryProductService)
         {
             _categoryProductService = categoryProductService;
-            _context = context;
-            _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> Index(int pg = 1)
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context , int pg = 1 )
         {
             var _Categories = await _categoryProductService.GetAll();
             const int pageSize = 7;
@@ -54,8 +50,7 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var _category = await _categoryProductService.GetById(id);
-            var _CreateUpdateCategory = _mapper.Map<CreateUpdateCategoryDto>(_category);
-            return View(_CreateUpdateCategory);
+            return View(_category);
         }
         [HttpPost]
         public async Task<IActionResult> Edit(CreateUpdateCategoryDto dto)
@@ -71,8 +66,7 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var _category = await _categoryProductService.GetById(id);
-            var dto = _mapper.Map<CreateUpdateCategoryDto>(_category);
-            return View(dto);
+            return View(_category);
         }
         [HttpPost]
         public async Task<IActionResult> Delete(CreateUpdateCategoryDto dto) { 

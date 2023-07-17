@@ -3,7 +3,8 @@
 @using Microsoft.EntityFrameworkCore;
 
 @{
-    var lang = "en";
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var lang = currentCulture.Name; 
     var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
     var last3News = db.Products.Where(x => x.IsDelete == false && x.IsActive == true && x.Id != Model.Id).OrderByDescending(x => x.SortId).Include(x => x.Category).Include(x => x.Brand).Take(6).ToList();
 }
@@ -14,10 +15,10 @@
             <ul class="d-flex justify-content-center">
                 <li>
                     <a asp-controller="Home" asp-action="Index">
-                        Home
+                        @(lang == "ar" ? "الصفحة الرئيسية" : "Home")
                     </a>
                 </li>
-                <li class="active" style="color:crimson">Products</li>
+                <li class="active" style="color:crimson">@(lang == "ar" ? "المنتجات" : "Products")</li>
             </ul>
         </div>
     </div>

@@ -11,17 +11,13 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
 {
     public class BrandController : AdminBaseController
     {
-        private readonly ApplicationDbContext _context;
         private readonly IBrandService _BrandService;
-        private readonly IMapper _mapper;
-        public BrandController(IBrandService BrandService, IMapper mapper , ApplicationDbContext context)
+        public BrandController(IBrandService BrandService)
         {
             _BrandService = BrandService;
-            _context = context;
-            _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromServices]ApplicationDbContext _context)
         {
             var _Brands = await _BrandService.GetAll();
             ViewBag.db = _context;
@@ -53,8 +49,7 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var _Brand = await _BrandService.GetById(id);
-            var _CreateUpdateBrandDto = _mapper.Map<CreateUpdateBrandDto>(_Brand);
-            return View(_CreateUpdateBrandDto);
+            return View(_Brand);
         }
         [HttpPost]
         public async Task<IActionResult> Edit(CreateUpdateBrandDto dto)
@@ -70,8 +65,7 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var _Brand = await _BrandService.GetById(id);
-            var dto = _mapper.Map<CreateUpdateBrandDto>(_Brand);
-            return View(dto);
+            return View(_Brand);
         }
         [HttpPost]
         public async Task<IActionResult> Delete(CreateUpdateCategoryDto dto)

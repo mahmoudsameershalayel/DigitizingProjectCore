@@ -23,7 +23,13 @@ namespace DigitizingProjectCore.Services.CategoryNewsService
         }
         public async Task<List<CategoryViewModel>> GetAll()
         {
-            var _Categories = await _context.CategoryForNews.Where(x => x.IsDelete == false).OrderBy(x => x.SortId).ToListAsync();
+            var _Categories = await _context.CategoryForNews.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).ToListAsync();
+            var _CategoriesVM = _mapper.Map<List<CategoryViewModel>>(_Categories);
+            return _CategoriesVM;
+        }
+        public async Task<List<CategoryViewModel>> GetAll(string? key)
+        {
+            var _Categories = await _context.CategoryForNews.Where(x => x.IsDelete == false && x.IsActive == true && (string.IsNullOrEmpty(key) || x.NameEn.Contains(key) || x.NameAr.Contains(key))).OrderBy(x => x.SortId).ToListAsync();
             var _CategoriesVM = _mapper.Map<List<CategoryViewModel>>(_Categories);
             return _CategoriesVM;
         }

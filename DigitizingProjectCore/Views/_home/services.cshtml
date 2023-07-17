@@ -1,0 +1,34 @@
+﻿@{
+    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var lang = currentCulture.Name;
+    var latestItems = db.Services.Where(x => x.IsDelete == false && x.IsActive == true )
+        .OrderBy(x => x.SortId)
+        .Take(4);
+}
+<section style="background-color:#fff !important" class="safety-area pt-100">
+    <div class="container">
+        <div class="section-title">
+            <h2>@(lang == "ar" ? "تدريب" : "Training")</h2>
+            <span>
+                @(lang == "ar" ? "يقدم خبراؤنا الدعم الفني على مدار الساعة طوال أيام الأسبوع ويخططون له الخدمات مع استشارات المنتج والأمن." : "Our experts are providing and planning 24 / 7 technical support services with product and security consultation.")
+            </span>
+        </div>
+        <div class="row pt-100 pb-70">
+            @foreach (var item in latestItems)
+            {
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-safety overly-one">
+                        <div class="overly-two">
+                            <img src="~/Images/@item.LogoImageName" alt="@(lang=="en"?item.NameEn: item.NameAr)">
+                            <a href="/@lang/Home/Service/@item.Id">
+                                <h3>@(lang == "en" ? item.NameEn : item.NameAr)</h3>
+                            </a>
+                            <p>@(lang == "en" ? item.SummaryEn : item.SummaryAr)</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

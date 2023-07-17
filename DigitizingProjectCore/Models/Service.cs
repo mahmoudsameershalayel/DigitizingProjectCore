@@ -9,9 +9,9 @@
         public string SummaryEn { get; set; }
         public string DetailsAr { get; set; }
         public string DetailsEn { get; set; }
-        public string PDFFileName { get; set; }
-        public string DocFileName { get; set; }
-        public string LogoImageName { get; set; }
+        public string? PDFFileName { get; set; }
+        public string? DocFileName { get; set; }
+        public string? LogoImageName { get; set; }
         public int? CategoryId { get; set; }
         public CategoryForService Category { get; set; }
     }

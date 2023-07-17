@@ -79,6 +79,7 @@ namespace DigitizingProjectCore.Services.CategoryServiceService
             var _Category = await _context.CategoryForServices.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (_Category != null)
             {
+                _Category.IsActive = false;
                 _Category.IsDelete = true;
                 _context.CategoryForServices.Update(_Category);
             }

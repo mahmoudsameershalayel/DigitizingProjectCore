@@ -1,6 +1,7 @@
 ﻿@model List<Product>
 @{
-    var lang = "en";
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var lang = currentCulture.Name;
     var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
     var _Solutions = db.Solutions.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).ToList();
     var _Categories = db.CategoryForProducts.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).ToList();
@@ -10,15 +11,15 @@
 <div class="page-title-area page-title-style-two">
     <div class="container">
         <div class="page-title-content">
-            <h2>Products</h2>
+            <h2>@(lang == "ar" ? "المنتجات" : "Products")</h2>
         </div>
         <ul class="d-flex justify-content-center">
             <li>
                 <a asp-controller="Home" asp-action="Index">
-                    Home
+                    @(lang == "ar" ? "الصفحة الرئيسية" : "Home")
                 </a>
             </li>
-            <li class="active" style="color:crimson"> / Products</li>
+            <li class="active" style="color:crimson"> /  @(lang == "ar" ? "المنتجات" : "Products")</li>
         </ul>
     </div>
 </div>
@@ -31,28 +32,28 @@
                 </div>
                 <div class="col-lg-3 col-sm-3">
                     <select name="solutionId" class="form-control">
-                        <option value="null">Select Solution</option>
+                        <option value="null">@(lang == "ar" ? "اختر حل" : "Select Solution")</option>
                         @foreach (var item in _Solutions)
                         {
-                            <option value="@item.Id">@item.NameEN</option>
+                            <option value="@item.Id">@(lang == "ar" ? item.NameAr : item.NameEN)</option>
                         }
                     </select>
                 </div>
                 <div class="col-lg-3 col-sm-3">
                     <select name="categoryId" class="form-control">
-                        <option value="null">Select Product Category</option>
+                        <option value="null">@(lang == "ar" ? "اختر قسم المنتج" : "Select Product Category")</option>
                         @foreach (var item in _Categories)
                         {
-                            <option value="@item.Id">@item.NameEn</option>
+                            <option value="@item.Id">@(lang == "ar" ? item.NameAr : item.NameEn)</option>
                         }
                     </select>
                 </div>
                 <div class="col-lg-3 col-sm-3">
                     <select name="brandId" class="form-control">
-                        <option value="null">Select Brand</option>
+                        <option value="null">@(lang == "ar" ? "اختر شريك" : "Select Brand")</option>
                         @foreach (var item in _Brands)
                         {
-                            <option value="@item.Id">@item.NameEn</option>
+                            <option value="@item.Id">@(lang == "ar" ? item.NameAr : item.NameEn)</option>
                         }
                     </select>
                 </div>

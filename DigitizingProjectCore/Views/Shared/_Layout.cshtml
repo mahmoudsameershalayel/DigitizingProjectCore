@@ -1,14 +1,20 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Localization
+@using System.Globalization;
+@{
     var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
     var controller = ViewContext.RouteData.Values["controller"].ToString().ToLower();
     var action = ViewContext.RouteData.Values["action"].ToString().ToLower();
-    var lang = "en";
-    var langURL = "/" + (lang == "en" ? "ar" : "en") + "/";
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var lang = currentCulture.Name;
     var ltrValue = lang == "en" ? "ltr" : "rtl";
     var productsCategory = db.CategoryForProducts.Where(x => x.IsDelete == false && x.IsActive == true && x._Products.Count > 0).OrderBy(x => x.SortId).ToList();
     var servicesCategory = db.CategoryForServices.Where(x => x.IsDelete == false && x.IsActive == true && x._Services.Count > 0).OrderBy(x => x.SortId).ToList();
     var dcount = db.Distributors.Count(x => x.IsDelete == false && x.IsActive == true);
-
+    var supportedCultures = new[]
+    {
+        new CultureInfo("en"),
+        new CultureInfo("ar"),
+    };
 }
 <!doctype html>
 <html dir="@ltrValue" lang="@lang">
@@ -33,82 +39,8 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/ico" href="~/Content/images/Icon.ico">
-    <style type="text/css">
-        .main-nav {
-            background-color: #fff;
-        }
-
-        .navbar-area .main-nav nav .navbar-nav .nav-item a.active {
-            color: #253F8E;
-            text-decoration: underline;
-        }
-
-        .navbar-area .main-nav nav .navbar-nav .nav-item a {
-            color: #253F8E;
-        }
-
-            .navbar-area .main-nav nav .navbar-nav .nav-item a:hover {
-                text-decoration: underline;
-                color: #253F8E;
-            }
-
-        .navbar-expand-md .navbar-nav {
-            margin-right: 0px !important;
-        }
-
-        .single-footer-widget h5 {
-            color: #fff;
-            font-size: 15px;
-        }
-
-        .challenges-area::before, .our-approach-area.our-approach-area-four .col-lg-6 .row .col-lg-6:nth-child(1) .single-approach::before,
-        .our-approach-area.our-approach-area-four .col-lg-6 .row .col-lg-6:nth-child(4) .single-approach::before, .footer-area::before {
-            background-color: #253F8E;
-        }
-
-        .footer-area {
-            background-image: url(/Content/images/SecureBG2.jpg)
-        }
-
-        .challenges-area3 {
-            background-image: url(/Content/images/SecureBG1.jpg) !important;
-        }
-
-        .copy-right-area {
-            background-color: #253F8E;
-            border-top: solid 1px #253F8E;
-        }
-
-        .clients img {
-            height: 90px;
-        }
-
-        .partner-item img {
-            width: 80px !important;
-        }
-
-        .recent-post img {
-            width: 80px;
-        }
-
-        .single-approach-box .icon {
-            background-color: #fff;
-        }
-
-            .single-approach-box .icon::after {
-                border: none !important;
-            }
-
-        .top-header.top-header-four, .page-title-area {
-            background-color: #253F8E !important;
-        }
-
-        .navbar-area .main-nav nav .navbar-nav .nav-item .dropdown-menu li a {
-            color: #253F8E;
-        }
-    </style>
     <!-- Title -->
-   @* @if (lang == "en")
+    @if (lang == "en")
     {
         <style type="text/css">
             .main-nav {
@@ -268,7 +200,7 @@
                 color: #253F8E;
             }
         </style>
-    }*@
+    }
 
     <style>
         body {
@@ -362,9 +294,18 @@
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-sm-6">
                         <ul class="header-left-content">
+                            <i class="bx bx-globe"></i>
                             <li>
-                                <i class="bx bx-globe"></i>
-                                <a href="@langURL">@(lang == "ar" ? "English" : "عربي")</a>
+                                @{
+                                    if (lang.Equals("ar"))
+                                    {
+                                        <a asp-controller="Culture" asp-action="SetCulture" asp-route-culture="en">الإنجليزية</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="Culture" asp-action="SetCulture" asp-route-culture="ar">Arabic</a>
+                                    }
+                                }
                             </li>
                         </ul>
                     </div>
@@ -385,19 +326,19 @@
             <div class="main-nav">
                 <div class="container">
                     <nav class="navbar navbar-expand-md">
-                        <a class="navbar-brand" href="/@lang/">
+                        <a class="navbar-brand" href="#">
                             <img src="~/Content/images/Logo.png" alt="Logo">
                         </a>
                         <div class="collapse navbar-collapse mean-menu">
                             <ul class="navbar-nav m-auto">
                                 <li class="nav-item">
                                     <a href="/" class="nav-link @(action=="index"&&controller=="home"?"active":"")">
-                                        Home
+                                        @(lang == "ar" ? "الصفحة الرئيسية" : "Home")
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link  @(action.Contains("product")&&controller=="home"?"active":"")">
-                                        Products
+                                    <a href="/Product/Index" class="nav-link">
+                                        @(lang == "ar" ? "المنتجات" : "Products")
                                         <i class="bx bx-chevron-down"></i>
                                     </a>
                                     <ul class="dropdown-menu">
@@ -417,7 +358,7 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link   @(action.Contains("solution")&&controller=="home"?"active":"")">
+                                    <a href="/Solution/Index" class="nav-link">
                                         @(lang == "ar" ? "الحلول" : "Solutions")
                                         <i class="bx bx-chevron-down"></i>
                                     </a>
@@ -431,7 +372,7 @@
                                         @foreach (var item in productsCategory)
                                         {
                                             <li class="nav-item">
-                                                <a href="/Home/Solutions?categoryId=@item.Id" class="nav-link">
+                                                <a href="/Solution/Index?categoryId=@item.Id" class="nav-link">
                                                     @(lang == "ar" ? item.NameAr : item.NameEn)
                                                 </a>
                                             </li>
@@ -441,15 +382,14 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link  @(action.Contains("service")&&controller=="home"?"active":"")">
-                                        Services
+                                        @(lang == "ar" ? "الخدمات" : "Services")
                                         <i class="bx bx-chevron-down"></i>
                                     </a>
                                     <ul class="dropdown-menu">
                                         @foreach (var item in servicesCategory)
                                         {
-
                                             <li class="nav-item">
-                                                <a href="/Service/Index/@item.Id" class="nav-link">
+                                                <a href="/Service/Index?CategoryId=@item.Id" class="nav-link">
                                                     @(lang == "ar" ? item.NameAr : item.NameEn)
                                                 </a>
                                             </li>
@@ -459,7 +399,7 @@
 
                                 <li class="nav-item">
                                     <a href="#" class="nav-link   @(action.Contains("about")&&controller=="home"?"active":"")">
-                                        AboutUs
+                                        @(lang == "ar" ? "من نحن" : "About Us")
                                         <i class="bx bx-chevron-down"></i>
                                     </a>
 
@@ -479,7 +419,8 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="/Contact/Index" class="nav-link   @(action.Contains("contact")&&controller=="home"?"active":"")">
-                                        Contact
+                                        @(lang == "ar" ? "اتصل بنا" : "Contact Us")
+
                                     </a>
                                 </li>
                                 @if (dcount > 0)

@@ -1,0 +1,226 @@
+﻿@model DigitizingProjectCore.Models.PhotoGallery
+@{
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var lang = currentCulture.Name;
+    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+    var last3Gallery = db.PhotoGalleries.Where(x => x.IsDelete == false && x.IsActive == true && x.Id != Model.Id)
+        .OrderByDescending(x => x.Created_At).Take(3);
+    var images = Model.ImagesName.Split(',');
+}
+<div class="page-title-area page-title-style-two">
+    <div class="container">
+        <div class="page-title-content">
+            <h2>@(lang == "ar" ? Model.NameAr : Model.NameEn)</h2>
+            <ul>
+                <li>
+                    <a href="/@lang/">
+                        <i class="bx bx-home"></i>
+                        @(lang == "ar" ? "الصفحة الرئيسية" : "Home")
+                    </a>
+                </li>
+                <li>
+                    <a href="/@lang/Home/About">
+                        @(lang == "ar" ? "من نحن" : "AboutUs")
+                    </a>
+                </li>
+                <li>
+                    <a href="/@lang/Home/PhotoGallery">
+                        @(lang == "ar" ? "معرض الصور" : "PhotoGallery")
+                    </a>
+                </li>
+                <li class="active">@(lang == "ar" ? Model.NameAr : Model.NameEn)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+@section css{
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+          integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+}
+
+<div class="blog-details-area ptb-100">
+    <div class="container">
+
+        <div class="row">
+            @foreach (var img in images)
+            {
+                if(img == "")
+                {
+                    continue;
+                }
+                <div class="col-lg-3 col-md-4 col-xs-6 mb-4 thumb">
+                    <a class="thumbnail imgContainer" href="#" data-image-id="" data-toggle="modal" data-title=""
+                       data-image="/Images/@img"
+                       data-target="#image-gallery">
+                        <img class="img-thumbnail"
+                             src="/Images/@img"
+                             alt="@(lang=="ar"?Model.NameAr: Model.NameEn)">
+                    </a>
+                </div>
+            }
+        </div>
+
+
+        <div class="modal fade" id="image-gallery" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="image-gallery-title"></h4>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="image-gallery-image" class="img-responsive col-md-12" src="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary float-left" id="show-previous-image">
+                            <i class="fa fa-arrow-left"></i>
+                        </button>
+
+                        <button type="button" id="show-next-image" class="btn btn-secondary float-right">
+                            <i class="fa fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (last3Gallery.Count() > 0)
+{
+    <section class="blog-area blog-area-four mt-5 pb-70">
+        <div class="container">
+            <div class="section-title">
+                <h2>OtherPhotoGallery</h2>
+            </div>
+
+            <div class="row">
+                @foreach (var item in last3Gallery)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single-blog-posts">
+                            <a class="imgContainer" href="/@lang/Home/PhotoGalleryDetails/@item.Id">
+                                <img src="/Images/@item.MainImageName" alt="@(lang == "ar" ? item.NameAr : item.NameEn)">
+                            </a>
+
+                            <div class="single-blog-content">
+                                <h3>
+                                    <a href="/@lang/Home/PhotoGalleryDetails/@item.Id">
+                                        @(lang == "ar" ? item.NameAr : item.NameEn)
+                                    </a>
+                                </h3>
+
+                                <p> @(lang == "ar" ? item.SummaryAr : item.SummaryEn)</p>
+
+                                <ul class="admin">
+                                    <li class="float">
+                                        <i class="bx bx-calendar-alt"></i>
+                                        @item.Created_At.ToString()
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </section>
+}
+
+@section scripts{
+
+    <script>
+        let modalId = $('#image-gallery');
+
+        $(document)
+            .ready(function () {
+
+                loadGallery(true, 'a.thumbnail');
+
+                //This function disables buttons when needed
+                function disableButtons(counter_max, counter_current) {
+                    $('#show-previous-image, #show-next-image')
+                        .show();
+                    if (counter_max === counter_current) {
+                        $('#show-next-image')
+                            .hide();
+                    } else if (counter_current === 1) {
+                        $('#show-previous-image')
+                            .hide();
+                    }
+                }
+
+
+                function loadGallery(setIDs, setClickAttr) {
+                    let current_image,
+                        selector,
+                        counter = 0;
+
+                    $('#show-next-image, #show-previous-image')
+                        .click(function () {
+                            if ($(this)
+                                .attr('id') === 'show-previous-image') {
+                                current_image--;
+                            } else {
+                                current_image++;
+                            }
+
+                            selector = $('[data-image-id="' + current_image + '"]');
+                            updateGallery(selector);
+                        });
+
+                    function updateGallery(selector) {
+                        let $sel = selector;
+                        current_image = $sel.data('image-id');
+                        $('#image-gallery-title')
+                            .text($sel.data('title'));
+                        $('#image-gallery-image')
+                            .attr('src', $sel.data('image'));
+                        disableButtons(counter, $sel.data('image-id'));
+                    }
+
+                    if (setIDs == true) {
+                        $('[data-image-id]')
+                            .each(function () {
+                                counter++;
+                                $(this)
+                                    .attr('data-image-id', counter);
+                            });
+                    }
+                    $(setClickAttr)
+                        .on('click', function () {
+                            updateGallery($(this));
+                        });
+                }
+            });
+
+        // build key actions
+        $(document)
+            .keydown(function (e) {
+                switch (e.which) {
+                    case 37: // left
+                        if ((modalId.data('bs.modal') || {})._isShown && $('#show-previous-image').is(":visible")) {
+                            $('#show-previous-image')
+                                .click();
+                        }
+                        break;
+
+                    case 39: // right
+                        if ((modalId.data('bs.modal') || {})._isShown && $('#show-next-image').is(":visible")) {
+                            $('#show-next-image')
+                                .click();
+                        }
+                        break;
+
+                    default:
+                        return; // exit this handler for other keys
+                }
+                e.preventDefault(); // prevent the default action (scroll / move caret)
+            });
+
+    </script>
+}

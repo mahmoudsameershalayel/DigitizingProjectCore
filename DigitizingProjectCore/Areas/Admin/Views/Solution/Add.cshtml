@@ -34,8 +34,8 @@
     </div>
     <div class="form-group">
         <label for="product">Products</label>
-        <select class="form-control" id="product" asp-for="ProductsId" asp-items="Model._Products"></select>
-        <span asp-validation-for="ProductsId" class="text-danger"></span>
+        <select class="form-control" id="product" asp-for="ProductIds" asp-items="Model._Products"></select>
+        <span asp-validation-for="ProductIds" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label for="detailsAr">Details (Arabic)</label>
@@ -75,13 +75,9 @@
         <label for="active">Active</label>
         <input type="checkbox" id="active" checked asp-for="IsActive">
     </div>
-    <div class="d-flex">
-        <div>
-            <button type="submit" class="btn btn-primary btn-create">Create</button>
-        </div>
-        <div>
-            <input type="reset" class="btn" value="Rest">
-        </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-create">Create</button>
+        <input type="reset" class="btn" value="Rest">
     </div>
 </form>
 

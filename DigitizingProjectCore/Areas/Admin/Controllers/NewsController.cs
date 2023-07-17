@@ -11,15 +11,13 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
     {
         private readonly INewsService _newsService;
         private readonly IMapper _mapper;
-        private readonly ApplicationDbContext _context;
-        public NewsController(INewsService newsService, ApplicationDbContext context , IMapper mapper)
+        public NewsController(INewsService newsService, IMapper mapper)
         {
             _newsService = newsService;
             _mapper = mapper;
-            _context = context;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context)
         {
             var _News = await _newsService.GetAll();
             ViewBag.db = _context;

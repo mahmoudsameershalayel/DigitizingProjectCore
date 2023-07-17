@@ -62,6 +62,11 @@ namespace DigitizingProjectCore.Services.UserService
             var dto = _mapper.Map<ResetPasswordDto>(_User);
             return dto;
         }
+        public async Task<List<Link>> GetLinks()
+        {
+            var _Links = await _context.Links.ToListAsync();
+            return _Links;
+        }
         public async Task<CreateUserDto> Create(CreateUserDto dto)
         {
             ApplicationUser _User = new ApplicationUser();
@@ -123,6 +128,5 @@ namespace DigitizingProjectCore.Services.UserService
 
         }
 
-        
     }
 }

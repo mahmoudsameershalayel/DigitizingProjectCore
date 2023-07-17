@@ -1,0 +1,84 @@
+﻿@{
+    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var lang = currentCulture.Name;
+    var sliders = db.HomePageBanners.Where(x => x.IsDelete == false && x.IsActive == true)
+        .OrderBy(x => x.SortId).Take(3).ToList();
+    int index = 0;
+}
+<style>
+    .banner-content h1 {
+        font-size: 45px;
+    }
+</style>
+
+<style>
+    .carousel-caption {
+        color: #fff;
+    @(lang == "ar" ? "left" : "right"): 20%;
+        width: 40%;
+        top: 30%;
+        padding: 20px;
+        text-align: unset;
+        background-color: rgba(0,0,0,0.4);
+        bottom: unset;
+    }
+
+        .carousel-caption h5 {
+            color: #fff;
+        }
+
+    .single-challenges i {
+        color: #5c5720;
+    }
+
+    .overly-one::after {
+        background: -webkit-gradient(linear, left top, left bottom, from(#5c5720), to(transparent)) !important;
+        background: linear-gradient(top, #5c5720, transparent) !important;
+    }
+
+    .overly-one .overly-two::before {
+        background: -webkit-gradient(linear, left top, right top, from(transparent), to(#5c5720)) !important;
+        background: linear-gradient(left, transparent, #5c5720) !important;
+    }
+
+    .overly-one::before {
+        background: -webkit-gradient(linear, left top, right top, from(#5c5720), to(transparent)) !important;
+        background: linear-gradient(left, #5c5720, transparent) !important;
+    }
+
+    .overly-one .overly-two::after {
+        background: -webkit-gradient(linear, left bottom, left top, from(#5c5720), to(transparent)) !important;
+        background: linear-gradient(bottom, #5c5720, transparent) !important;
+    }
+
+    .carousel-item {
+        max-height: 645px !important;
+    }
+</style>
+<div style="margin-top: 145px" id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        @foreach (var slider in sliders)
+        {
+            <a href="@(lang=="ar"?slider.URLAr:slider.URLEn)" class="carousel-item @(index++ == 0 ? "active" : "")">
+                <img src="~/Images/@slider.BackgroundImageName" class="d-block w-100"
+                     alt="@(lang=="ar"?slider.TitleAr:slider.TitleEn)">
+                @if (slider.ShowText)
+                {
+                    <div class="carousel-caption d-none d-md-block">
+                        <h2 style="color:#fff">@(lang == "ar" ? slider.TitleAr : slider.TitleEn)</h2>
+                        <p>@(lang == "ar" ? slider.SummaryAr : slider.SummaryEn)</p>
+                    </div>
+                }
+            </a>
+        }
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">@(lang == "ar" ? "السابق" : "Previous")</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">@(lang == "ar" ? "التالي" : "Next")</span>
+    </a>
+</div>

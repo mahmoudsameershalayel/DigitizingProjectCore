@@ -1,0 +1,48 @@
+﻿@model List<HomePageViewModel>
+<div class="table-responsive">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h2>Home Page Banners</h2>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <a class="btn btn-success" onclick="showInPopup('@Url.Action("Add" , "HomePageBanner" ,null ,Context.Request.Scheme)' , 'Add Home Page Banner');">Add Home Page Banner</a>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Title (English)</th>
+                    <th>Title (Arabic)</th>
+                    <th>Active</th>
+                    <th>Created Date</th>
+                    <th width="15%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.TitleEn</td>
+                        <td>@item.TitleAr</td>
+                        @if (item.IsActive)
+                        {
+                            <td><input type="checkbox" checked></td>
+                        }
+                        else
+                        {
+                            <td><input type="checkbox"></td>
+                        }
+                        <td>@item.Created_At</td>
+                        <td>
+                            <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "HomePageBanner" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Home Page Banner');"><i class='glyphicon glyphicon-edit'></i></a>
+                            <a class="btn btn-xs btn-danger PopUp" onclick="showInPopup('@Url.Action("Delete" , "HomePageBanner" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Delete Home Page Banner');"><i class='glyphicon glyphicon-trash'></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
