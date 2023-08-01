@@ -40,6 +40,9 @@ namespace DigitizingProjectCore.Areas.Admin.Dto
         public void InjectCategories(List<CategoryForProduct> categories)
         {
             List<SelectListItem> ListOfCategories = new List<SelectListItem>();
+            ListOfCategories.Add(
+               new SelectListItem { Text = "Select Category", Value = null }
+               );
             foreach (var category in categories)
             {
                 ListOfCategories.Add(
@@ -51,6 +54,9 @@ namespace DigitizingProjectCore.Areas.Admin.Dto
         public void InjectBrands(List<Brand> Brands)
         {
             List<SelectListItem> ListOfBrands = new List<SelectListItem>();
+            ListOfBrands.Add(
+                 new SelectListItem { Text = "Select Brand", Value = null }
+            ); 
             foreach (var Brand in Brands)
             {
                 ListOfBrands.Add(

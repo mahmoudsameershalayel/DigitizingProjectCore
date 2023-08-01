@@ -7,6 +7,7 @@ namespace DigitizingProjectCore.Services.ServiceService
     public interface IServiceService
     {
         public Task<List<ServiceViewModel>> GetAll();
+        public Task<List<ServiceViewModel>> GetAll(string? key , int? categoryId , bool? isActive);
         public Task<CreateUpdateServiceDto> GetDtoById(int id);
         public Task<Service> GetServiceById(int id);
         public Task<CreateUpdateServiceDto> Create(CreateUpdateServiceDto dto);

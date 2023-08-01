@@ -31,7 +31,12 @@ namespace DigitizingProjectCore.Services.UserService
             var _UsersVM = _mapper.Map<List<UserViewModel>>(_Users);
             return _UsersVM;
         }
-
+        public async Task<List<UserViewModel>> GetAll(string? key)
+        {
+            var _Users = await _context.Users.Where(x => x.IsDeleted == false && x.IsActive == true && (string.IsNullOrEmpty(key) || x.FullName.Contains(key))).ToListAsync();
+            var _UsersVM = _mapper.Map<List<UserViewModel>>(_Users);
+            return _UsersVM;
+        }
         public async Task<CreateUserDto> GetById(string id)
         {
             var _User = await _context.Users.Where(x => x.IsDeleted == false && x.IsActive == true && x.Id == id).FirstOrDefaultAsync();
@@ -41,6 +46,15 @@ namespace DigitizingProjectCore.Services.UserService
             }
             var dto = _mapper.Map<CreateUserDto>(_User);
             return dto;
+        }
+        public async Task<ApplicationUser> GetUserById(string id)
+        {
+            var _User = await _context.Users.Where(x => x.IsDeleted == false && x.IsActive == true && x.Id == id).FirstOrDefaultAsync();
+            if (_User == null)
+            {
+                throw new Exception("Not Found!!");
+            }
+            return _User;
         }
         public async Task<UpdateUserDto> GetByIdForEdit(string id)
         {
@@ -122,11 +136,29 @@ namespace DigitizingProjectCore.Services.UserService
             var _User = await _context.Users.Where(x => x.IsDeleted == false && x.IsActive == true && x.Id == id).FirstOrDefaultAsync();
             if (_User != null)
             {
-                await _userManager.DeleteAsync(_User);
+                _User.IsActive = false;
+                _User.IsDeleted = true;
+                await _userManager.UpdateAsync(_User);
             }
             return await _context.SaveChangesAsync();
 
         }
 
+        public async Task<int> UserPremissions(string userId, int[] linkIds)
+        {
+            var _User = await _context.Users.Where(x => x.IsDeleted == false && x.IsActive == true && x.Id == userId).FirstOrDefaultAsync();
+            if (_User != null)
+            {
+                foreach (var id in linkIds)
+                {
+                    await _context.AdminLinks.AddAsync(new AdminLinks
+                    {
+                        AdminId = _User.Id,
+                        LinkId = id
+                    });
+                }
+            }
+            return await _context.SaveChangesAsync();
+        }
     }
 }

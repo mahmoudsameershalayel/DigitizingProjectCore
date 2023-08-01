@@ -9,6 +9,7 @@ namespace DigitizingProjectCore.Services.CategoryServiceService
     public interface ICategoryServiceService
     {
         public Task<List<CategoryViewModel>> GetAll();
+        public Task<List<CategoryViewModel>> GetAll(string? key);
         public Task<CreateUpdateCategoryDto> GetById(int id);
         public Task<List<CategoryViewModel>> Search(string term);
         public Task<CreateUpdateCategoryDto> Create(CreateUpdateCategoryDto dto);

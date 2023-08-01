@@ -1,0 +1,37 @@
+﻿@model DigitizingProjectCore.Areas.Admin.Dto.SaveSettingDto
+@section css{
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.css">
+}
+<form asp-controller="Setting" asp-action="Save" method="POST" onsubmit="return jQueryAjaxPost(this);">
+    <div class="form-group">
+        <label for="valueAr">Message (Arabic)</label>
+        <textarea class="form-control" id="valueAr" asp-for="value_ar"></textarea>
+        <span asp-validation-for="value_ar" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="valueEn">Message (English)</label>
+        <textarea class="form-control" id="valueEn" asp-for="value_en"></textarea>
+        <span asp-validation-for="value_en" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" id="btn-save" class="btn btn-primary" value="Save" />
+        <input type="reset" class="btn" value="Reset" />
+    </div>
+</form>
+@section scripts{
+    <script src="~/ckeditor5-build-classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor.create(document.querySelector('#valueAr'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+        ClassicEditor.create(document.querySelector('#valueEn'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+    </script>
+}

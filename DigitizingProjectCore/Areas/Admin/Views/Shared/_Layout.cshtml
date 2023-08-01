@@ -1,6 +1,7 @@
 ﻿@using DigitizingProjectCore.Areas.Admin.Controllers;
 @using DigitizingProjectCore.Data;
 @using Microsoft.AspNetCore.Mvc.Rendering
+@using System.Security.Claims;
 @{
     var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
     var action = ViewContext.RouteData.Values["action"].ToString().ToLower();
@@ -10,6 +11,8 @@
         action = "";
     }
     var currentUrl = "/Admin/" + controller + "/" + action;
+    string username = User.Identity.Name;
+    string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 <!DOCTYPE html>
 <html lang="en" dir="ltr" ng-app="myApp">
@@ -50,6 +53,8 @@
     <link href="/Content/MetronicRTL/assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css" />
     <link href="/Content/nprogress-master/nprogress.css" rel="stylesheet" />
     <link rel="shortcut icon" href="/Content/images/Icon.ico" />
+    <!-- date picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <style>
         .lblBalance {
@@ -230,15 +235,11 @@
                         <li class="dropdown dropdown-user">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                 @*<img alt="" class="img-circle" src="/Content/MetronicRTL/assets/layouts/layout/img/avatar3_small.jpg" />*@
-                                <span class="username username-hide-on-mobile"> @ViewBag.adminName </span>
+                                <span class="username username-hide-on-mobile"> @username </span>
                                 <i class="fa fa-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-default">
-                                <li>
-                                    <a title="Update Password" class="PopUp" href="/AdminPanel/Home/ChangePassword">
-                                        <i class="icon-user"></i> Change Password
-                                    </a>
-                                </li>
+                                <li><a class='PopUp' onclick="showInPopup('@Url.Action("ResetPassword" , "User" ,new{id = userId},Context.Request.Scheme)' , 'Reset Password');"><i class='fa fa-key'></i> Reset Password</a>  </li>
                                 <li title="Logout">
                                     <form method="POST" asp-area="" asp-controller="Auth" asp-action="Logout">
                                         <i class="icon-key"></i>
@@ -271,36 +272,52 @@
                             var links = db.Links.Where(x => x.ParentId == 0 && x.ShowInMenu == true).OrderBy(x => x.OrderId).ToList();
                             foreach (var link in links)
                             {
-                                var sublinks = db.Links.Where(x => x.ParentId == link.Id && x.ShowInMenu == true).OrderBy(x => x.OrderId).ToList();
-                                var isCurrent = link.URL.ToLower() == currentUrl;
-                                <li class="nav-item @(i++ == 0 ? "start" : "") ">
-                                    <a href="@link.URL" class="nav-link nav-toggle">
-                                        <i class="@link.Icon"></i>
-                                        <span class="title">@link.Title</span>
+                                var haveAdminThisLink = db.AdminLinks.Count(x => x.AdminId == userId && x.LinkId == link.Id) > 0;
+                                if (haveAdminThisLink)
+                                {
+                                    var sublinks = db.Links.Where(x => x.ParentId == link.Id && x.ShowInMenu == true).OrderBy(x => x.OrderId).ToList();
+                                    var isCurrent = link.URL.ToLower() == currentUrl;
+                                    <li class="nav-item @(i++ == 0 ? "start" : "") ">
+                                        <a href="@link.URL" class="nav-link nav-toggle">
+                                            <i class="@link.Icon"></i>
+                                            <span class="title">@link.Title</span>
+                                            @if (sublinks.Count > 0)
+                                            {
+                                                <span class="arrow"></span>
+                                            }
+                                        </a>
                                         @if (sublinks.Count > 0)
                                         {
-                                            <span class="arrow"></span>
+                                            var j = 0;
+                                            <ul class="sub-menu">
+                                                @foreach (var sublink in sublinks)
+                                                {
+                                                    isCurrent = sublink.URL.ToLower() == currentUrl;
+                                                    <li class="nav-item @(j++ == 0 ? "start" : "") @(isCurrent ? "active" : "")">
+                                                        @if (sublink.Title.Equals("Add New User"))
+                                                        {
+                                                            <a class="nav-link" onclick="showInPopup('@Url.Action("Add" , "User" ,null ,Context.Request.Scheme)' , 'Add New User');">
+                                                                <i class="@sublink.Icon"></i>
+                                                                <span class="title">@sublink.Title</span>
+                                                            </a>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <a title="@sublink.Title" href="@sublink.URL" class="nav-link">
+                                                                <i class="@sublink.Icon"></i>
+                                                                <span class="title">@sublink.Title</span>
+                                                            </a>
+                                                        }
+
+                                                    </li>
+                                                }
+
+                                            </ul>
                                         }
-                                    </a>
-                                    @if (sublinks.Count > 0)
-                                    {
-                                        var j = 0;
-                                        <ul class="sub-menu">
-                                            @foreach (var sublink in sublinks)
-                                            {
-                                                isCurrent = sublink.URL.ToLower() == currentUrl;
-                                                <li class="nav-item @(j++ == 0 ? "start" : "") @(isCurrent ? "active" : "")">
-                                                    <a title="@sublink.Title" href="@sublink.URL" class="nav-link">
-                                                        <i class="@sublink.Icon"></i>
-                                                        <span class="title">@sublink.Title</span>
-                                                    </a>
-                                                </li>
-                                            }
-                                        </ul>
-                                    }
-                                </li>
+                                    </li>
+                                }
                             }
-                        }
                         }
 
                     </ul>
@@ -336,7 +353,6 @@
                 @DateTime.Now.Year &copy;
                 All rights reserved
                 <a href="http://visionplus.ps" style="color: #337ab7" target="_blank">Vision Plus</a>
-
             </div>
             <div class="scroll-to-top">
                 <i class="icon-arrow-up"></i>
@@ -377,6 +393,9 @@
 
     <script src="~/Content/MetronicRTL/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
     <script src="~/Scripts/jquery.form.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="~/js/bootstrap-datepicker.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="~/js/site.js"></script>
 
     <div class="modal" tabindex="-1" role="dialog" id="form-modal">

@@ -1,43 +1,54 @@
-﻿@model DigitizingProjectCore.Areas.Admin.Dto.CreateUpdatePremissionDto
+﻿@model DigitizingProjectCore.Models.ApplicationUser
+
 @{
+    var db = ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
     Layout = null;
 }
+
+
 <form asp-controller="User" asp-action="UserPremissions" method="POST" onsubmit="return jQueryAjaxPost(this);">
-    @{
-        var i = 0;
-        var links = Model.Links.Where(x => x.ParentId == 0 && x.ShowInMenu == true).OrderBy(x => x.OrderId).ToList();
-        foreach (var link in links)
-        {
-            var sublinks = Model.Links.Where(x => x.ParentId == link.Id && x.ShowInMenu == true).OrderBy(x => x.OrderId).ToList();
-            <li class="nav-item @(i++ == 0 ? "start" : "")">
-                <a href="@link.URL" class="nav-link nav-toggle">
-                    <i class="@link.Icon"></i>
-                    <span class="title">@link.Title</span>
+    <input type="hidden" value="@Model.Id" name="userId"/>
+    <ul class="list-unstyled permissions">
+        @{
+            int i = 0;
+            var links = db.Links.Where(x => x.ParentId == 0).OrderBy(x => x.OrderId).ToList();
+            foreach (var link in links)
+            {
+                i++;
+                var sublinks = db.Links.Where(x => x.ParentId == link.Id).OrderBy(x => x.OrderId).ToList();
+                <li>
+                    <label>
+                        <input name="linkIds[]" type="checkbox" value="@link.Id" />
+                        <b>@link.Title</b>
+                    </label>
                     @if (sublinks.Count > 0)
                     {
-                        <span class="arrow"></span>
-                    }
-                </a>
-                @if (sublinks.Count > 0)
-                {
-                    var j = 0;
-                    <ul class="sub-menu">
-                        @foreach (var sublink in sublinks)
-                        {
-                            <li class="nav-item @(j++ == 0 ? "start" : "")">
-                                <div class="form-grpup">
+                        <ul class="list-unstyled">
+                            @foreach (var sublink in sublinks)
+                            {
+                                <li>
                                     <label>
-                                        <i class="@sublink.Icon"></i>
-                                        <span class="title">@sublink.Title</span>
+                                        <input name="linkIds[]" type="checkbox" value="@sublink.Id" />
+                                        @sublink.Title
                                     </label>
-                                    <input type="checkbox" value="@sublink.Id" name="LinkIds">
-                                </div>
-                            </li>
-                        }
-                    </ul>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </li>
+                if (i % 2 == 0)
+                {
+                    <li class="clear"></li>
                 }
-            </li>
+            }
         }
-
-    }
+       
+    </ul>
+    <div class="form-group">
+        <input type="submit" value="حفظ الصلاحيات" class="btn btn-primary" />
+    </div>
 </form>
+
+
+
+

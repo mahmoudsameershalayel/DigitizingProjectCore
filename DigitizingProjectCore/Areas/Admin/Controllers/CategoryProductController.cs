@@ -16,9 +16,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _categoryProductService = categoryProductService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context , int pg = 1 )
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context, string? key, int pg = 1)
         {
-            var _Categories = await _categoryProductService.GetAll();
+            var _Categories = await _categoryProductService.GetAll(key);
             const int pageSize = 7;
             if (pg < 1)
             {
@@ -34,12 +34,15 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add() {
-            return View();  
+        public IActionResult Add()
+        {
+            return View();
         }
         [HttpPost]
-        public async Task<JsonResult> Add(CreateUpdateCategoryDto dto) {
-            if (ModelState.IsValid) { 
+        public async Task<IActionResult> Add(CreateUpdateCategoryDto dto)
+        {
+            if (ModelState.IsValid)
+            {
                 await _categoryProductService.Create(dto);
                 return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _categoryProductService.GetAll()) });
             }
@@ -69,9 +72,10 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             return View(_category);
         }
         [HttpPost]
-        public async Task<IActionResult> Delete(CreateUpdateCategoryDto dto) { 
+        public async Task<IActionResult> Delete(CreateUpdateCategoryDto dto)
+        {
             await _categoryProductService.Delete(dto.Id);
             return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", await _categoryProductService.GetAll()) });
         }
-    } 
+    }
 }

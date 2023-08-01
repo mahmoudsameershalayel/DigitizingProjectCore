@@ -29,11 +29,16 @@ namespace DigitizingProjectCore.Services.PhotoGalleryService
         }
         public async Task<List<PhotoGalleryViewModel>> GetAll()
         {
-            var _Photos = await _context.PhotoGalleries.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).ToListAsync();
+            var _Photos = await _context.PhotoGalleries.Where(x => x.IsDelete == false).OrderBy(x => x.SortId).ToListAsync();
             var _PhotosVM = _mapper.Map<List<PhotoGalleryViewModel>>(_Photos);
             return _PhotosVM;
         }
-
+        public async Task<List<PhotoGalleryViewModel>> GetAll(string? key , bool? isActive)
+        {
+            var _Photos = await _context.PhotoGalleries.Where(x => x.IsDelete == false && (string.IsNullOrEmpty(key) || x.NameEn.Contains(key) || x.NameAr.Contains(key)) && (isActive == null || x.IsActive == isActive)).OrderBy(x => x.SortId).ToListAsync();
+            var _PhotosVM = _mapper.Map<List<PhotoGalleryViewModel>>(_Photos);
+            return _PhotosVM;
+        }
         public async Task<CreateUpdatePhotoGalleryDto> GetById(int id)
         {
             var _Photo = await _context.PhotoGalleries.Where(x => x.Id == id).FirstOrDefaultAsync();
@@ -76,7 +81,6 @@ namespace DigitizingProjectCore.Services.PhotoGalleryService
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _Photo.Created_By = _UserId;
             _Photo.Created_At = DateTime.Now;
-            _Photo.IsActive = true;
             _Photo.IsDelete = false;
             await _context.PhotoGalleries.AddAsync(_Photo);
             await _context.SaveChangesAsync();
@@ -135,5 +139,17 @@ namespace DigitizingProjectCore.Services.PhotoGalleryService
             return await _context.SaveChangesAsync();
         }
 
+        public async Task<int> DeleteImage(int id, string imageNames)
+        {
+            var _PhotoGallery =await _context.PhotoGalleries.Where(x => x.Id == id).FirstOrDefaultAsync();
+            if (_PhotoGallery != null) {
+                var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
+                _PhotoGallery.ImagesName = imageNames;
+                _PhotoGallery.Updated_At = DateTime.Now;
+                _PhotoGallery.Updated_By = _UserId;
+                _context.PhotoGalleries.Update(_PhotoGallery);
+            }
+            return await _context.SaveChangesAsync();
+        }
     }
 }

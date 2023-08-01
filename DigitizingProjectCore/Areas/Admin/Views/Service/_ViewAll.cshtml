@@ -36,8 +36,8 @@
                         {
                             <td><input type="checkbox"></td>
                         }
-                        <td>@item.Category.NameEn</td>
-                        <td>@item.Created_At</td>
+                        <td>@((item.Category.IsActive == true && item.Category.IsDelete == false) ? @item.Category.NameEn : "UNKNOWN")</td>
+                        <td>@item.Created_At.ToString("dddd, dd MMMM yyyy")</td>
                         <td>
                             <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
                             <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "Service" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Service');"><i class='glyphicon glyphicon-edit'></i></a>

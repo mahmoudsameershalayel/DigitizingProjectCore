@@ -7,6 +7,7 @@ namespace DigitizingProjectCore.Services.SolutionService
     public interface ISolutionService
     {
         public Task<List<SolutionViewModel>> GetAll();
+        public Task<List<SolutionViewModel>> GetAll(string? key);
         public Task<Solution> GetById(int id);
         public Task<List<Product>> GetAllProducts();
         public Task<CreateUpdateSolutionDto> Create(CreateUpdateSolutionDto dto);

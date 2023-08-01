@@ -7,6 +7,7 @@ namespace DigitizingProjectCore.Services.DistributorService
     public interface IDistributorService
     {
         public Task<List<DistributorViewModel>> GetAll();
+        public Task<List<DistributorViewModel>> GetAll(string? key , int? cityId , bool? isActive);
         public Task<Distributor> GetById(int id);
         public Task<CreateUpdateDistributorDto> Create(CreateUpdateDistributorDto dto);
         public Task<CreateUpdateDistributorDto> Update(CreateUpdateDistributorDto dto);

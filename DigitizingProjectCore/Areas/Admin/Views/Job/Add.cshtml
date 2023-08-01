@@ -1,0 +1,72 @@
+﻿@model DigitizingProjectCore.Areas.Admin.Dto.CreateUpdateJobDto
+@section css{
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+    </style>
+}
+<form asp-controller="Job" asp-action="Add" method="POST" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="titleEn">Job Title (English)</label>
+            <input type="text" class="form-control" id="titleEn" asp-for="JobTitleEn">
+            <span asp-validation-for="JobTitleEn" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="titleAr">Job Title (Arabic)</label>
+            <input type="text" class="form-control" id="titleAr" asp-for="JobTitleAr">
+            <span asp-validation-for="JobTitleAr" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="fromDate">From Date</label>
+            <input type="date" class="form-control" id="fromDate" asp-for="FromDate">
+            <span asp-validation-for="FromDate" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="toDate">To Date</label>
+            <input type="date" class="form-control" id="toDate" asp-for="ToDate">
+            <span asp-validation-for="ToDate" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="detailsAr">Details (Arabic)</label>
+        <textarea type="text" class="form-control" id="detailsAr" asp-for="DetailsAr"></textarea>
+        <span asp-validation-for="DetailsAr" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="detailsEn">Details (English)</label>
+        <textarea type="text" class="form-control" id="detailsEn" asp-for="DetailsEn"></textarea>
+        <span asp-validation-for="DetailsEn" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="active">Active</label>
+        <input type="checkbox" id="active" checked asp-for="IsActive">
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-create">Create</button>
+        <input type="reset" class="btn" value="Rest">
+    </div>
+</form>
+
+
+@section scripts{
+    <script src="~/ckeditor5-build-classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor.create(document.querySelector('#detailsAr'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+        ClassicEditor.create(document.querySelector('#detailsEn'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+    </script>
+}

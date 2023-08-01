@@ -1,0 +1,99 @@
+﻿@using DigitizingProjectCore.Services.LocalizationService;
+@model List<DigitizingProjectCore.Models.Distributor>
+@{
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var lang = currentCulture.Name;
+}
+@inject LocalizationService _localization
+
+<div class="page-title-area page-title-style-two">
+    <div class="container">
+        <div class="page-title-content">
+            <h2>
+                @_localization.Getkey("Distributors")
+            </h2>
+            <ul>
+                <li>
+                    <a href="/@lang/">
+                        <i class="bx bx-home"></i>
+                        @_localization.Getkey("Home")
+                    </a>
+                </li>
+                <li class="active">
+                    @_localization.Getkey("Distributors")
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<style>
+    th, td {
+        text-align: @(lang == "ar" ? "right" : "left") !important;
+    }
+</style>
+<section class="shopping-cart-area ptb-100">
+    <div class="container">
+        <form class="cart-controller">
+            <div class="cart-table table-responsive">
+                @if (Model.Count() > 0)
+                {
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    @_localization.Getkey("Name")
+                                </th>
+                                <th scope="col">
+                                    @_localization.Getkey("City")
+                                </th>
+                                <th scope="col">
+                                    @_localization.Getkey("Address")
+                                </th>
+                                <th scope="col">
+                                    @_localization.Getkey("Phone")
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var m in Model)
+                            {
+
+                                <tr>
+
+                                    <td class="product-name">
+                                        @(lang == "ar" ? m.NameAr : m.NameEn)
+                                    </td>
+
+                                    <td class="product-price">
+                                        @(lang == "ar" ? m.City.NameAr : m.City.NameEn)
+                                    </td>
+
+                                    <td class="product-quantity">
+                                        @(lang == "ar" ? m.AddressAr : m.AddressEn)
+                                    </td>
+
+                                    <td dir="ltr" class="product-subtotal">
+                                        <a href="tel:@m.Phone">@m.Phone</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="col-sm-12">
+                        <div class="alert alert-info">
+                            @_localization.Getkey("ThereIsNoItemsToShow")
+                        </div>
+                    </div>
+                }
+            </div>
+
+
+        </form>
+
+
+    </div>
+</section>

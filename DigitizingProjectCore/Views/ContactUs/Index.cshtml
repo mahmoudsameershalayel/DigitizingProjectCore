@@ -1,0 +1,204 @@
+﻿@model DigitizingProjectCore.Areas.Admin.Dto.CreateContactUsDto
+@using DigitizingProjectCore.Resources;
+@using DigitizingProjectCore.Services.LocalizationService;
+@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.Extensions.Localization
+@{
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var lang = currentCulture.Name;
+    var db = ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+    var setting = db.Configurations.FirstOrDefault();
+    if (setting == null)
+    {
+        setting = new DigitizingProjectCore.Models.Configuration();
+    }
+}
+@inject LocalizationService _localization
+
+<div class="page-title-area page-title-style-two">
+    <div class="container">
+        <div class="page-title-content">
+            <h2>Contact</h2>
+            <ul>
+                <li>
+                    <a href="#">
+                        <i class="bx bx-home"></i>
+                        @_localization.Getkey("Home")
+                    </a>
+                </li>
+                <li class="active">
+                    @_localization.Getkey("ContactUs")
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- End Page Title Area -->
+<!-- Start Contact Area -->
+<section class="main-contact-area ptb-100">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="contact-wrap">
+                    <div class="contact-form">
+                        <div class="contact-title">
+                            <h2>WriteUs</h2>
+                            <span class="hidden" id="didYouFill">DidYouFill</span>
+                            <span class="hidden" id="MessageSubmitted">MessageSubmitted</span>
+                            <span class="hidden" id="HomeClass"></span>
+                        </div>
+
+                        <form method="POST" asp-action="Send" asp-controller="ContactUs">
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>
+                                            @_localization.Getkey("Name")
+                                        </label>
+                                        <input type="text" id="name" class="form-control" asp-for="Name">
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>
+                                            @_localization.Getkey("EmailAddress")
+                                        </label>
+                                        <input type="email" id="email" class="form-control" asp-for="Email">
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>
+                                            @_localization.Getkey("subject")
+                                        </label>
+                                        <input type="text" id="msg_subject" class="form-control" asp-for="Subject">
+                                        <span asp-validation-for="Subject" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>
+                                            @_localization.Getkey("Message")
+                                        </label>
+                                        <textarea class="form-control" id="message" cols="30" rows="10" asp-for="Message"></textarea>
+                                        <span asp-validation-for="Message" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12">
+                                    <button type="submit" class="default-btn btn-two">
+                                        <span>
+                                            @_localization.Getkey("SendMessage")
+                                        </span>
+                                    </button>
+                                    <div id="msgSubmit" class="h3 text-center hidden"></div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="contact-info">
+                    <h3>
+                        @_localization.Getkey("OurContactDetails")
+                    </h3>
+                    <p>@(lang == "en" ? setting.ContactUsSloganEn : setting.ContactUsSloganAr)</p>
+
+                    <ul class="address">
+                        <li class="location">
+                            <i class="bx bxs-location-plus"></i>
+                            <span>
+                                @_localization.Getkey("Address")
+                            </span>
+                            @(lang == "en" ? setting.AddressEn : setting.AddressAr)
+                        </li>
+                        @if (!string.IsNullOrEmpty(setting.Phone) || !string.IsNullOrEmpty(setting.Phone2))
+                        {
+                            <li>
+                                <i class="bx bxs-phone-call"></i>
+                                <span>
+                                    @_localization.Getkey("Phone")
+                                </span>
+                                @if (!string.IsNullOrEmpty(setting.Phone))
+                                {
+                                    <a dir="ltr" href="tel:@setting.Phone">@setting.Phone</a>
+                                }
+                                @if (!string.IsNullOrEmpty(setting.Phone2))
+                                {
+                                    <a dir="ltr" href="tel:@setting.Phone2">@setting.Phone2</a>
+                                }
+                            </li>
+                        }
+                        @if (!string.IsNullOrEmpty(setting.Email))
+                        {
+                            <li>
+                                <i class="bx bxs-envelope"></i>
+                                <span>
+                                    @_localization.Getkey("Email")
+                                </span>
+                                <a href="mailto:@setting.Email">@setting.Email</a>
+                            </li>
+                        }
+                    </ul>
+
+                    <div class="sidebar-follow-us">
+                        <h3>
+                            @_localization.Getkey("Followus")
+                        </h3>
+
+                        <ul class="social-wrap">
+
+                            @if (!string.IsNullOrEmpty(setting.FaceBook))
+                            {
+                                <li>
+                                    <a target="_blank" href="@setting.FaceBook">
+                                        <i class="bx bxl-facebook"></i>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (!string.IsNullOrEmpty(setting.Instegram))
+                            {
+                                <li>
+                                    <a target="_blank" href="@setting.Instegram">
+                                        <i class="bx bxl-instagram"></i>
+                                    </a>
+                                </li>
+
+                            }
+
+                            @if (!string.IsNullOrEmpty(setting.LinkedIn))
+                            {
+                                <li>
+                                    <a target="_blank" href="@setting.LinkedIn">
+                                        <i class="bx bxl-linkedin-square"></i>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (!string.IsNullOrEmpty(setting.Twitter))
+                            {
+                                <li>
+                                    <a target="_blank" href="@setting.Twitter">
+                                        <i class="bx bxl-twitter"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="map-area">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d96573.31103674119!2d-73.91097366523668!3d40.85176866829554!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c28b553a697cb1%3A0x556e43a78ff15c77!2sThe%20Bronx%2C%20NY%2C%20USA!5e0!3m2!1sen!2sbd!4v1600202608808!5m2!1sen!2sbd"></iframe>
+</div>

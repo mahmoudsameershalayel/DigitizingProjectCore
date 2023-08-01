@@ -7,6 +7,7 @@ namespace DigitizingProjectCore.Services.CityService
     public interface ICityService
     {
         public Task<List<CityViewModel>> GetAll();
+        public Task<List<CityViewModel>> GetAll(string? key);
         public Task<CityViewModel> GetById(int id);
         public Task<CityViewModel> Create(CityViewModel vm);
         public Task<CityViewModel> Update(CityViewModel vm);

@@ -24,11 +24,16 @@ namespace DigitizingProjectCore.Services.CityService
 
         public async Task<List<CityViewModel>> GetAll()
         {
-            var _Cities = await _context.Cities.ToListAsync();
+            var _Cities = await _context.Cities.Where(x => x.IsDelete == false).ToListAsync();
             var _CitiesVM = _mapper.Map<List<CityViewModel>>(_Cities);
             return _CitiesVM;
         }
+        public async Task<List<CityViewModel>> GetAll(string? key) {
 
+            var _Cities = await _context.Cities.Where(x => x.IsDelete == false && (string.IsNullOrEmpty(key) || x.NameEn.Contains(key) || x.NameAr.Contains(key))).ToListAsync();
+            var _CitiesVM = _mapper.Map<List<CityViewModel>>(_Cities);
+            return _CitiesVM;
+        }
         public async Task<CityViewModel> GetById(int id)
         {
             var _City = await _context.Cities.Where(x => x.Id == id).FirstOrDefaultAsync();
@@ -41,7 +46,6 @@ namespace DigitizingProjectCore.Services.CityService
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _City.Created_By = _UserId;
             _City.Created_At = DateTime.Now;
-            _City.IsActive = true;
             _City.IsDelete = false;
             await _context.Cities.AddAsync(_City);
             await _context.SaveChangesAsync();

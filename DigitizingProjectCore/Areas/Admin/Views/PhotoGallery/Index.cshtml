@@ -5,15 +5,23 @@
             overflow-x: hidden;
         }
     </style>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 }
 <div class="panel panel-default">
     <div class="panel-heading">
-        <form class="form-inline" id="search-form" asp-controller="PhotoGallery" asp-action="search" method="POST" onsubmit="return search(this);">
+        <form class="form-inline" asp-controller="PhotoGallery" asp-action="Index" method="GET">
             <div class="form-group">
-                <input type="text" placeholder="search ..." name="term" class="form-control" />
+                <input type="text" placeholder="search ..." name="key" class="form-control" />
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Search" />
+                <select name="isActive" class="form-control">
+                    <option value="null">Is Active</option>
+                    <option value="true">Active</option>
+                    <option value="false">Not Active</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
             </div>
         </form>
     </div>
@@ -40,5 +48,9 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
+    <script type="text/javascript">
+        $("#btnDeleteImage").click(function () {
+            alert("The paragraph was clicked.");
+        });
+    </script>
 }

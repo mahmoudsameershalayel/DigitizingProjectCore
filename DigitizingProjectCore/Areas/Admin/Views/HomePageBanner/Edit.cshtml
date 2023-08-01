@@ -86,11 +86,25 @@
     </div>
     <div class="form-group">
         <label for="showText">Show Text on Slider</label>
-        <input type="checkbox" id="showText" checked asp-for="ShowText">
+        @if (Model.ShowText)
+        {
+            <input type="checkbox" id="active" checked asp-for="ShowText">
+        }
+        else
+        {
+            <input type="checkbox" id="active" asp-for="ShowText">
+        }
     </div>
     <div class="form-group">
         <label for="active">Active</label>
-        <input type="checkbox" id="active" checked asp-for="IsActive">
+        @if (Model.IsActive)
+        {
+            <input type="checkbox" id="active" checked asp-for="IsActive">
+        }
+        else
+        {
+            <input type="checkbox" id="active" asp-for="IsActive">
+        }
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-warning">Edit</button>

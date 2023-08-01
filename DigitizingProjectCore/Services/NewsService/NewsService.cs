@@ -30,7 +30,12 @@ namespace DigitizingProjectCore.Services.NewsService
             var _NewsVM = _mapper.Map<List<NewsViewModel>>(_News);
             return _NewsVM;
         }
-
+        public async Task<List<NewsViewModel>> GetAll(string? key, int? categoryId, bool? isActive)
+        {
+            var _News = await _context.News.Where(x => x.IsDelete == false && (string.IsNullOrEmpty(key) || x.TitleEn.Contains(key) || x.TitleAr.Contains(key)) && (categoryId == null || x.Category.Id == categoryId) && (isActive == null || x.IsActive == isActive)).OrderBy(x => x.SortId).Include(c => c.Category).ToListAsync();
+            var _NewsVM = _mapper.Map<List<NewsViewModel>>(_News);
+            return _NewsVM;
+        }
         public async Task<CreateUpdateNewsDto> GetDtoById(int id)
         {
             var _News = await _context.News.Where(x => x.Id == id).Include(c => c.Category).FirstOrDefaultAsync();
@@ -51,7 +56,7 @@ namespace DigitizingProjectCore.Services.NewsService
             }
             return _News;
         }
-        
+
         public async Task<CreateUpdateNewsDto> Create(CreateUpdateNewsDto dto)
         {
             var _News = _mapper.Map<News>(dto);
@@ -66,7 +71,6 @@ namespace DigitizingProjectCore.Services.NewsService
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _News.Created_By = _UserId;
             _News.Created_At = DateTime.Now;
-            _News.IsActive = true;
             _News.IsDelete = false;
             await _context.News.AddAsync(_News);
             await _context.SaveChangesAsync();
@@ -109,7 +113,7 @@ namespace DigitizingProjectCore.Services.NewsService
             return await _context.SaveChangesAsync();
         }
 
-        
+
         public async Task<CreateUpdateNewsDto> InjectCategories()
         {
             var _Categories = await _context.CategoryForNews.Where(x => x.IsDelete == false).ToListAsync();
@@ -118,6 +122,6 @@ namespace DigitizingProjectCore.Services.NewsService
             return dto;
         }
 
-        
+
     }
 }

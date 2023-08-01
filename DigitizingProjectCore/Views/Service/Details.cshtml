@@ -1,0 +1,124 @@
+﻿@model DigitizingProjectCore.Models.Service
+@{
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var lang = currentCulture.Name;
+    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+    var otherItems = db.Services.Where(x => x.IsDelete == false && x.IsActive == true
+        && x.CategoryId == Model.CategoryId && x.Id != Model.Id)
+        .OrderByDescending(x => x.SortId).Take(6);
+    var categores = db.CategoryForServices.Where(x => x.IsDelete == false && x.IsActive == true && x._Services.Count > 0)
+        .OrderBy(x => x.SortId)
+        .ToList();
+}
+<div class="page-title-area page-title-style-two">
+    <div class="container">
+        <div class="page-title-content">
+            <h2>@(lang == "en" ? Model.NameEn : Model.NameAr)</h2>
+            <ul>
+                <li>
+                    <a href="/@lang/">
+                        <i class="bx bx-home"></i>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="/Service/Index?CategoryId=@Model.CategoryId">
+                        @(lang == "ar" ? Model.Category.NameAr : Model.Category.NameEn)
+                    </a>
+                </li>
+                <li class="active">@(lang == "en" ? Model.NameEn : Model.NameAr)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- End Page Title Area -->
+<!-- Start Services Details Area -->
+<section class="services-details-area pt-100 pb-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="services-details-content">
+                    <div class="services-content">
+                        @*<h2>@(lang=="en"?Model.NameEn:Model.NameAr)</h2>*@
+                        @*<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat dolor in hendrerit in vulputate feugiat.</p>*@
+
+                        <div style="margin-top:0px" class="services-details-one">
+                            <img src="/Images/@Model.LogoImageName" alt="@(lang=="en"?Model.NameEn:Model.NameAr)">
+                        </div>
+                    </div>
+
+                    <div class="services-content">
+                        @Html.Raw((lang == "en" ? Model.DetailsEn : Model.DetailsAr).Replace("\n","<br>"))
+                    </div>
+
+                    <div class="related-post">
+                        <div class="title">
+                            <h2>OtherServices</h2>
+                        </div>
+
+                        <div class="row">
+                            @foreach (var item in otherItems)
+                            {
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="single-services">
+                                        <div class="services-img">
+                                            <a class="imgContainer2" href="/Service/Details?id=@item.Id">
+                                                <img src="/Images/@item.LogoImageName" />
+                                            </a>
+                                        </div>
+
+                                        <div class="services-content">
+                                            <h3 class="f15"><a href="/Service/Details?id=@item.Id">@(lang == "en" ? item.NameEn : item.NameAr)</a></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="services-sidebar">
+                    <div class="services-category">
+                        <ul>
+                            @foreach (var c in categores)
+                            {
+                                <li>
+                                    <a href="/Service/Index?CategoryId=@c.Id">
+                                        @(lang == "en" ? c.NameEn : c.NameAr)
+                                        <i class="bx bx-chevron-right"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                    @*<div class="services-pdf">
+                    <ul>
+                    <li>
+                    <a href="#">
+                    <i class="bx bxs-file-pdf"></i>
+                    PDF Download
+                    </a>
+                    </li>
+                    <li>
+                    <a href="#">
+                    <i class="bx bxs-file-doc"></i>
+                    DOC Download
+                    </a>
+                    </li>
+                    </ul>
+                    </div>*@
+
+                    @*<div class="services-contact mb-30">
+                    <h3>@Resources.Pages.ContactUsToDoYourNewProjects</h3>
+                    <a href="/@lang/Home/Contact" class="default-btn">
+                    <span>@Resources.Pages.ContactUs</span>
+                    </a>
+                    </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

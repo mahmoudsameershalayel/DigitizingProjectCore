@@ -35,7 +35,7 @@
                         {
                             <td><input type="checkbox"></td>
                         }
-                        <td>@item.Created_At</td>
+                        <td>@item.Created_At.ToString("dddd, dd MMMM yyyy")</td>
                         <td>
                             <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "HomePageBanner" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Home Page Banner');"><i class='glyphicon glyphicon-edit'></i></a>
                             <a class="btn btn-xs btn-danger PopUp" onclick="showInPopup('@Url.Action("Delete" , "HomePageBanner" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Delete Home Page Banner');"><i class='glyphicon glyphicon-trash'></i></a>

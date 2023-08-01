@@ -19,9 +19,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context)
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context , string? key)
         {
-            var _Solutions = await _solutionService.GetAll();
+            var _Solutions = await _solutionService.GetAll(key);
             ViewBag.db = _context;
             return View(_Solutions);
         }
@@ -47,22 +47,25 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit([FromServices] ApplicationDbContext _context , int id)
         {
             var _Solution = await _solutionService.GetById(id);
             var _AddSolutionWithCBP = await _solutionService.InjectCategoriesAndBrandsAndProducts();
             _AddSolutionWithCBP = _mapper.Map(_Solution, _AddSolutionWithCBP);
+            ViewBag.db = _context;
             return View(_AddSolutionWithCBP);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(CreateUpdateSolutionDto dto)
+        public async Task<IActionResult> Edit([FromServices] ApplicationDbContext _context , CreateUpdateSolutionDto dto)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                await _solutionService.Update(dto);
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _solutionService.GetAll()) });
+                ViewBag.db = _context;
+                return View(dto);
             }
-            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", dto) });
+            await _solutionService.Update(dto);
+            return RedirectToAction("Index");
+            
         }
         [HttpGet]
         public IActionResult Delete(int id)

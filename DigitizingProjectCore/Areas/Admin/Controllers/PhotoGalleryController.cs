@@ -2,6 +2,7 @@
 using DigitizingProjectCore.Data;
 using DigitizingProjectCore.Services.CategoryServiceService;
 using DigitizingProjectCore.Services.PhotoGalleryService;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DigitizingProjectCore.Areas.Admin.Controllers
@@ -15,9 +16,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _photoGalleryService = photoGalleryService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context)
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context , string? key , bool? isActive )
         {
-            var _Categories = await _photoGalleryService.GetAll();
+            var _Categories = await _photoGalleryService.GetAll(key , isActive);
             ViewBag.db = _context;
             return View(_Categories);
         }
@@ -61,13 +62,22 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var _category = await _photoGalleryService.GetById(id);
-            return View(_category);
+            var _PhotoGallery = await _photoGalleryService.GetById(id);
+            return View(_PhotoGallery);
         }
         [HttpPost]
         public async Task<IActionResult> Delete(CreateUpdatePhotoGalleryDto dto)
         {
             await _photoGalleryService.Delete(dto.Id);
+            return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", await _photoGalleryService.GetAll()) });
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteImage(int id, string imageNames) {
+            var _PhotoGallery = await _photoGalleryService.GetById(id);
+            int result = await _photoGalleryService.DeleteImage(id, imageNames);
+            if (result != 0) {
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", _PhotoGallery) });
+            }
             return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", await _photoGalleryService.GetAll()) });
         }
     }

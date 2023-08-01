@@ -24,7 +24,7 @@ namespace DigitizingProjectCore.Areas.Admin.Dto
         public string DetailsAr { get; set; }
         public IFormFile? LogoImage { get; set; }
         public string? LogoImageName { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
         public bool IsActive { get; set; }
     }
     public class AddNewsWithCategory : CreateUpdateNewsDto

@@ -28,11 +28,16 @@ namespace DigitizingProjectCore.Services.ProductService
         }
         public async Task<List<ProductViewModel>> GetAll()
         {
-            var _products = await _context.Products.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).Include(c => c.Category).Include(b => b.Brand).ToListAsync();
+            var _products = await _context.Products.Where(x => x.IsDelete == false).OrderBy(x => x.SortId).Include(c => c.Category).Include(b => b.Brand).ToListAsync();
             var _productsVM = _mapper.Map<List<ProductViewModel>>(_products);
             return _productsVM;
         }
-
+        public async Task<List<ProductViewModel>> GetAll(string? key, int? categoryId, int? brandId, bool? isActive)
+        {
+            var _products = await _context.Products.Where(x => x.IsDelete == false && (string.IsNullOrEmpty(key) || x.NameEn.Contains(key) || x.NameAr.Contains(key)) && (categoryId == null || x.Category.Id == categoryId) && (brandId == null || x.Brand.Id == brandId) && (isActive == null || x.IsActive == isActive)).OrderBy(x => x.SortId).Include(c => c.Category).Include(b => b.Brand).ToListAsync();
+            var _productsVM = _mapper.Map<List<ProductViewModel>>(_products);
+            return _productsVM;
+        }
         public async Task<Product> GetById(int id)
         {
             var _product = await _context.Products.Where(x => x.Id == id).Include(c => c.Category).Include(b => b.Brand).FirstOrDefaultAsync();
@@ -82,7 +87,6 @@ namespace DigitizingProjectCore.Services.ProductService
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _product.Created_By = _UserId;
             _product.Created_At = DateTime.Now;
-            _product.IsActive = true;
             _product.IsDelete = false;
             await _context.Products.AddAsync(_product);
             await _context.SaveChangesAsync();
@@ -90,57 +94,56 @@ namespace DigitizingProjectCore.Services.ProductService
         }
         public async Task<CreateUpdateProductDto> Update(CreateUpdateProductDto dto)
         {
-            var _product = await _context.Products.Where(x => x.Id == dto.Id).FirstOrDefaultAsync();
-            if (_product == null)
+            var _product = await _context.Products.Where(x => x.IsDelete == false && x.Id == dto.Id).FirstOrDefaultAsync();
+            if (_product != null)
             {
-                throw new Exception("Not Found!!");
-            }
-            var LogoImageName = _product.LogoImageName;
-            var PDFFileName = _product.PDFFileName;
-            var DocFileName = _product.DocFileName;
-            var _Updateproduct = _mapper.Map(dto, _product);
-            _Updateproduct.LogoImageName = LogoImageName;
-            _Updateproduct.PDFFileName = PDFFileName;
-            _Updateproduct.DocFileName = DocFileName;
-            if (dto.LogoImage != null)
-            {
-                var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
-                var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.LogoImage.FileName);
-                var filePath = Path.Combine(uploadFolder, uniqueName);
-                dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
-                _Updateproduct.LogoImageName = uniqueName;
-            }
-            if (dto.PDFFile != null)
-            {
-                string ext = Path.GetExtension(dto.PDFFile.FileName);
-                if (ext.ToLower() != ".pdf")
+                var LogoImageName = _product.LogoImageName;
+                var PDFFileName = _product.PDFFileName;
+                var DocFileName = _product.DocFileName;
+                var _Updateproduct = _mapper.Map(dto, _product);
+                _Updateproduct.LogoImageName = LogoImageName;
+                _Updateproduct.PDFFileName = PDFFileName;
+                _Updateproduct.DocFileName = DocFileName;
+                if (dto.LogoImage != null)
                 {
-                    throw new Exception("Not File Type!!");
+                    var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
+                    var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.LogoImage.FileName);
+                    var filePath = Path.Combine(uploadFolder, uniqueName);
+                    dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
+                    _Updateproduct.LogoImageName = uniqueName;
                 }
-                var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
-                var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.PDFFile.FileName);
-                var filePath = Path.Combine(uploadFolder, uniqueName);
-                dto.PDFFile.CopyTo(new FileStream(filePath, FileMode.Create));
-                _Updateproduct.PDFFileName = uniqueName;
-            }
-            if (dto.DocFile != null)
-            {
-                string ext = Path.GetExtension(dto.DocFile.FileName);
-                if (ext.ToLower() != ".doc")
+                if (dto.PDFFile != null)
                 {
-                    throw new Exception("Not File Type!!");
+                    string ext = Path.GetExtension(dto.PDFFile.FileName);
+                    if (ext.ToLower() != ".pdf")
+                    {
+                        throw new Exception("Not File Type!!");
+                    }
+                    var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
+                    var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.PDFFile.FileName);
+                    var filePath = Path.Combine(uploadFolder, uniqueName);
+                    dto.PDFFile.CopyTo(new FileStream(filePath, FileMode.Create));
+                    _Updateproduct.PDFFileName = uniqueName;
                 }
-                var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "DocFiles");
-                var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.DocFile.FileName);
-                var filePath = Path.Combine(uploadFolder, uniqueName);
-                dto.DocFile.CopyTo(new FileStream(filePath, FileMode.Create));
-                _Updateproduct.DocFileName = uniqueName;
+                if (dto.DocFile != null)
+                {
+                    string ext = Path.GetExtension(dto.DocFile.FileName);
+                    if (ext.ToLower() != ".doc")
+                    {
+                        throw new Exception("Not File Type!!");
+                    }
+                    var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "DocFiles");
+                    var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.DocFile.FileName);
+                    var filePath = Path.Combine(uploadFolder, uniqueName);
+                    dto.DocFile.CopyTo(new FileStream(filePath, FileMode.Create));
+                    _Updateproduct.DocFileName = uniqueName;
+                }
+                var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
+                _Updateproduct.Updated_By = _UserId;
+                _Updateproduct.Updated_At = DateTime.Now;
+                _context.Products.Update(_Updateproduct);
+                await _context.SaveChangesAsync();
             }
-            var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
-            _Updateproduct.Updated_By = _UserId;
-            _Updateproduct.Updated_At = DateTime.Now;
-            _context.Products.Update(_Updateproduct);
-            await _context.SaveChangesAsync();
             return dto;
         }
 
@@ -165,5 +168,7 @@ namespace DigitizingProjectCore.Services.ProductService
             dto.InjectBrands(_Brands);
             return dto;
         }
+
+
     }
 }

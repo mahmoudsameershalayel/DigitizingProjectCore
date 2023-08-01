@@ -1,0 +1,37 @@
+﻿@model DigitizingProjectCore.Models.Page
+@{
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var lang = currentCulture.Name;
+}
+
+<!-- Start Page Title Area -->
+<div class="page-title-area page-title-style-two">
+    <div class="container">
+        <div class="page-title-content">
+            <h2>@(lang == "ar" ? Model.TitleAr : Model.TitleEn)</h2>
+            <ul>
+                <li>
+                    <a href="/">
+                        <i class="bx bx-home"></i>
+                        Home
+                    </a>
+                </li>
+                <li class="active">@(lang == "ar" ? Model.TitleAr : Model.TitleEn)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- End Page Title Area -->
+<!-- Start Terms & Conditions Area -->
+<section class="terms-conditions-area ptb-100">
+    <div class="container">
+        <div class="terms-conditions">
+            <!--div class="title">
+                <span>Information & notices</span>
+                <h2>Seqty Terms of Service</h2>
+            </div-->
+            @Html.Raw(lang == "ar" ? Model.DetailsAr : Model.DetailsEn)
+        </div>
+    </div>
+</section>
+<!-- End Terms & Conditions Area -->

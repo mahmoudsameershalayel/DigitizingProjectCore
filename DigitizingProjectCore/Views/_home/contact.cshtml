@@ -1,5 +1,77 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model DigitizingProjectCore.Areas.Admin.Dto.CreateContactUsDto
+@using DigitizingProjectCore.Services.LocalizationService;
 @{
+    var db = ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+    var setting = db.Configurations.FirstOrDefault();
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var lang = currentCulture.Name;
 }
+@inject LocalizationService _localization
+
+<section class="challenges-area challenges-area3 ptb-100">
+    <div class="container">
+        <div class="section-title white-title">
+            <span>
+                @_localization.Getkey("ContactUs")
+            </span>
+            <h2>@(lang == "ar" ? setting.ContactUsSloganAr : setting.ContactUsSloganEn)</h2>
+            <span style="display:none !important" id="didYouFill">DidYouFill</span>
+            <span style="display:none !important" id="MessageSubmitted">MessageSubmitted</span>
+
+            <span style="display:none !important" id="HomeClass">get-in-touch-form</span>
+        </div>
+
+        <form asp-controller="ContactUs" asp-action="SendFromHome" method="POST" class="get-in-touch-form">
+            <div class="row">
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label>
+                            @_localization.Getkey("Name")
+                        </label>
+                        <input type="text" id="name" class="form-control" asp-for="Name" required data-error=" PleaseEnterYourName">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label>
+                            @_localization.Getkey("EmailAddress")
+                        </label>
+                        <input type="email" id="email" class="form-control" asp-for="Email" required data-error=" PleasEenterYourEmail">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label>
+                            @_localization.Getkey("Subject")
+                        </label>
+                        <input type="text" id="msg_subject" class="form-control" asp-for="Subject" required data-error="PleasEenterYourSubject">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-sm-12">
+                    <div class="form-group">
+                        <label>
+                            @_localization.Getkey("Message")
+                        </label>
+                        <textarea class="form-control" id="message" rows="2" asp-for="Message" required data-error="PleasEenterYourMessage"></textarea>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="default-btn">
+                <span>
+                    @_localization.Getkey("SendMessage")
+                </span>
+            </button>
+
+            <div id="msgSubmit" class="h3 text-center hidden"></div>
+        </form>
+    </div>
+</section>
+

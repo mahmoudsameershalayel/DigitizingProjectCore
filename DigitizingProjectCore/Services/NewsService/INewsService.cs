@@ -7,6 +7,7 @@ namespace DigitizingProjectCore.Services.NewsService
     public interface INewsService
     {
         public Task<List<NewsViewModel>> GetAll();
+        public Task<List<NewsViewModel>> GetAll(string? key , int? categoryId , bool? isActive);
         public Task<CreateUpdateNewsDto> GetDtoById(int id);
         public Task<News> GetNewsById(int id);
         public Task<CreateUpdateNewsDto> Create(CreateUpdateNewsDto dto);

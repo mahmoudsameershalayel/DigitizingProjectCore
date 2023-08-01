@@ -31,7 +31,12 @@ namespace DigitizingProjectCore.Services.SolutionService
             var _SolutionsVM = _mapper.Map<List<SolutionViewModel>>(_Solutions);
             return _SolutionsVM;
         }
-
+        public async Task<List<SolutionViewModel>> GetAll(string? key)
+        {
+            var _Solutions = await _context.Solutions.Where(x => x.IsDelete == false && (string.IsNullOrEmpty(key) || x.NameEN.Contains(key) || x.NameAr.Contains(key))).OrderBy(x => x.SortId).Include(c => c.Category).Include(b => b.Brand).Include(x => x.SolutionProducts).ToListAsync();
+            var _SolutionsVM = _mapper.Map<List<SolutionViewModel>>(_Solutions);
+            return _SolutionsVM;
+        }
         public async Task<Solution> GetById(int id)
         {
             var _Solution = await _context.Solutions.Where(x => x.Id == id).Include(c => c.Category).Include(b => b.Brand).Include(x => x.SolutionProducts).FirstOrDefaultAsync();
@@ -88,7 +93,6 @@ namespace DigitizingProjectCore.Services.SolutionService
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _Solution.Created_By = _UserId;
             _Solution.Created_At = DateTime.Now;
-            _Solution.IsActive = true;
             _Solution.IsDelete = false;
             await _context.Solutions.AddAsync(_Solution);
             await _context.SaveChangesAsync();
@@ -182,6 +186,6 @@ namespace DigitizingProjectCore.Services.SolutionService
             return dto;
         }
 
-
+       
     }
 }

@@ -6,6 +6,7 @@ using DigitizingProjectCore.Models;
 using Humanizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Web.Mvc;
 
 namespace DigitizingProjectCore.Services.ServiceService
 {
@@ -31,7 +32,12 @@ namespace DigitizingProjectCore.Services.ServiceService
             var _ServicesVM = _mapper.Map<List<ServiceViewModel>>(_Services);
             return _ServicesVM;
         }
-
+        public async Task<List<ServiceViewModel>> GetAll(string? key, int? categoryId, bool? isActive)
+        {
+            var _Services = await _context.Services.Where(x => x.IsDelete == false && (string.IsNullOrEmpty(key) || x.NameEn.Contains(key) || x.NameAr.Contains(key)) && (categoryId == null || x.Category.Id == categoryId) && (isActive == null || x.IsActive == isActive)).OrderBy(x => x.SortId).Include(c => c.Category).ToListAsync();
+            var _ServicesVM = _mapper.Map<List<ServiceViewModel>>(_Services);
+            return _ServicesVM;
+        }
         public async Task<CreateUpdateServiceDto> GetDtoById(int id)
         {
             var _Service = await _context.Services.Where(x => x.Id == id).Include(c => c.Category).FirstOrDefaultAsync();
@@ -91,7 +97,6 @@ namespace DigitizingProjectCore.Services.ServiceService
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _Service.Created_By = _UserId;
             _Service.Created_At = DateTime.Now;
-            _Service.IsActive = true;
             _Service.IsDelete = false;
             await _context.Services.AddAsync(_Service);
             await _context.SaveChangesAsync();
@@ -169,5 +174,7 @@ namespace DigitizingProjectCore.Services.ServiceService
             dto.InjectCategories(_Categories);
             return dto;
         }
+
+       
     }
 }

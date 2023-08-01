@@ -67,8 +67,9 @@
             else
             {
                 <div class="col-sm-12">
-
-                    <div class="alert alert-info">ThereIsNoItemsToShow</div>
+                    <div class="alert alert-info">
+                        @(lang == "ar" ? "لا يوجد عناصر لعرضها" : "ThereIsNoItemsToShow")
+                    </div>
                 </div>
             }
 

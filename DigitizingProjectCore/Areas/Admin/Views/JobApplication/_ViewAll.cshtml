@@ -1,0 +1,66 @@
+﻿@model List<JobApplicationViewModel>
+<div class="table-responsive">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h2>
+                        Jobs Applications
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <table id="categoryService" class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Job Title</th>
+                    <th>Name</th>
+                    <th>DOB</th>
+                    <th>Mobile</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Date</th>
+                    <th width="15%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.JobTitleEn</td>
+                        <td>@item.Name</td>
+                        <td>@item.DOB</td>
+                        <td>@item.Mobile</td>
+                        <td>@item.Phone</td>
+                        <td>@item.Address</td>
+                        @if (item.IsChecked)
+                        {
+                            <td><input type="checkbox" checked></td>
+                        }
+                        else
+                        {
+                            <td><input type="checkbox"></td>
+                        }
+                        @if (item.StillWork)
+                        {
+                            <td><input type="checkbox" checked></td>
+                        }
+                        else
+                        {
+                            <td><input type="checkbox"></td>
+                        }
+                        @if (item.HaveDrivingLiscence)
+                        {
+                            <td><input type="checkbox" checked></td>
+                        }
+                        else
+                        {
+                            <td><input type="checkbox"></td>
+                        }
+                        <td>@item.Created_At.ToString("dddd, dd MMMM yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

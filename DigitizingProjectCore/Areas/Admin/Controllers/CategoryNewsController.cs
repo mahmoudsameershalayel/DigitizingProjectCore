@@ -14,7 +14,7 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _categoryNewsService = categoryNewsService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices]ApplicationDbContext _context , string key)
+        public async Task<IActionResult> Index([FromServices]ApplicationDbContext _context , string? key)
         {
             var _Categories = await _categoryNewsService.GetAll(key);
             ViewBag.db = _context;

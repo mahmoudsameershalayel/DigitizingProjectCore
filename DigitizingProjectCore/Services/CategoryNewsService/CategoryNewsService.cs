@@ -50,7 +50,6 @@ namespace DigitizingProjectCore.Services.CategoryNewsService
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _Category.Created_By = _UserId;
             _Category.Created_At = DateTime.Now;
-            _Category.IsActive = true;
             _Category.IsDelete = false;
             await _context.CategoryForNews.AddAsync(_Category);
             await _context.SaveChangesAsync();

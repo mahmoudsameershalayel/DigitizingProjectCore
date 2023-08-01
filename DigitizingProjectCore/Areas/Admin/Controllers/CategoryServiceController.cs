@@ -2,9 +2,7 @@
 using DigitizingProjectCore.Data;
 using DigitizingProjectCore.Services.CategoryServiceService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using System.Drawing.Printing;
-using System.Globalization;
+
 
 namespace DigitizingProjectCore.Areas.Admin.Controllers
 {
@@ -17,16 +15,11 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _categoryServiceService = categoryServiceService;           
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context)
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context , string? key)
         {
-            var _Categories = await _categoryServiceService.GetAll();
+            var _Categories = await _categoryServiceService.GetAll(key);
             ViewBag.db = _context;
             return View(_Categories);
-        }
-        [HttpPost]
-        public async Task<ActionResult> Search(string term = "")
-        {
-            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _categoryServiceService.Search(term)) });
         }
         [HttpGet]
         public IActionResult Add()

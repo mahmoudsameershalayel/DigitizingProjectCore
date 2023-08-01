@@ -1,21 +1,26 @@
-﻿@model DigitizingProjectCore.Models.CategoryForService
+﻿@using DigitizingProjectCore.Services.LocalizationService;
+@model DigitizingProjectCore.Models.CategoryForService
 @{
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
     var lang = currentCulture.Name;
 }
+@inject LocalizationService _localization
+
 <div class="page-title-area page-title-style-two">
     <div class="container">
         <div class="page-title-content">
             <h2>@(lang == "en" ? Model.NameEn : Model.NameAr)</h2>
             <ul>
                 <li>
-                    <a href="/@lang/">
+                    <a href="/">
                         <i class="bx bx-home"></i>
-                        @(lang == "ar" ? "الصفحة الرئيسية" : "Home")
+                        @_localization.Getkey("Home")
                     </a>
                 </li>
                 <li>
-                    <a>@(lang == "ar" ? "الخدمات" : "Services")</a>
+                    <a>
+                        @_localization.Getkey("Services")
+                    </a>
                 </li>
                 <li class="active">@(lang == "en" ? Model.NameEn : Model.NameAr)</li>
             </ul>
@@ -34,9 +39,11 @@
         <div class="row">
             @foreach (var item in Model._Services.Where(x => x.IsDelete == false && x.IsActive == true))
             {
-                <a href="/@lang/Home/Service/@item.Id" class="col-lg-4 col-sm-6">
+                <a href="/Service/Details?id=@item.Id" class="col-lg-4 col-sm-6">
                     <div class="single-safety overly-one">
                         <div class="overly-two">
+
+
                             <img src="/Images/@item.LogoImageName" alt="@(lang=="en"?item.NameEn: item.NameAr)">
                             <div>
                                 <h3>@(lang == "en" ? item.NameEn : item.NameAr)</h3>

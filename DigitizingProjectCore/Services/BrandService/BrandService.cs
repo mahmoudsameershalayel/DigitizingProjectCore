@@ -4,10 +4,18 @@ using DigitizingProjectCore.Areas.Admin.ViewModel;
 using DigitizingProjectCore.Data;
 using DigitizingProjectCore.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
-namespace DigitizingProjectCore.Services.BrandServices
+namespace DigitizingProjectCore.Services.BrandService
 {
     public class BrandService : IBrandService
     {
@@ -26,11 +34,16 @@ namespace DigitizingProjectCore.Services.BrandServices
         }
         public async Task<List<BrandViewModel>> GetAll()
         {
-            var _Brands = await _context.Brands.Where(x => x.IsDelete == false && x.IsActive == true).ToListAsync();
+            var _Brands = await _context.Brands.Where(x => x.IsDelete == false).ToListAsync();
             var _BrandsVM = _mapper.Map<List<BrandViewModel>>(_Brands);
             return _BrandsVM;
         }
-
+        public async Task<List<BrandViewModel>> GetAll(string? key)
+        {
+            var _Brands = await _context.Brands.Where(x => x.IsDelete == false && (string.IsNullOrEmpty(key) || x.NameEn.Contains(key) || x.NameAr.Contains(key))).ToListAsync();
+            var _BrandsVM = _mapper.Map<List<BrandViewModel>>(_Brands);
+            return _BrandsVM;
+        }
         public async Task<CreateUpdateBrandDto> GetById(int id)
         {
             var _Brand = await _context.Brands.Where(x => x.Id == id).FirstOrDefaultAsync();
@@ -102,5 +115,6 @@ namespace DigitizingProjectCore.Services.BrandServices
             var _brandVM = _mapper.Map<List<BrandViewModel>>(_brands);
             return _brandVM;
         }
+
     }
 }

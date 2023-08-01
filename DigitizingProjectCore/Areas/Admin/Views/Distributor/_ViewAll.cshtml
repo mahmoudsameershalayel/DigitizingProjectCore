@@ -4,7 +4,9 @@
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-6">
-                    <h2>Distributor</h2>
+                    <h2>
+                        Manage Distributors
+                    </h2>
                 </div>
                 <div class="col-sm-6 text-right">
                     <a class="btn btn-success" onclick="showInPopup('@Url.Action("Add" , "Distributor" ,null ,Context.Request.Scheme)' , 'Add Distributor');">Add Distributor</a>
@@ -28,7 +30,7 @@
                 {
                     <tr>
                         <td>@item.NameEn</td>
-                        <td>@item.City.NameEn</td>
+                        <td>@((item.City.IsActive == true && item.City.IsDelete == false) ? @item.City.NameEn : "UNKNOWN")</td>
                         <td>@item.AddressEn</td>
                         <td>@item.Phone</td>
 
@@ -41,7 +43,7 @@
                             <td><input type="checkbox"></td>
                         }
 
-                        <td>@item.Created_At</td>
+                        <td>@item.Created_At.ToString("dddd, dd MMMM yyyy")</td>
                         <td>
                             <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
                             <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "Distributor" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Distributor');"><i class='glyphicon glyphicon-edit'></i></a>

@@ -1,0 +1,825 @@
+﻿@using DigitizingProjectCore.Services.LocalizationService;
+@model DigitizingProjectCore.Areas.Admin.Dto.AddJobApplicationWithJMD
+@{
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var lang = currentCulture.Name;
+    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+    string successUrl = "/" + lang + "/Jobs/ApplySuccess";
+}
+@inject LocalizationService _localization
+<style>
+    .main-contact-area ul {
+        list-style: disc;
+        padding: 30px;
+    }
+
+    .nice-select.open .list {
+        height: 500px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .form-control {
+        margin-bottom: 0px;
+        border-color: #c0c0c0;
+    }
+
+    .btn-success {
+        padding-top: 3px;
+    }
+</style>
+<div class="page-title-area page-title-style-two">
+    <div class="container">
+        <div class="page-title-content">
+            <h2>
+                @_localization.Getkey("Apply")
+            </h2>
+            <ul>
+                <li>
+                    <a href="/">
+                        <i class="bx bx-home"></i>
+                        @_localization.Getkey("Home")
+                    </a>
+                </li>
+                <li>
+                    <a href="/Job/Index">
+                        @_localization.Getkey("Jobs")
+                    </a>
+                </li>
+                <li>
+                    <a href="/Job/Details/@Model.Job.Id">
+                        @(lang == "ar" ? Model.Job.JobTitleAr : Model.Job.JobTitleEn)
+                    </a>
+                </li>
+                <li class="active">Apply</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- End Page Title Area -->
+<!-- Start Contact Area -->
+<section class="main-contact-area ptb-100">
+    <div class="container">
+
+        <div id="divForm" class="row align-items-center">
+            <div class="col-lg-12">
+                <div class="contact-wrap">
+                    <div class="contact-form">
+                        <div class="contact-title">
+                            <input type="hidden" id="hdn" />
+                            <span class="hidden" id="didYouFill">DidYouFill</span>
+                            <span class="hidden" id="MessageSubmitted">MessageSubmitted</span>
+                            <span class="hidden" id="HomeClass"></span>
+                        </div>
+                        <form asp-controller="JobApplication" asp-action="Add" method="POST">
+                            <div class="card">
+                                <div class="card-header">
+                                    @_localization.Getkey("PersonalInfo")
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="jobTitle">JobTitle</label>
+                                                <select class="form-control" id="jobTitle" asp-for="JobId" asp-items="@(lang == "ar" ? Model._JobsAr : Model._JobsEn)"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>
+                                                    @_localization.Getkey("IDNO")
+                                                </label>
+                                                <input type="text" asp-for="IdNo" class="form-control" />
+
+                                                @Html.ValidationMessageFor(model => model.IdNo, "", new { type = "number", @class = "text-danger" })
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Gender</label>
+                                                <div class="form-control">
+                                                    <input type="radio" id="male" asp-for="Gender" value="M">
+                                                    <label for="male">Male</label><br>
+                                                    <input type="radio" id="female" asp-for="Gender" value="F">
+                                                    <label for="female">Female</label><br>
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="name">FullName</label>
+                                                <input type="text" id="name" asp-for="Name" class="form-control" />
+                                                <span asp-validation-for="Name" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="emailAddress">EmailAddress</label>
+                                                <input type="text" id="emailAddress" asp-for="Email" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="mobile">Mobile</label>
+                                                <input type="text" id="mobile" asp-for="Mobile" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="phone">Phone</label>
+                                                <input type="text" id="phone" asp-for="Phone" class="form-control" />
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>MairtalStatus</label>
+                                                <select class="form-control" id="jobTitle" asp-for="MairtalStatuId" asp-items="@(lang == "ar" ? Model._MartialStatusAr : Model._MartialStatusEn)"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="dob">DOB</label>
+                                                <input type="date" id="dob" asp-for="DOB" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="placeBirth">PlaceBirth</label>
+                                                <input type="text" id="placeBirth" asp-for="PlaceBirth" class="form-control" />
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="wifeWork">WifeWork</label>
+                                                <input type="text" id="wifeWork" asp-for="WifeWork" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="childrenCount">ChildrenCount</label>
+                                                <input type="number" id="childrenCount" asp-for="ChildrenCount" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="address">Address</label>
+                                                <input type="text" id="address" asp-for="Address" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-5 card">
+                                <div class="card-header">
+                                    @(lang == "ar" ? "المؤهلات العلمية" : "Education")
+                                    <input style="visibility:hidden" data-val="true" :value='educations.length>0?JSON.stringify(educations):""' data-val-required="Required Field"
+                                           id="Educations" name="Educations" type="text" class="input-validation-error">
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>EducationLevel</label>
+                                                <select asp-for="Educations" id="eduLevel" class="form-control">
+                                                    <option value="">EducationLevel</option>
+                                                    <option value="HighSchool">HighSchool</option>
+                                                    <option value="Diploma">Diploma</option>
+                                                    <option value="Bachelors">Bachelors</option>
+                                                    <option value="Masters">Masters</option>
+                                                    <option value="PHD">PHD</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="eduSpecial">Special</label>
+                                                <input type="text" class="form-control" v-model="eduSpecial" id="eduSpecial" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>OrgName</label>
+                                                <input type="text" class="form-control" v-model="eduOrg" id="eduOrg" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>GraduateDate</label>
+                                                <input type="date" class="form-control" v-model="eduGDate" id="eduGDate" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>GPA</label>
+                                                <input type="number" step="0.5" max="100" min="0" class="form-control" v-model="eduGPA" id="eduGPA" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button @@click="addEducation()" type="button" style="font-size:31px; margin-top:32px;height:50px;" class="btn btn-block btn-success"><i class="bx bx-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    <table class="table table-striped table-hover" v-if="educations.length>0">
+                                        <thead>
+                                            <tr>
+                                                <th>EducationLevel</th>
+                                                <th>Special</th>
+                                                <th>OrgName</th>
+                                                <th>GraduateDate</th>
+                                                <th>GPA</th>
+                                                <th width="2%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(edu,index) in educations">
+                                                <td>{{edu.eduLevel}}</td>
+                                                <td>{{edu.eduSpecial}}</td>
+                                                <td>{{edu.eduOrg}}</td>
+                                                <td>{{edu.eduGDate}}</td>
+                                                <td>{{edu.eduGPA}}</td>
+                                                <td><button @@click="deleteEdu(index)" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                            <div class="mt-5 card">
+                                <div class="card-header">
+                                    @(lang == "ar" ? "الخبرات العملية" : "Experiences")
+                                    <input style="visibility:hidden" data-val="true" :value='exps.length>0?JSON.stringify(exps):""' data-val-required="Required Field"
+                                           id="Experiences" name="Experiences" type="text" class="input-validation-error">
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>JobTitle</label>
+                                                <input type="text" class="form-control" v-model="expJobTitle" id="expJobTitle" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>JobPlace</label>
+                                                <input type="text" class="form-control" v-model="expPlace" id="expPlace" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>JobPeriod</label>
+                                                <input type="text" placeholder="NoYearsMonths" class="form-control" v-model="expPeriod" id="expPeriod" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>LeaveReason</label>
+                                                <input type="text" class="form-control" v-model="expLeaveReason" id="expLeaveReason" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>JobTasks</label>
+                                                <input type="text" class="form-control" v-model="expJobTasks" id="expJobTasks" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button type="button" @@click="addExp()" style="font-size:31px; margin-top:32px;height:50px;" class="btn btn-block btn-success"><i class="bx bx-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    <table class="table table-striped table-hover" v-if="exps.length>0">
+                                        <thead>
+                                            <tr>
+                                                <th>JobTitle</th>
+                                                <th>JobPlace</th>
+                                                <th>JobPeriod</th>
+                                                <th>LeaveReason</th>
+                                                <th>JobTasks</th>
+                                                <th width="2%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(item,index) in exps">
+                                                <td>{{item.expJobTitle}}</td>
+                                                <td>{{item.expPlace}}</td>
+                                                <td>{{item.expPeriod}}</td>
+                                                <td>{{item.expLeaveReason}}</td>
+                                                <td>{{item.expJobTasks}}</td>
+                                                <td><button @@click="deleteExp(index)" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                            <div class="mt-5 card">
+                                <div class="card-header">
+                                    @(lang == "ar" ? "الدورات التدريبية" : "Training Courses")
+                                    <input style="visibility:hidden" data-val="true" :value='trainings.length>0?JSON.stringify(trainings):""' data-val-required="Required Field"
+                                           id="Trainings" name="Trainings" type="text" class="input-validation-error">
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>CourseName</label>
+                                                <input type="text" class="form-control" v-model="crsName" id="crsName" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>OrgName</label>
+                                                <input type="text" class="form-control" v-model="crsOrgName" id="crsOrgName" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>CoursePeriod</label>
+                                                <input type="text" placeholder="NoHours" class="form-control" v-model="crsPeriod" id="crsPeriod" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>GraduateDate</label>
+                                                <input type="date" class="form-control" v-model="crsGDate" id="crsGDate" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>TrainingTopics</label>
+                                                <input type="text" class="form-control" v-model="crsTopics" id="crsTopics" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button type="button" @@click="addTraining()" style="font-size:31px; margin-top:32px;height:50px;" class="btn btn-block btn-success"><i class="bx bx-plus"></i></button>
+                                        </div>
+                                    </div>
+
+                                    <table class="table table-striped table-hover" v-if="trainings.length>0">
+                                        <thead>
+                                            <tr>
+                                                <th>CourseName</th>
+                                                <th>OrgName</th>
+                                                <th>CoursePeriod</th>
+                                                <th>GraduateDate</th>
+                                                <th>TrainingTopics</th>
+                                                <th width="2%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(item,index) in trainings">
+                                                <td>{{item.crsName}}</td>
+                                                <td>{{item.crsOrgName}}</td>
+                                                <td>{{item.crsPeriod}}</td>
+                                                <td>{{item.crsGDate}}</td>
+                                                <td>{{item.crsTopics}}</td>
+                                                <td><button type="button" @@click="deleteTraining(index)" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                            <div class="mt-5 card">
+                                <div class="card-header">
+                                    @(lang == "ar" ? "المعرفين" : "References")
+                                    <input style="visibility:hidden" data-val="true" :value='refs.length>0?JSON.stringify(refs):""' data-val-required="Required Field"
+                                           id="Preferences" name="Preferences" type="text" class="input-validation-error">
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>ReferenceName</label>
+                                                <input type="text" class="form-control" v-model="refName" id="refName" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>JobTitle</label>
+                                                <input type="text" class="form-control" v-model="refJobTitle" id="refJobTitle" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>JobPlace</label>
+                                                <input type="text" class="form-control" v-model="refJobPlace" id="refJobPlace" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Mobile</label>
+                                                <input type="tel" class="form-control" v-model="refMobile" id="refMobile" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Email</label>
+                                                <input type="email" class="form-control" v-model="refEmail" id="refEmail" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button type="button" @@click="addRef()" style="font-size:31px; margin-top:32px;height:50px;" class="btn btn-block btn-success"><i class="bx bx-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    <table class="table table-striped table-hover" v-if="refs.length>0">
+                                        <thead>
+                                            <tr>
+                                                <th>ReferenceName</th>
+                                                <th>JobTitle</th>
+                                                <th>JobPlace</th>
+                                                <th>Mobile</th>
+                                                <th>Email</th>
+                                                <th width="2%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(item,index) in refs">
+                                                <td>{{item.refName}}</td>
+                                                <td>{{item.refJobTitle}}</td>
+                                                <td>{{item.refJobPlace}}</td>
+                                                <td>{{item.refMobile}}</td>
+                                                <td>{{item.refEmail}}</td>
+                                                <td><button type="button" @@click="deleteRef(index)" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="card mt-5">
+                                <div class="card-header">
+                                    @(lang == "ar" ? "معلومات اضافية" : "Additional Info")
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>@(lang == "ar" ? "لماذا تريد العمل في شركة سيكيورلاند ؟" : "Why do you want to work in Secureland?")</label>
+                                                <textarea placeholder="EnterYourAnswer" asp-for="WhyWork" class="form-control"></textarea>
+                                                @Html.ValidationMessageFor(model => model.WhyWork, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>@(lang == "ar" ? "يرجى كتابة بعض الاسطر لتوضيح الكيفية التي ترى/ترين فيها ملاءمة الوظيفة لمؤهلاتك الشخصية والعملية" : "Please write a few lines to explain how you think the job fits your personal and professional qualifications")</label>
+                                                @Html.TextAreaFor(x => x.QuestionAnswer, new { placeholder = "EnterYourAnswer", @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.QuestionAnswer, "", new { type = "number", @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>StillWork</label>
+                                                <div class="form-control">
+
+                                                    <label>
+                                                        <input @@click="stillWork=true" data-val="true" data-val-required="The StillWork field is required."
+                                                               id="StillWork" name="StillWork" type="radio" value="true">
+                                                        Yes
+                                                    </label>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <label>
+                                                        <input @@click="stillWork=false" data-val="false" data-val-required="The StillWork field is required."
+                                                               id="StillWork" name="StillWork" type="radio" value="false">
+                                                        No
+                                                    </label>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+                                                <label>@(lang == "ar" ? "اذا كان جوابك ب نعم لماذا ستترك وظيفتك الحالية ؟" : "If your answer is yes, why would you leave your current job?")</label>
+
+                                                <input class="form-control text-box single-line" id="WhyLeaveCurrentJob" name="WhyLeaveCurrentJob"
+                                                       placeholder="EnterYourAnswer" :disabled="stillWork!=true" type="text">
+                                                @Html.ValidationMessageFor(model => model.WhyLeaveCurrentJob, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>@(lang == "ar" ? "اذا كان جوابك ب نعم وضح/ي هل جاهز لاستلام وظيفتنا فورا ام نحتاج وقتا؟ حدد الوقت الذي تحتاجه لتقديم استقالتك من عملك الحالي والاتحاق بوظيفتنا؟" : "If your answer is yes, please explain, are you ready to take our job immediately, or do we need time? Determine the time you need to submit your resignation from your current job and join our job?")</label>
+
+
+                                                <input class="form-control text-box single-line" id="StillWorkQuestion1Answer" name="StillWorkQuestion1Answer"
+                                                       placeholder="EnterYourAnswer" :disabled="stillWork!=true" type="text">
+                                                @Html.ValidationMessageFor(model => model.WhyLeaveCurrentJob, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>@(lang == "ar" ? "حدد قيمة آخر راتب شهري حصلت عليه بالشيكل" : "Determine the value of the last monthly salary you received in shekels")</label>
+
+                                                @Html.EditorFor(model => model.LastSalary, new { htmlAttributes = new { type = "number", placeholder = "EnterYourAnswer", @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.LastSalary, "", new { @class = "text-danger" })
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>@(lang == "ar" ? "حدد  الراتب المتوقع من سيكيورلاند بالشيكل" : "Determine the expected salary from Secureland in shekels")</label>
+
+                                                @Html.EditorFor(model => model.ExpectedSalary, new { htmlAttributes = new { type = "number", placeholder = "EnterYourAnswer", @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.ExpectedSalary, "", new { @class = "text-danger" })
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>@(lang == "ar" ? "ملف السيرة الذاتية لايزيد عن 2MB" : "Your CV File not more than 2MB")</label>
+                                                <input type="file" class="form-control" name="cvFile" id="cvFile" />
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>HaveDrivingLiscence</label>
+                                                <div class="form-control">
+
+                                                    <label>@Html.RadioButtonFor(x => x.HaveDrivingLiscence, "نعم", new { Value = "true" }) Yes</label>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <label>@Html.RadioButtonFor(x => x.HaveDrivingLiscence, "لا", new { Value = "false" }) No</label>
+
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.HaveDrivingLiscence, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label formaction="drivingLiscence">DrivingLiscenceType</label>
+                                                <select class="form-control" id="drivingLiscence" asp-for="DrivingLiscenceTypeId" asp-items="@(lang == "ar" ? Model._DrivingLiscenceAr : Model._DrivingLiscenceEn)"></select>
+                                                @Html.ValidationMessageFor(model => model.DrivingLiscenceTypeId, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Length</label>
+                                                @Html.EditorFor(model => model.Length, new { htmlAttributes = new { Value = "", type = "number", @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Length, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Weight</label>
+                                                @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { Value = "", type = "number", @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top:20px;">
+                                <button type="submit" class="default-btn btn-two">
+                                    <span>Apply</span>
+                                </button>
+                                <input type="hidden" id="token" name="token" />
+                                <div id="msgSubmit" class="h3 text-center hidden"></div>
+                                <div class="clearfix"></div>
+                                <div id="message" style="display:none" class="mt-3 alert">
+                                    <button type="button" style='float:@(lang=="ar"?"left":"right")' class="close"><span>&times;</span></button>
+                                    <span class="content"></span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script src="~/Scripts/jquery.form.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp } = Vue
+        createApp({
+            data() {
+                return {
+                    eduSpecial: "",
+                    eduLevel: "",
+                    eduGPA: "",
+                    eduGDate: "",
+                    eduOrg: "",
+                    educations: [],
+
+                    expJobTitle: "",
+                    expPlace: "",
+                    expPeriod: "",
+                    expLeaveReason: "",
+                    expJobTasks: "",
+                    exps: [],
+
+                    crsName: "",
+                    crsOrgName: "",
+                    crsPeriod: "",
+                    crsGDate: "",
+                    crsTopics: "",
+                    trainings: [],
+
+                    refName: "",
+                    refJobTitle: "",
+                    refJobPlace: "",
+                    refMobile: "",
+                    refEmail: "",
+                    refs: [],
+
+                    stillWork: false
+                }
+            },
+            methods: {
+                deleteEdu(index) {
+                    this.educations.splice(index, 1);
+                },
+                addEducation() {
+                    if (this.eduLevel == "") {
+                        $("#eduLevel").focus();
+                        return false;
+                    }
+                    if (this.eduSpecial == "") {
+                        $("#eduSpecial").focus();
+                        return false;
+                    }
+                    if (this.eduOrg == "") {
+                        $("#eduOrg").focus();
+                        return false;
+                    }
+                    if (this.eduGDate == "") {
+                        $("#eduGDate").focus();
+                        return false;
+                    }
+                    if (this.eduGPA == "") {
+                        $("#eduGPA").focus();
+                        return false;
+                    }
+                    this.educations.push({
+                        "eduLevel": this.eduLevel,
+                        "eduSpecial": this.eduSpecial,
+                        "eduOrg": this.eduOrg,
+                        "eduGDate": this.eduGDate,
+                        "eduGPA": this.eduGPA,
+                    });
+                    this.eduGDate = this.eduLevel = this.eduSpecial = this.eduOrg = this.eduGDate = "";
+                    $("#eduLevel").focus();
+                },
+                deleteExp(index) {
+                    this.exps.splice(index, 1);
+                },
+                addExp() {
+                    if (this.expJobTitle == "") {
+                        $("#expJobTitle").focus();
+                        return false;
+                    }
+                    if (this.expPlace == "") {
+                        $("#expPlace").focus();
+                        return false;
+                    }
+                    if (this.expPeriod == "") {
+                        $("#expPeriod").focus();
+                        return false;
+                    }
+                    if (this.expLeaveReason == "") {
+                        $("#expLeaveReason").focus();
+                        return false;
+                    }
+                    if (this.expJobTasks == "") {
+                        $("#expJobTasks").focus();
+                        return false;
+                    }
+                    this.exps.push({
+                        "expJobTitle": this.expJobTitle,
+                        "expPlace": this.expPlace,
+                        "expPeriod": this.expPeriod,
+                        "expLeaveReason": this.expLeaveReason,
+                        "expJobTasks": this.expJobTasks,
+                    });
+                    this.expJobTitle = this.expPlace = this.expPeriod = this.expLeaveReason = this.expJobTasks = "";
+                    $("#expJobTitle").focus();
+                },
+                deleteTraining(index) {
+                    this.trainings.splice(index, 1);
+                },
+                addTraining() {
+                    if (this.crsName == "") {
+                        $("#crsName").focus();
+                        return false;
+                    }
+                    if (this.crsOrgName == "") {
+                        $("#crsOrgName").focus();
+                        return false;
+                    }
+                    if (this.crsPeriod == "") {
+                        $("#crsPeriod").focus();
+                        return false;
+                    }
+                    if (this.crsGDate == "") {
+                        $("#crsGDate").focus();
+                        return false;
+                    }
+                    if (this.crsTopics == "") {
+                        $("#crsTopics").focus();
+                        return false;
+                    }
+                    this.trainings.push({
+                        "crsName": this.crsName,
+                        "crsOrgName": this.crsOrgName,
+                        "crsPeriod": this.crsPeriod,
+                        "crsGDate": this.crsGDate,
+                        "crsTopics": this.crsTopics,
+                    });
+                    this.crsName = this.crsOrgName = this.crsPeriod = this.crsGDate = this.crsTopics = "";
+                    $("#crsName").focus();
+                },
+                deleteRef(index) {
+                    this.refs.splice(index, 1);
+                },
+                addRef() {
+                    if (this.refName == "") {
+                        $("#refName").focus();
+                        return false;
+                    }
+                    if (this.refJobTitle == "") {
+                        $("#refJobTitle").focus();
+                        return false;
+                    }
+                    if (this.refJobPlace == "") {
+                        $("#refJobPlace").focus();
+                        return false;
+                    }
+                    if (this.refMobile == "") {
+                        $("#refMobile").focus();
+                        return false;
+                    }
+                    if (this.refEmail == "") {
+                        $("#refEmail").focus();
+                        return false;
+                    }
+                    this.refs.push({
+                        "refName": this.refName,
+                        "refJobTitle": this.refJobTitle,
+                        "refJobPlace": this.refJobPlace,
+                        "refMobile": this.refMobile,
+                        "refEmail": this.refEmail,
+                    });
+                    this.refEmail = this.refMobile = this.refJobPlace = this.refJobTitle = this.refName = "";
+                    $("#refName").focus();
+                }
+            }
+        }).mount('#divForm')
+    </script>
+
+    <script>
+        $(function () {
+            $("#message .close").click(function () {
+                $("#message").fadeOut();
+                return false;
+            });
+
+            $(".ajaxForm").ajaxForm({
+                success: function (json) {
+                    if (json.status == 1) {
+                        window.location.href = "@successUrl";
+                    }
+                    $(".ajaxForm :submit span").text('@(lang == "ar" ? "ارسال" : "Submit")');
+                    if (json.msg != null)
+                        ShowMssage(json.msg);
+                    if (json.redirect != null)
+                        window.location = json.redirect;
+                    if (json.close == 1)
+                        $("#PopUp").modal("hide");
+                    $(".ajaxForm :submit").prop("disabled", false);
+                },
+                beforeSubmit: function () {
+                    $(".ajaxForm :submit").prop("disabled", true);
+                    $(".ajaxForm :submit span").text('@(lang == "ar" ? "جاري الارسال..." : "Submitting...")');
+                }
+            });
+        });
+
+        function ShowMssage(msg) {
+            var cls = "info";
+            if (msg.indexOf("s:") == 0) { cls = "success"; msg = msg.substring(2); }
+            if (msg.indexOf("w:") == 0) { cls = "warning"; msg = msg.substring(2); }
+            if (msg.indexOf("e:") == 0) { cls = "danger"; msg = msg.substring(2); }
+            if (msg.indexOf("i:") == 0) { cls = "info"; msg = msg.substring(2); }
+            $('#message').addClass('alert-' + cls);
+            $("#message").fadeIn();
+            $("#message .content").text(msg);
+        }
+    </script>
+}
+

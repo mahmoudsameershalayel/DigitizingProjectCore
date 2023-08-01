@@ -18,9 +18,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _cityService = cityService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context)
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context , string? key)
         {
-            var _Categories = await _cityService.GetAll();
+            var _Categories = await _cityService.GetAll(key);
             ViewBag.db = _context;
             return View(_Categories);
         }

@@ -41,10 +41,10 @@
                         {
                             <td><input type="checkbox"></td>
                         }
-                        <td>@item.Created_At</td>
+                        <td>@item.Created_At.ToString("dddd, dd MMMM yyyy")</td>
                         <td>
                             <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
-                            <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "Solution" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Solution');"><i class='glyphicon glyphicon-edit'></i></a>
+                            <a class='btn btn-xs btn-info PopUp' asp-controller="Solution" asp-action="Edit" asp-route-id="@item.Id"><i class='glyphicon glyphicon-edit'></i></a>
                             <a class="btn btn-xs btn-danger PopUp" onclick="showInPopup('@Url.Action("Delete" , "Solution" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Delete Solution');"><i class='glyphicon glyphicon-trash'></i></a>
                         </td>
                     </tr>

@@ -1,13 +1,14 @@
 ﻿@model DigitizingProjectCore.Models.Product
 @using DigitizingProjectCore.Models;
 @using Microsoft.EntityFrameworkCore;
-
+@using DigitizingProjectCore.Services.LocalizationService;
 @{
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
     var lang = currentCulture.Name; 
     var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
     var last3News = db.Products.Where(x => x.IsDelete == false && x.IsActive == true && x.Id != Model.Id).OrderByDescending(x => x.SortId).Include(x => x.Category).Include(x => x.Brand).Take(6).ToList();
 }
+@inject LocalizationService _localization
 <div class="page-title-area page-title-style-two">
     <div class="container">
         <div class="page-title-content">
@@ -15,10 +16,12 @@
             <ul class="d-flex justify-content-center">
                 <li>
                     <a asp-controller="Home" asp-action="Index">
-                        @(lang == "ar" ? "الصفحة الرئيسية" : "Home")
+                        @_localization.Getkey("Home")
                     </a>
                 </li>
-                <li class="active" style="color:crimson">@(lang == "ar" ? "المنتجات" : "Products")</li>
+                <li class="active" style="color:crimson">
+                    @_localization.Getkey("Products")
+                </li>
             </ul>
         </div>
     </div>

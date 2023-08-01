@@ -24,14 +24,19 @@ namespace DigitizingProjectCore.Services.DistributorService
         }
         public async Task<List<DistributorViewModel>> GetAll()
         {
-            var _Distributors = await _context.Distributors.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).Include(x => x.City).ToListAsync();
+            var _Distributors = await _context.Distributors.Where(x => x.IsDelete == false).OrderBy(x => x.SortId).Include(x => x.City).ToListAsync();
             var _DistributorsVM = _mapper.Map<List<DistributorViewModel>>(_Distributors);
             return _DistributorsVM;
         }
-
+        public async Task<List<DistributorViewModel>> GetAll(string? key, int? cityId, bool? isActive)
+        {
+            var _Distributors = await _context.Distributors.Where(x => x.IsDelete == false && (string.IsNullOrEmpty(key) || x.NameEn.Contains(key) || x.NameAr.Contains(key)) && (cityId == null || cityId == x.CityId) && (isActive == null || isActive == x.IsActive)).OrderBy(x => x.SortId).Include(x => x.City).ToListAsync();
+            var _DistributorsVM = _mapper.Map<List<DistributorViewModel>>(_Distributors);
+            return _DistributorsVM;
+        }
         public async Task<Distributor> GetById(int id)
         {
-            var _Distributor = await _context.Distributors.Where(x => x.Id == id).Include(x => x.City). FirstOrDefaultAsync();
+            var _Distributor = await _context.Distributors.Where(x => x.Id == id).Include(x => x.City).FirstOrDefaultAsync();
             if (_Distributor == null)
             {
                 throw new Exception("Not Found!!");
@@ -44,7 +49,6 @@ namespace DigitizingProjectCore.Services.DistributorService
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _Distributor.Created_By = _UserId;
             _Distributor.Created_At = DateTime.Now;
-            _Distributor.IsActive = true;
             _Distributor.IsDelete = false;
             await _context.Distributors.AddAsync(_Distributor);
             await _context.SaveChangesAsync();

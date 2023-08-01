@@ -2,10 +2,12 @@
 using DigitizingProjectCore.Areas.Admin.Dto;
 using DigitizingProjectCore.Areas.Admin.ViewModel;
 using DigitizingProjectCore.Data;
-using DigitizingProjectCore.Services.BrandServices;
+using DigitizingProjectCore.Models;
+using DigitizingProjectCore.Services.BrandService;
 using DigitizingProjectCore.Services.CategoryProductService;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
+using System.Linq;
 
 namespace DigitizingProjectCore.Areas.Admin.Controllers
 {
@@ -17,11 +19,22 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _BrandService = BrandService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices]ApplicationDbContext _context)
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context, string? key)
         {
-            var _Brands = await _BrandService.GetAll();
+            var _Brands = await _BrandService.GetAll(key);
             ViewBag.db = _context;
             return View(_Brands);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Index(string? key)
+        {
+            var items = await _BrandService.GetAll(key);
+            var result =
+               new
+               {
+                   data = items.ToList()
+               };
+            return Json(result);    
         }
         [HttpGet]
         public async Task<IActionResult> GetByName(string key)
@@ -29,6 +42,7 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             var _brands = await _BrandService.GetByName(key);
             return PartialView("_SearchBrandsResultsPartial", _brands);
         }
+       
         [HttpGet]
         public IActionResult Add()
         {

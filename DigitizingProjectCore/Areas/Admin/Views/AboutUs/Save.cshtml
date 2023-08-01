@@ -1,0 +1,201 @@
+﻿@model DigitizingProjectCore.Areas.Admin.Dto.SaveAboutUsDto
+@section css{
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+    </style>
+}
+<form asp-controller="AboutUs" asp-action="Save" method="POST" onsubmit="return jQueryAjaxPost(this);">
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="approuchTitleAr">Approuch Title (Ar)</label>
+            <input type="text" class="form-control" id="approuchTitleAr" asp-for="ApprouchTitlesAr">
+            <span asp-validation-for="ApprouchTitlesAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="approuchTitleEn">Approuch Title (En)</label>
+            <input type="text" class="form-control" id="approuchTitleEn" asp-for="ApprouchTitlesEn">
+            <span asp-validation-for="ApprouchTitlesEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="approuchAr">Approuch (Arabic)</label>
+            <textarea class="form-control" id="approuchAr" asp-for="ApprouchAr"></textarea>
+            <span asp-validation-for="ApprouchAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="approuchEn">Approuch (English)</label>
+            <textarea class="form-control" id="approuchEn" asp-for="ApprouchEn"></textarea>
+            <span asp-validation-for="ApprouchEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="experienceTitleAr">Experience  Title (Ar)</label>
+            <input type="text" class="form-control" id="experienceTitleAr" asp-for="ExperienceTitlesAr">
+            <span asp-validation-for="ExperienceTitlesAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="experienceTitleEn">Experience  Title (En)</label>
+            <input type="text" class="form-control" id="experienceTitleEn" asp-for="ExperienceTitlesEn">
+            <span asp-validation-for="ExperienceTitlesEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="experienceAr">Experience (Arabic)</label>
+            <textarea class="form-control" id="experienceAr" asp-for="ExperienceAr"></textarea>
+            <span asp-validation-for="ExperienceAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="experienceEn">Experience (English)</label>
+            <textarea class="form-control" id="experienceEn" asp-for="ExperienceEn"></textarea>
+            <span asp-validation-for="ExperienceEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="whyUsTitleAr">WhyUs Title (Ar)</label>
+            <input type="text" class="form-control" id="whyUsTitleAr" asp-for="WhyUsTitlesAr">
+            <span asp-validation-for="WhyUsTitlesAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="whyUsTitleEn">WhyUs Title (En)</label>
+            <input type="text" class="form-control" id="whyUsTitleEn" asp-for="WhyUsTitlesEn">
+            <span asp-validation-for="WhyUsTitlesEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="WhyUsAr">WhyUs (Arabic)</label>
+            <textarea class="form-control" id="WhyUsAr" asp-for="WhyUsAr"></textarea>
+            <span asp-validation-for="WhyUsAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="WhyUsEn">WhyUs (English)</label>
+            <textarea class="form-control" id="WhyUsEn" asp-for="WhyUsEn"></textarea>
+            <span asp-validation-for="WhyUsEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="visionTitleAr">Vision Title (Ar)</label>
+            <input type="text" class="form-control" id="visionTitleAr" asp-for="VisionTitlesAr">
+            <span asp-validation-for="VisionTitlesAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="visionTitleEn">Vision Title (En)</label>
+            <input type="text" class="form-control" id="visionTitleEn" asp-for="VisionTitlesEn">
+            <span asp-validation-for="VisionTitlesEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="visionAr">Vision (Arabic)</label>
+            <textarea class="form-control" id="visionAr" asp-for="VisionAr"></textarea>
+            <span asp-validation-for="VisionAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="visionEn">Vision (English)</label>
+            <textarea class="form-control" id="visionEn" asp-for="VisionEn"></textarea>
+            <span asp-validation-for="VisionEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="detailsAr">Details (Arabic)</label>
+            <textarea class="form-control" id="detailsAr" asp-for="DetailsAr"></textarea>
+            <span asp-validation-for="DetailsAr" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="detailsEn">Details (English)</label>
+            <textarea class="form-control" id="detailsEn" asp-for="DetailsEn"></textarea>
+            <span asp-validation-for="DetailsEn" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="image">Image</label>
+        <img src="/Images/@Model.ImageName" width="250" height="250">
+        <input type="file" class="form-control" id="image" asp-for="Image">
+    </div>
+    <div class="form-group">
+        <label for="showPartners">ShowPartners</label>
+        <input type="checkbox" id="showPartners" checked asp-for="ShowPartners">
+        <label for="showServices">ShowServices</label>
+        <input type="checkbox" id="showServices" checked asp-for="ShowServices">
+    </div>
+    <input type="submit" id="btn-save" class="btn btn-primary" value="Save" />
+</form>
+
+@section scripts{
+    <script src="~/ckeditor5-build-classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor.create(document.querySelector('#approuchAr'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+        ClassicEditor.create(document.querySelector('#approuchEn'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+
+
+        ClassicEditor.create(document.querySelector('#experienceAr'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+        ClassicEditor.create(document.querySelector('#experienceEn'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+
+        ClassicEditor.create(document.querySelector('#WhyUsAr'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+        ClassicEditor.create(document.querySelector('#WhyUsEn'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+
+        ClassicEditor.create(document.querySelector('#visionAr'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+        ClassicEditor.create(document.querySelector('#visionEn'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+
+        ClassicEditor.create(document.querySelector('#DetailsAr'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+        ClassicEditor.create(document.querySelector('#DetailsEn'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+    </script>
+}

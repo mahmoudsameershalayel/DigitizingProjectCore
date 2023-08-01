@@ -16,9 +16,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context)
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context , string? key , int? cityId , bool? isActive)
         {
-            var _Distributors = await _distributorService.GetAll();
+            var _Distributors = await _distributorService.GetAll(key , cityId , isActive);
             ViewBag.db = _context;
             return View(_Distributors);
         }

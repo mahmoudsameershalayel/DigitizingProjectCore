@@ -1,9 +1,18 @@
 ﻿@model DigitizingProjectCore.Areas.Admin.Dto.AddSolutionWithCategoryAndBrandAndProduct
-@{
-    Layout = null;
+@section css{
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+
+        .ck-editor__editable {
+            min-height: 200px;
+            max-height: 400px;
+        }
+    </style>
 }
 <form asp-controller="Solution" asp-action="Edit" method="POST" onsubmit="return jQueryAjaxPost(this);">
-    <input type="hidden" asp-for="Id"/>
+    <input type="hidden" asp-for="Id" />
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -30,21 +39,17 @@
             <select class="form-control" id="brand" asp-for="BrandId" asp-items="Model._Brands"></select>
         </div>
     </div>
-    <div class="row">
+    <div class="form-group">
         <label for="product">Products</label>
         <select class="form-control" id="product" asp-for="ProductIds" asp-items="Model._Products"></select>
     </div>
-    <div class="row">
-        <div class="form-group">
-            <label for="detailsAr">Details (Arabic)</label>
-            <textarea type="text" class="form-control" id="detailsAr" cols="20" rows="7" asp-for="DetailsAr"></textarea>
-        </div>
+    <div class="form-group">
+        <label for="detailsAr">Details (Arabic)</label>
+        <textarea type="text" class="form-control" id="detailsAr" cols="20" rows="7" asp-for="DetailsAr"></textarea>
     </div>
-    <div class="row">
-        <div class="form-group">
-            <label for="detailsEn">Details (English)</label>
-            <textarea type="text" class="form-control" id="detailsEn" cols="20" rows="7" asp-for="DetailsEn"></textarea>
-        </div>
+    <div class="form-group">
+        <label for="detailsEn">Details (English)</label>
+        <textarea type="text" class="form-control" id="detailsEn" cols="20" rows="7" asp-for="DetailsEn"></textarea>
     </div>
     <div class="row">
         <div class="col-md-6 form-group">
@@ -73,5 +78,22 @@
     <div class="form-group">
         <button type="submit" class="btn btn-warning btn-create">Edit</button>
         <input type="reset" class="btn" value="Rest">
-    </div>  
+    </div>
 </form>
+@section scripts{
+    <script src="~/ckeditor5-build-classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor.create(document.querySelector('#detailsAr'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+        ClassicEditor.create(document.querySelector('#detailsEn'), {
+        }).then(editor => {
+            window.editor = editor;
+        }).catch(err => {
+            console.error(err.stack);
+        })
+    </script>
+}

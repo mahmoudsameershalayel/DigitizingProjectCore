@@ -59,6 +59,13 @@ namespace DigitizingProjectCore.AutoMapper
             CreateMap<Solution , SolutionViewModel>().ReverseMap();
             CreateMap<Solution, AddSolutionWithCategoryAndBrandAndProduct>().ReverseMap();
 
+
+            //JobApplication
+            CreateMap<JobApplication, CreateJobApplicationDto>().ReverseMap();
+            CreateMap<JobApplication, JobApplicationViewModel>().ReverseMap();
+            CreateMap<JobApplication, AddJobApplicationWithJMD>().ReverseMap();
+
+
             //Brand
             CreateMap<Brand , CreateUpdateBrandDto>().ReverseMap();
             CreateMap<Brand , BrandViewModel>().ReverseMap();
@@ -68,14 +75,37 @@ namespace DigitizingProjectCore.AutoMapper
             CreateMap<City , CityViewModel>().ReverseMap();
 
 
+            //Job
+            CreateMap<Job, CreateUpdateJobDto>().ReverseMap();
+            CreateMap<Job, JobViewModel>().ReverseMap();
+
+
             //Distributor
             CreateMap<Distributor , DistributorViewModel>().ReverseMap();
             CreateMap<Distributor , CreateUpdateDistributorDto>().ReverseMap();
             CreateMap<Distributor, AddDistibutorWithCity>().ReverseMap();
 
 
+            //Page
+            CreateMap<Page, CreateUpdatePageDto>().ReverseMap();
+            CreateMap<Page, PageViewModel>().ReverseMap();
+
+
             //Configuration
             CreateMap<Configuration, SaveConfigurationDto>().ReverseMap();
+
+
+            //AboutUs
+            CreateMap<AboutUs, SaveAboutUsDto>().ReverseMap();
+
+
+            //Setting
+            CreateMap<Setting, SaveSettingDto>().ReverseMap();
+
+
+            //ContactUs
+            CreateMap<ContactUs, CreateContactUsDto>().ReverseMap();
+            CreateMap<ContactUs, ContactUsViewModel>().ReverseMap();
 
 
             //HomePageBanner

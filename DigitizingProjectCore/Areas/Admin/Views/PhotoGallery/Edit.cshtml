@@ -4,7 +4,7 @@
 }
 
 <form asp-controller="PhotoGallery" asp-action="Edit" method="POST" enctype="multipart/form-data" onsubmit="return jQueryAjaxPost(this);">
-    <input type="hidden" asp-for="Id"/>
+    <input type="hidden" asp-for="Id" />
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -49,13 +49,20 @@
         <label for="images">Images</label>
         @if (Model.ImagesName != null)
         {
-            @foreach (var imageName in Model.ImagesName.Split(','))
-            {
-                if (imageName != "")
+            <div class="row imgGallery">
+                @foreach (var imageName in Model.ImagesName.Split(','))
                 {
-                    <img src="/Images/@imageName" width="100" height="100">
+                    if (imageName != "")
+                    {
+                        <div class="col-sm-2">
+                            <img fname="@imageName" src="/Images/@imageName" width="100" height="100">
+                            <button data-id="@Model.Id" type="button" id="btnDeleteImage" class="btn btn-xs btn-danger">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    }
                 }
-            }
+            </div>
         }
         <input type="file" multiple class="form-control" id="images" asp-for="Images">
     </div>
@@ -69,3 +76,4 @@
     </div>
 
 </form>
+

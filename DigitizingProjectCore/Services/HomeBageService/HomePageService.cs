@@ -55,7 +55,6 @@ namespace DigitizingProjectCore.Services.HomeBageService
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _Banner.Created_By = _UserId;
             _Banner.Created_At = DateTime.Now;
-            _Banner.IsActive = true;
             _Banner.IsDelete = false;
             await _context.HomePageBanners.AddAsync(_Banner);
             await _context.SaveChangesAsync();

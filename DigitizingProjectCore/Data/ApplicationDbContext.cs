@@ -76,9 +76,17 @@ namespace DigitizingProjectCore.Data
         public DbSet<Link> Links { get; set; }
         public DbSet<AdminLinks> AdminLinks { get; set; }
         public DbSet<SolutionProducts> SolutionProducts { get; set; }
+        public DbSet<Page> Pages { get; set; }
         public DbSet<Setting> Settings { get; set; }
         public DbSet<HomePageBanner> HomePageBanners { get; set; }
         public DbSet<Configuration> Configurations { get; set; }
+        public DbSet<AboutUs> AboutUs { get; set; }
+        public DbSet<ContactUs> ContactUs { get; set; }
+        public DbSet<Job> Jobs { get; set; }
+        public DbSet<JobApplication> jobApplications { get; set; }
+        public DbSet<DrivingLiscenceType> DrivingLiscenceTypes { get; set; } 
+        public DbSet<MaritalStatu> MaritalStatus { get; set; }
+
 
     }
 }

@@ -1,26 +1,35 @@
-﻿@model List<Product>
+﻿@using DigitizingProjectCore.Services.LocalizationService;
+@model List<Product>
+@await Component.InvokeAsync("Layout");
 @{
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
     var lang = currentCulture.Name;
-    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+    var db =  ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
     var _Solutions = db.Solutions.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).ToList();
     var _Categories = db.CategoryForProducts.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).ToList();
     var _Brands = db.Brands.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).ToList();
 }
+@inject LocalizationService _localization
+
 <!-- Start Page Title Area -->
 <div class="page-title-area page-title-style-two">
     <div class="container">
         <div class="page-title-content">
-            <h2>@(lang == "ar" ? "المنتجات" : "Products")</h2>
+            <h2>
+                @_localization.Getkey("Products")
+            </h2>
+            <ul>
+                <li>
+                    <a href="/">
+                        <i class="bx bx-home"></i>
+                        @_localization.Getkey("Home")
+                    </a>
+                </li>
+                <li class="active">
+                    @_localization.Getkey("Products")
+                </li>
+            </ul>
         </div>
-        <ul class="d-flex justify-content-center">
-            <li>
-                <a asp-controller="Home" asp-action="Index">
-                    @(lang == "ar" ? "الصفحة الرئيسية" : "Home")
-                </a>
-            </li>
-            <li class="active" style="color:crimson"> /  @(lang == "ar" ? "المنتجات" : "Products")</li>
-        </ul>
     </div>
 </div>
 <div class="product-area ptb-100">
@@ -32,7 +41,9 @@
                 </div>
                 <div class="col-lg-3 col-sm-3">
                     <select name="solutionId" class="form-control">
-                        <option value="null">@(lang == "ar" ? "اختر حل" : "Select Solution")</option>
+                        <option value="null">
+                            @_localization.Getkey("SelectSolution")
+                        </option>
                         @foreach (var item in _Solutions)
                         {
                             <option value="@item.Id">@(lang == "ar" ? item.NameAr : item.NameEN)</option>
@@ -41,7 +52,9 @@
                 </div>
                 <div class="col-lg-3 col-sm-3">
                     <select name="categoryId" class="form-control">
-                        <option value="null">@(lang == "ar" ? "اختر قسم المنتج" : "Select Product Category")</option>
+                        <option value="null">
+                            @_localization.Getkey("SelectProductCategory")
+                        </option>
                         @foreach (var item in _Categories)
                         {
                             <option value="@item.Id">@(lang == "ar" ? item.NameAr : item.NameEn)</option>
@@ -50,7 +63,9 @@
                 </div>
                 <div class="col-lg-3 col-sm-3">
                     <select name="brandId" class="form-control">
-                        <option value="null">@(lang == "ar" ? "اختر شريك" : "Select Brand")</option>
+                        <option value="null">
+                            @_localization.Getkey("SelectBrand")
+                        </option>
                         @foreach (var item in _Brands)
                         {
                             <option value="@item.Id">@(lang == "ar" ? item.NameAr : item.NameEn)</option>
@@ -101,8 +116,9 @@
             else
             {
                 <div class="col-sm-12">
-
-                    <div class="alert alert-info">ThereIsNoItemsToShow</div>
+                    <div class="alert alert-info">
+                        @_localization.Getkey("ThereIsNoItemsToShow")
+                    </div>
                 </div>
             }
         </div>

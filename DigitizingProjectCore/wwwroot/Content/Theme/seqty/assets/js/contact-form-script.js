@@ -26,7 +26,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/en/home/contactus",
+            url: "/ContactUs/Send",
             data: "name=" + name + "&email=" + email + "&subject=" + msg_subject + "&message=" + message,
             success : function(text){
                 if (text == "success"){

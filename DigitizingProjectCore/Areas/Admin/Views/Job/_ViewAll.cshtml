@@ -1,0 +1,53 @@
+﻿@model List<JobViewModel>
+<div class="table-responsive">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h2>Manage Jobs</h2>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <a class="btn btn-success" asp-controller="Job" asp-action="Add">Add Job</a>
+                </div>
+            </div>
+        </div>
+        <table id="categoryService" class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Title (English)</th>
+                    <th>Title (Arabic)</th>
+                    <th>FromDate</th>
+                    <th>Applications</th>
+                    <th>Active</th>
+                    <th>Created Date</th>
+                    <th width="15%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.JobTitleEn</td>
+                        <td>@item.JobTitleAr</td>
+                        <td>@item.FromDate.ToString("dddd, dd MMMM yyyy")</td>
+                        <td><a href="#" class="btn btn-info">(@item.JobApplications.Count)</a></td>
+                        @if (item.IsActive)
+                        {
+                            <td><input type="checkbox" checked></td>
+                        }
+                        else
+                        {
+                            <td><input type="checkbox"></td>
+                        }
+                        <td>@item.Created_At.ToString("dddd, dd MMMM yyyy")</td>
+                        <td>
+                            <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
+                            <a class='btn btn-xs btn-info PopUp' asp-controller="Job" asp-action="Edit" asp-route-id="@item.Id"><i class='glyphicon glyphicon-edit'></i></a>
+                            <a class="btn btn-xs btn-danger PopUp" onclick="showInPopup('@Url.Action("Delete" , "Job" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Delete Job');"><i class='glyphicon glyphicon-trash'></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -27,7 +27,13 @@ namespace DigitizingProjectCore.Services.CategoryProductService
         }
         public async Task<List<CategoryViewModel>> GetAll()
         {
-            var _Categories = await _context.CategoryForProducts.Where(x => x.IsDelete == false).OrderBy(x => x.SortId).ToListAsync();
+            var _Categories = await _context.CategoryForProducts.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).ToListAsync();
+            var _CategoriesVM = _mapper.Map<List<CategoryViewModel>>(_Categories);
+            return _CategoriesVM;
+        }
+        public async Task<List<CategoryViewModel>> GetAll(string? key)
+        {
+            var _Categories = await _context.CategoryForProducts.Where(x => x.IsDelete == false && x.IsActive == true && (string.IsNullOrEmpty(key) || x.NameEn.Contains(key) || x.NameAr.Contains(key))).OrderBy(x => x.SortId).ToListAsync();
             var _CategoriesVM = _mapper.Map<List<CategoryViewModel>>(_Categories);
             return _CategoriesVM;
         }
@@ -47,7 +53,6 @@ namespace DigitizingProjectCore.Services.CategoryProductService
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _Category.Created_By = _UserId;
             _Category.Created_At = DateTime.Now;
-            _Category.IsActive = true;
             _Category.IsDelete = false;
             await _context.CategoryForProducts.AddAsync(_Category);
             await _context.SaveChangesAsync();

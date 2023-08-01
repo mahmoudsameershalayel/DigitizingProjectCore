@@ -5,16 +5,15 @@
             overflow-x: hidden;
         }
     </style>
-    <link rel="stylesheet" href="sweetalert2.min.css">
 }
 <div class="panel panel-default">
     <div class="panel-heading">
-        <form class="form-inline" id="search-form" asp-controller="CategoryService" asp-action="search" method="POST" onsubmit="return search(this);">
+        <form class="form-inline" asp-controller="CategoryProduct" asp-action="Index" method="GET">
             <div class="form-group">
-                <input type="text" placeholder="search ..." name="term" class="form-control" />
+                <input type="text" placeholder="search ..." name="key" class="form-control" />
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Search" />
+                <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
             </div>
         </form>
     </div>

@@ -1,0 +1,78 @@
+﻿@model List<JobApplicationViewModel>
+@{
+    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+    var jobs = db.Jobs.Where(x => x.IsDelete == false && x.IsActive == true).ToList();
+}
+@section css{
+    <style>
+        .table-responsive {
+            overflow-x: hidden;
+        }
+    </style>
+}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <form class="form-inline" asp-controller="JobApplication" asp-action="Index" method="GET">
+            <div class="form-group">
+                <input type="text" placeholder="search ..." name="key" class="form-control" />
+            </div>
+            <div class="form-group">
+                <select name="jobId" class="form-control">
+                    <option value="null">Any Job</option>
+                    @foreach (var job in jobs)
+                    {
+                        <option value="@job.Id">@job.JobTitleEn</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <select name="isChecked" class="form-control">
+                    <option value="null">Checked Status</option>
+                    <option value="true">Checked</option>
+                    <option value="false">Not Checked</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <select name="haveLiscence" class="form-control">
+                    <option value="null">Driving Liscence</option>
+                    <option value="true">Have Liscence</option>
+                    <option value="false">Not Have</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <select name="stillWork" class="form-control">
+                    <option value="null">Working Status</option>
+                    <option value="true">Still Work</option>
+                    <option value="false">Not Working</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+    </div>
+    <div class="panel-body" id="view-all">
+        @await Html.PartialAsync("_ViewAll", Model)
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="form-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

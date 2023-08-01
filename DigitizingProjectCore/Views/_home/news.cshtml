@@ -1,5 +1,5 @@
 ﻿@{
-    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+    var db = ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
     var lang = currentCulture.Name;
     var latestNews = db.News.Where(x => x.IsDelete == false && x.IsActive == true)
@@ -19,16 +19,16 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="single-blog">
                         <div class="blog-img imgContainer">
-                            <a href="/Home/NewsDetails/@item.Id">
+                            <a href="/News/Details?id=@item.Id">
                                 <img src="~/Images/@item.LogoImageName" alt="@(lang=="ar"?item.TitleAr:item.TitleEn)">
                             </a>
                         </div>
 
                         <div class="blog-content">
                             <span>@item.Date.ToString("dd MMMM yyyy")</span>
-                            <h3><a href="/@lang/Home/NewsDetails/@item.Id">@(lang == "ar" ? item.TitleAr : item.TitleEn)</a></h3>
+                            <h3><a href="/News/Details?id=@item.Id">@(lang == "ar" ? item.TitleAr : item.TitleEn)</a></h3>
                             @*<p>@(lang=="ar"?item.SummaryAr:item.SummaryEn)</p>*@
-                            <a href="/@lang/Home/NewsDetails/@item.Id" class="read-more">
+                            <a href="/News/Details?id=@item.Id" class="read-more">
                                 @(lang == "ar" ? "اقرأ المزيد" : "Read More")<i class="flaticon-right-arrow"></i>
                             </a>
                         </div>

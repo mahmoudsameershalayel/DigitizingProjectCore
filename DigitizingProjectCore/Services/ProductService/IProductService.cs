@@ -7,6 +7,7 @@ namespace DigitizingProjectCore.Services.ProductService
     public interface IProductService
     {
         public Task<List<ProductViewModel>> GetAll();
+        public Task<List<ProductViewModel>> GetAll(string? key, int? categoryId, int? brandId, bool? isActive);
         public Task<Product> GetById(int id);
         public Task<CreateUpdateProductDto> Create(CreateUpdateProductDto dto);
         public Task<CreateUpdateProductDto> Update(CreateUpdateProductDto dto);

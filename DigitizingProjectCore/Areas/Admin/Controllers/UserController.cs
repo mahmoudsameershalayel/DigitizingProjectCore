@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using DigitizingProjectCore.Areas.Admin.Dto;
 using DigitizingProjectCore.Data;
+using DigitizingProjectCore.Models;
 using DigitizingProjectCore.Services.DistributorService;
 using DigitizingProjectCore.Services.UserService;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace DigitizingProjectCore.Areas.Admin.Controllers
 {
@@ -15,9 +18,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _userService = userService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context)
+        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context , string? key)
         {
-            var _Users = await _userService.GetAll();
+            var _Users = await _userService.GetAll(key);
             ViewBag.db = _context;
             return View(_Users);
         }
@@ -59,22 +62,31 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordDto dto)
         {
-            await _userService.RestPassword(dto);
-            return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", await _userService.GetAll()) });
+           var result =  await _userService.RestPassword(dto);
+            if (result != 0) {
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _userService.GetAll()) });
+            }
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "ResetPassword", dto) });
+
+
         }
         [HttpGet]
-        public async Task<IActionResult> UserPremissions()
+        public async Task<IActionResult> UserPremissions([FromServices] ApplicationDbContext _context , string id)
         {
-            var _Links = await _userService.GetLinks();
-            var dto = new CreateUpdatePremissionDto();
-            dto.Links = _Links;
-            return View(dto);
+            var item = await _userService.GetUserById(id);
+            ViewBag.db = _context;
+            return View(item);
         }
         [HttpPost]
-        public async Task<IActionResult> UserPremissions(CreateUpdatePremissionDto dto)
+        public async Task<IActionResult> UserPremissions(string userId , int[] linkIds)
         {
-            var _Links = await _userService.GetLinks();
-            return View(_Links);
+            var _User = await _userService.GetUserById(userId);
+            int result = await _userService.UserPremissions(userId, linkIds);
+            if(result != 0)
+            {
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _userService.GetAll()) });
+            }
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "UserPremissions", _User) });
         }
         [HttpGet]
         public async Task<IActionResult> Delete(string id)

@@ -1,0 +1,80 @@
+﻿@using DigitizingProjectCore.Services.LocalizationService;
+@model DigitizingProjectCore.Areas.Admin.Dto.SaveAboutUsDto
+@{
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var lang = currentCulture.Name;
+}
+@inject LocalizationService _localization
+
+<style>
+    .about-content .tabs li {
+    @(lang == "ar" ? "margin-left" : "margin-right"):30px !important;
+    @(lang == "ar" ? "margin-right" : "margin-left"):0px !important;
+    }
+</style>
+<div class="page-title-area page-title-style-two">
+    <div class="container">
+        <div class="page-title-content">
+            <h2>
+                @_localization.Getkey("AboutUs")
+            </h2>
+            <ul>
+                <li>
+                    <a href="/">
+                        <i class="bx bx-home"></i>
+                        @_localization.Getkey("Home")
+                    </a>
+                </li>
+                <li class="active">
+                    @_localization.Getkey("AboutUs")
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- End Page Title Area -->
+<!-- Start About Us Area -->
+<section class="about-us-area pt-100 pb-70">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="about-img">
+                    @if (!string.IsNullOrEmpty(Model.ImageName))
+                    {
+                        <img src="/Images/@Model.ImageName" alt="AboutUs">
+                    }
+                    else
+                    {
+                        <img src="/Content/images/Logo.png" alt="AboutUs" />
+                    }
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="about-content">
+                    <div class="about-title">
+                        <span>
+                            @_localization.Getkey("AboutUs")
+                        </span>
+                        <p>
+                            @Html.Raw(lang == "ar" ? Model.DetailsAr : Model.DetailsEn)
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (Model.ShowServices)
+{
+    @Html.Partial("../_home/services")
+}
+
+
+@if (Model.ShowPartners)
+{
+    @Html.Partial("../_home/partners")
+}
+

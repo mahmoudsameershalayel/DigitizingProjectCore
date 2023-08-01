@@ -1,17 +1,22 @@
-﻿@{
-    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+﻿@using DigitizingProjectCore.Services.LocalizationService;
+@{
+    var db = ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
     var lang = currentCulture.Name;
     var latestItems = db.Services.Where(x => x.IsDelete == false && x.IsActive == true )
         .OrderBy(x => x.SortId)
         .Take(4);
 }
+@inject LocalizationService _localization
+
 <section style="background-color:#fff !important" class="safety-area pt-100">
     <div class="container">
         <div class="section-title">
-            <h2>@(lang == "ar" ? "تدريب" : "Training")</h2>
+            <h2>
+                @_localization.Getkey("Training")
+            </h2>
             <span>
-                @(lang == "ar" ? "يقدم خبراؤنا الدعم الفني على مدار الساعة طوال أيام الأسبوع ويخططون له الخدمات مع استشارات المنتج والأمن." : "Our experts are providing and planning 24 / 7 technical support services with product and security consultation.")
+                @_localization.Getkey("OurExpertsAreProvidingAndPlanning24/7TechnicalSupportServicesWithProductAndSecurityConsultation.")
             </span>
         </div>
         <div class="row pt-100 pb-70">

@@ -1,11 +1,14 @@
-﻿@{
-    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+﻿@using DigitizingProjectCore.Services.LocalizationService;
+@{
+    var db = ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
     var lang = currentCulture.Name;
     var sliders = db.HomePageBanners.Where(x => x.IsDelete == false && x.IsActive == true)
         .OrderBy(x => x.SortId).Take(3).ToList();
     int index = 0;
 }
+@inject LocalizationService _localization
+
 <style>
     .banner-content h1 {
         font-size: 45px;
@@ -75,10 +78,14 @@
     </div>
     <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">@(lang == "ar" ? "السابق" : "Previous")</span>
+        <span class="sr-only">
+            @_localization.Getkey("Previous")
+        </span>
     </a>
     <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">@(lang == "ar" ? "التالي" : "Next")</span>
+        <span class="sr-only">
+            @_localization.Getkey("Next")
+        </span>
     </a>
 </div>

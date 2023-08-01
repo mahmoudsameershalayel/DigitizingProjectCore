@@ -1,5 +1,8 @@
 ﻿@model List<DigitizingProjectCore.Areas.Admin.ViewModel.ServiceViewModel>
-
+@{
+    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+    var categories = db.CategoryForServices.Where(x => x.IsDelete == false && x.IsActive == true).ToList();
+}
 @section css{
     <style>
         .table-responsive {
@@ -9,12 +12,28 @@
 }
 <div class="panel panel-default">
     <div class="panel-heading">
-        <form class="form-inline" id="search-form" asp-controller="CategoryService" asp-action="search" method="POST" onsubmit="return search(this);">
+        <form class="form-inline" asp-controller="Service" asp-action="Index" method="GET">
             <div class="form-group">
-                <input type="text" placeholder="search ..." name="term" class="form-control" />
+                <input type="text" placeholder="search ..." name="key" class="form-control" />
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Search" />
+                <select name="categoryId" class="form-control">
+                    <option value="null">Any Category</option>
+                    @foreach (var category in categories)
+                    {
+                        <option value="@category.Id">@category.NameEn</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <select name="isActive" class="form-control">
+                    <option value="null">Is Active</option>
+                    <option value="true">Active</option>
+                    <option value="false">Not Active</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
             </div>
         </form>
     </div>
