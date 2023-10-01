@@ -1,8 +1,9 @@
-﻿@{
-    var db = ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
+﻿@using DigitizingProjectCore.Data;
+@inject ApplicationDbContext _context;
+@{
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
     var lang = currentCulture.Name;
-    var latestNews = db.News.Where(x => x.IsDelete == false && x.IsActive == true)
+    var latestNews = _context.News.Where(x => x.IsDelete == false && x.IsActive == true)
         .OrderByDescending(x => x.Date)
         .Take(3);
 }

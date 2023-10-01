@@ -12,8 +12,9 @@ namespace DigitizingProjectCore.Services.UserService
         public Task<ApplicationUser> GetUserById(string id);
         public Task<UpdateUserDto> GetByIdForEdit(string id);
         public Task<ResetPasswordDto> GetByIdForReset(string id);
+        public Task<bool> IsExist(string username, string email);
         public Task<List<Link>> GetLinks(); 
-        public Task<CreateUserDto> Create(CreateUserDto dto);
+        public Task<int> Create(CreateUserDto dto);
         public Task<UpdateUserDto> Update(UpdateUserDto dto);
         public Task<int> RestPassword(ResetPasswordDto dto);
         public Task<int> UserPremissions(string userId, int[] linkIds);

@@ -16,10 +16,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _homePageService = homePageService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context)
+        public async Task<IActionResult> Index()
         {
             var _Banners = await _homePageService.GetAll();
-            ViewBag.db = _context;
             return View(_Banners);
         }
         [HttpGet]

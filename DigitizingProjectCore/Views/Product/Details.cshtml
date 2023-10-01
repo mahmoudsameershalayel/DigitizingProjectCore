@@ -1,12 +1,13 @@
 ﻿@model DigitizingProjectCore.Models.Product
+@using DigitizingProjectCore.Data;
 @using DigitizingProjectCore.Models;
 @using Microsoft.EntityFrameworkCore;
 @using DigitizingProjectCore.Services.LocalizationService;
+@inject ApplicationDbContext _context
 @{
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
     var lang = currentCulture.Name; 
-    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
-    var last3News = db.Products.Where(x => x.IsDelete == false && x.IsActive == true && x.Id != Model.Id).OrderByDescending(x => x.SortId).Include(x => x.Category).Include(x => x.Brand).Take(6).ToList();
+    var last3News = _context.Products.Where(x => x.IsDelete == false && x.IsActive == true && x.Id != Model.Id).OrderByDescending(x => x.SortId).Include(x => x.Category).Include(x => x.Brand).Take(6).ToList();
 }
 @inject LocalizationService _localization
 <div class="page-title-area page-title-style-two">

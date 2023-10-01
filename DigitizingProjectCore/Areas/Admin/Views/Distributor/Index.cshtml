@@ -1,7 +1,8 @@
-﻿@model List<DigitizingProjectCore.Areas.Admin.ViewModel.DistributorViewModel>
+﻿@using DigitizingProjectCore.Data;
+@model List<DigitizingProjectCore.Areas.Admin.ViewModel.DistributorViewModel>
+@inject ApplicationDbContext _context;
 @{
-    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
-    var cities = db.Cities.Where(x => x.IsDelete == false && x.IsActive == true).ToList();
+    var cities = _context.Cities.Where(x => x.IsDelete == false && x.IsActive == true).ToList();
 }
 @section css{
     <style>
@@ -59,4 +60,14 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#tbllist").DataTable({
+                "bFilter": false,
+                "bDestroy": true,
+                "bSort": false,
+                "bStateSave": true,
+            });
+        })
+    </script>
 }

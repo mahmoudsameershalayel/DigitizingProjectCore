@@ -1,16 +1,12 @@
-﻿using AutoMapper;
-using DigitizingProjectCore.Areas.Admin.Dto;
-using DigitizingProjectCore.Areas.Admin.ViewModel;
-using DigitizingProjectCore.Data;
+﻿using DigitizingProjectCore.Areas.Admin.ViewModel;
 using DigitizingProjectCore.Services.CityService;
-using Humanizer.Localisation;
-using Microsoft.Ajax.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DigitizingProjectCore.Areas.Admin.Controllers
 {
     public class CityController : AdminBaseController
     {
+
         private readonly ICityService _cityService;
 
         public CityController(ICityService cityService)
@@ -18,10 +14,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _cityService = cityService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context , string? key)
+        public async Task<IActionResult> Index(string? key)
         {
             var _Categories = await _cityService.GetAll(key);
-            ViewBag.db = _context;
             return View(_Categories);
         }
         [HttpGet]

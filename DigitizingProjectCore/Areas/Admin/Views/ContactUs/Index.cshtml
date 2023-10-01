@@ -39,12 +39,20 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#tbllist").DataTable({
+                "bFilter": false,
+                "bDestroy": true,
+                "bSort": false,
+                "bStateSave": true,
+            });
+        })
+    </script>
     <script>
         function isReadedFunction() {
             // Get the checkbox
             var checkBox = document.getElementById("isReaded");
-
-
             const dataToSend = {
                 isReaded: !checkBox.checked
             };

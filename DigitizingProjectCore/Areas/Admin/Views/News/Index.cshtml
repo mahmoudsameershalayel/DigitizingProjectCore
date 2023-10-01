@@ -1,7 +1,8 @@
-﻿@model List<NewsViewModel>
+﻿@using DigitizingProjectCore.Data;
+@model List<NewsViewModel>
+@inject ApplicationDbContext _context;
 @{
-    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
-    var categories = db.CategoryForNews.Where(x => x.IsDelete == false && x.IsActive == true).ToList();
+    var categories = _context.CategoryForNews.Where(x => x.IsDelete == false && x.IsActive == true).ToList();
 }
 @section css{
     <style>
@@ -59,6 +60,16 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#tbllist").DataTable({
+                "bFilter": false,
+                "bDestroy": true,
+                "bSort": false,
+                "bStateSave": true,
+            });
+        })
+    </script>
     <script>
         flatpickr("#date-picker", {
             // Set the initial selected date

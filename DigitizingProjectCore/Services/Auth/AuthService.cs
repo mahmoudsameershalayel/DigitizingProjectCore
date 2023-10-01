@@ -24,7 +24,7 @@ namespace DigitizingProjectCore.Services.Auth
                 var _UserEmail = await _userManager.FindByEmailAsync(dto.Username);
                 if (_UserEmail == null)
                 {
-                    throw new Exception("Not Found!!");
+                    return false;
                 }
                 var result1 = await _signInManager.PasswordSignInAsync(_UserEmail, dto.Password, false, false);
                 if (result1.Succeeded)

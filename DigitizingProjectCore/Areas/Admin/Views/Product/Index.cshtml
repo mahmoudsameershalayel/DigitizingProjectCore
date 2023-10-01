@@ -1,8 +1,9 @@
-﻿@model List<DigitizingProjectCore.Areas.Admin.ViewModel.ProductViewModel>
+﻿@using DigitizingProjectCore.Data;
+@model List<DigitizingProjectCore.Areas.Admin.ViewModel.ProductViewModel>
+@inject ApplicationDbContext _context;
 @{
-    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
-    var categories = db.CategoryForProducts.Where(x => x.IsDelete == false && x.IsActive == true).ToList();
-    var brands = db.Brands.Where(x => x.IsDelete == false && x.IsActive == true).ToList();
+    var categories = _context.CategoryForProducts.Where(x => x.IsDelete == false && x.IsActive == true).ToList();
+    var brands = _context.Brands.Where(x => x.IsDelete == false && x.IsActive == true).ToList();
 }
 @section css{
     <style>
@@ -69,4 +70,14 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#tbllist").DataTable({
+                "bFilter": false,
+                "bDestroy": true,
+                "bSort": false,
+                "bStateSave": true,
+            });
+        })
+    </script>
 }

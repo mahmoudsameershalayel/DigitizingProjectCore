@@ -15,14 +15,12 @@ namespace DigitizingProjectCore.Controllers
         public async Task<IActionResult> Index()
         {
             var _News = await _context.News.Where(x => x.IsDelete == false && x.IsActive == true).Include(x => x.Category).ToListAsync();
-            ViewBag.db = _context;
             return View(_News);
         }
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var _News = await _context.News.Where(x => x.IsDelete == false && x.IsActive == true && x.Id == id).Include(x => x.Category).FirstOrDefaultAsync();
-            ViewBag.db = _context;
             return View(_News);
         }
     }

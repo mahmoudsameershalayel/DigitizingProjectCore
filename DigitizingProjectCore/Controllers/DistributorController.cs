@@ -15,7 +15,6 @@ namespace DigitizingProjectCore.Controllers
         public async Task<IActionResult> Index()
         {
             var distributors = await _context.Distributors.Where(x => x.IsDelete == false && x.IsActive == true).Include(x => x.City).ToListAsync();
-            ViewBag.db = _context;
             return View(distributors);
         }
     }

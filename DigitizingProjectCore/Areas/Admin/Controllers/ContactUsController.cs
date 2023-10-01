@@ -8,25 +8,21 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
 {
     public class ContactUsController : AdminBaseController
     {
-        private readonly ApplicationDbContext _context;
         private readonly IContactUsService _contactUsService;
-        public ContactUsController(ApplicationDbContext context, IContactUsService contactUsService)
+        public ContactUsController(IContactUsService contactUsService)
         {
             _contactUsService = contactUsService;
-            _context = context;
         }
         [HttpGet]
         public async Task<IActionResult> Index(string? key)
         {
             var contactUs = await _contactUsService.GetAll(key);
-            ViewBag.db = _context;
             return View(contactUs);
         }
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var contactUs = await _contactUsService.GetById(id);
-            ViewBag.db = _context;
             return View(contactUs);
         }
         [HttpGet]

@@ -1,6 +1,7 @@
 ﻿using Abp.Domain.Entities;
 using AutoMapper;
 using DigitizingProjectCore.Areas.Admin.Dto;
+using DigitizingProjectCore.Areas.Admin.Dto.ProductDto;
 using DigitizingProjectCore.Areas.Admin.ViewModel;
 using DigitizingProjectCore.Data;
 using DigitizingProjectCore.Models;
@@ -36,7 +37,7 @@ namespace DigitizingProjectCore.Services.ProductService
         {
             var _products = await _context.Products.Where(x => x.IsDelete == false && (string.IsNullOrEmpty(key) || x.NameEn.Contains(key) || x.NameAr.Contains(key)) && (categoryId == null || x.Category.Id == categoryId) && (brandId == null || x.Brand.Id == brandId) && (isActive == null || x.IsActive == isActive)).OrderBy(x => x.SortId).Include(c => c.Category).Include(b => b.Brand).ToListAsync();
             var _productsVM = _mapper.Map<List<ProductViewModel>>(_products);
-            return _productsVM;
+            return _productsVM; 
         }
         public async Task<Product> GetById(int id)
         {
@@ -47,7 +48,7 @@ namespace DigitizingProjectCore.Services.ProductService
             }
             return _product;
         }
-        public async Task<CreateUpdateProductDto> Create(CreateUpdateProductDto dto)
+        public async Task<CreateProductDto> Create(CreateProductDto dto)
         {
             var _product = _mapper.Map<Product>(dto);
             if (dto.LogoImage != null)
@@ -92,7 +93,7 @@ namespace DigitizingProjectCore.Services.ProductService
             await _context.SaveChangesAsync();
             return dto;
         }
-        public async Task<CreateUpdateProductDto> Update(CreateUpdateProductDto dto)
+        public async Task<UpdateProductDto> Update(UpdateProductDto dto)
         {
             var _product = await _context.Products.Where(x => x.IsDelete == false && x.Id == dto.Id).FirstOrDefaultAsync();
             if (_product != null)
@@ -159,7 +160,7 @@ namespace DigitizingProjectCore.Services.ProductService
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<CreateUpdateProductDto> InjectCategoriesAndBrands()
+        public async Task<CreateProductDto> CreateInjectCategoriesAndBrands()
         {
             var _Categories = await _context.CategoryForProducts.Where(x => x.IsDelete == false).ToListAsync();
             var _Brands = await _context.Brands.Where(x => x.IsDelete == false).ToListAsync();
@@ -170,5 +171,16 @@ namespace DigitizingProjectCore.Services.ProductService
         }
 
 
+        public async Task<UpdateProductDto> UpdateInjectCategoriesAndBrands()
+        {
+            var _Categories = await _context.CategoryForProducts.Where(x => x.IsDelete == false).ToListAsync();
+            var _Brands = await _context.Brands.Where(x => x.IsDelete == false).ToListAsync();
+            var dto = new EditProductWithCategoryAndBrand();
+            dto.InjectCategories(_Categories);
+            dto.InjectBrands(_Brands);
+            return dto;
+        }
+
+      
     }
 }

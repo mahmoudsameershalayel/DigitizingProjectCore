@@ -16,7 +16,7 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _categoryProductService = categoryProductService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context, string? key, int pg = 1)
+        public async Task<IActionResult> Index(string? key, int pg = 1)
         {
             var _Categories = await _categoryProductService.GetAll(key);
             const int pageSize = 7;
@@ -29,7 +29,6 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             int _categorySkip = (pg - 1) * pageSize;
             var data = _Categories.Skip(_categorySkip).Take(pager.PageSize).ToList();
             ViewBag.Pager = pager;
-            ViewBag.db = _context;
             return View(data);
         }
 

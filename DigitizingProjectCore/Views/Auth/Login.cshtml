@@ -37,8 +37,8 @@
     <!-- END THEME LAYOUT STYLES -->
     <link rel="shortcut icon" href="~/Content/images/Icon.ico" />
     <style>
-        .signIn{
-            margin-top:30px;
+        .signIn {
+            margin-top: 30px;
         }
     </style>
 </head>
@@ -54,21 +54,26 @@
                     <p>
                         Please enter your Username & Password
                     </p>
-                    <form method="POST" asp-controller="Auth" asp-action="Login">
-                        <div asp-validation-summary="All"></div>
-                        <input type="hidden" asp-for="@ReturnUrl" />
+                    <form action="javascript:;" class="login-form" method="post">
                         <div class="alert alert-danger display-hide">
                             <button class="close" data-close="alert"></button>
-                            <span>Enter you email and password. </span>
+                            <span>Enter any username and password. </span>
                         </div>
+                    </form>
+                    @await Html.PartialAsync("_msg")
+                    <form method="POST" asp-controller="Auth" asp-action="Login">
+                        <input type="hidden" asp-for="@ReturnUrl" />
                         <div class="row">
                             <div class="col-xs-6">
                                 <label for="exampleInputEmail1" class="form-label">Username :</label>
                                 <input asp-for="Username" type="text" class="form-control" placeholder="please write UserName">
+                                <span asp-validation-for="Username" class="text-danger"></span>
+
                             </div>
                             <div class="col-xs-6">
                                 <label for="exampleInputPassword1" class="form-label">Password</label>
                                 <input asp-for="Password" type="password" class="form-control mb-5" placeholder="please write Password">
+                                <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="row signIn">

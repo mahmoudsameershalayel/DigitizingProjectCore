@@ -19,22 +19,10 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _BrandService = BrandService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context, string? key)
-        {
-            var _Brands = await _BrandService.GetAll(key);
-            ViewBag.db = _context;
-            return View(_Brands);
-        }
-        [HttpPost]
         public async Task<IActionResult> Index(string? key)
         {
-            var items = await _BrandService.GetAll(key);
-            var result =
-               new
-               {
-                   data = items.ToList()
-               };
-            return Json(result);    
+            var _Brands = await _BrandService.GetAll(key);
+            return View(_Brands);
         }
         [HttpGet]
         public async Task<IActionResult> GetByName(string key)

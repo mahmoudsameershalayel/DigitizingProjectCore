@@ -11,6 +11,5 @@ namespace DigitizingProjectCore.Services.ContactUsService
         public Task<int> EditReaded(int id ,bool isReaded);
         public Task<CreateContactUsDto> Create(CreateContactUsDto vm);
         public Task<int> Delete(int id);
-
     }
 }

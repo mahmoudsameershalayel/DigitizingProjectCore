@@ -1,9 +1,10 @@
-﻿@model DigitizingProjectCore.Models.News
+﻿@using DigitizingProjectCore.Data;
+@model DigitizingProjectCore.Models.News
+@inject ApplicationDbContext _context
 @{
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
     var lang = currentCulture.Name;
-    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
-    var last3News = db.News.Where(x => x.IsDelete == false && x.IsActive == true && x.Id != Model.Id)
+    var last3News = _context.News.Where(x => x.IsDelete == false && x.IsActive == true && x.Id != Model.Id)
         .OrderByDescending(x => x.Date).Take(3);
 }
 <div class="page-title-area page-title-style-two">

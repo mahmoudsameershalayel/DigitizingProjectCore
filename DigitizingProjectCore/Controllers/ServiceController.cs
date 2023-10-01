@@ -12,15 +12,14 @@ namespace DigitizingProjectCore.Controllers
             _context = context;
         }
         [HttpGet]
-        public IActionResult Index(int? CategoryId)
+        public IActionResult Index(int? id)
         {
-            var service = _context.CategoryForServices.Where(x => x.IsDelete == false && x.IsActive == true && (x.Id == CategoryId)).OrderBy(x => x.SortId).FirstOrDefault();
-            var item = _context.Services.Where(x => x.IsDelete == false && x.IsActive == true && x.CategoryId == CategoryId).FirstOrDefault();
+            var service = _context.CategoryForServices.Where(x => x.IsDelete == false && x.IsActive == true && (x.Id == id)).OrderBy(x => x.SortId).FirstOrDefault();
+            var item = _context.Services.Where(x => x.IsDelete == false && x.IsActive == true && x.CategoryId == id).FirstOrDefault();
             if (item == null)
             {
                 throw new Exception("Not Found!!");
             }
-            ViewBag.db = _context;
             return View(service);
         }
         [HttpGet]
@@ -31,7 +30,6 @@ namespace DigitizingProjectCore.Controllers
             {
                 throw new Exception("Not Found!!");
             }
-            ViewBag.db = _context;
             return View(item);
         }
     }

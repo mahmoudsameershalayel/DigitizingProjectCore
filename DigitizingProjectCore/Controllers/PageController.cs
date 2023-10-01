@@ -8,7 +8,6 @@ namespace DigitizingProjectCore.Controllers
         public ActionResult Index([FromServices] ApplicationDbContext _context ,  string id)
         {
             var page = _context.Pages.Where(x => x.IsActive == true && x.IsDelete == false && x.Slug.Equals(id)).FirstOrDefault();
-            ViewBag.db = _context;
             return View(page);
         }
     }

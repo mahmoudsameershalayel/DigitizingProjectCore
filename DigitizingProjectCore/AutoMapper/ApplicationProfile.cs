@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using DigitizingProjectCore.Areas.Admin.Dto;
+using DigitizingProjectCore.Areas.Admin.Dto.NewsDto;
+using DigitizingProjectCore.Areas.Admin.Dto.ProductDto;
 using DigitizingProjectCore.Areas.Admin.ViewModel;
 using DigitizingProjectCore.Models;
 
@@ -29,10 +31,11 @@ namespace DigitizingProjectCore.AutoMapper
 
 
             //Product
-            CreateMap<Product , CreateUpdateProductDto>().ReverseMap();
+            CreateMap<Product , CreateProductDto>().ReverseMap();
+            CreateMap<Product, UpdateProductDto>().ReverseMap();
             CreateMap<Product , ProductViewModel>().ReverseMap();
             CreateMap<Product , AddProductWithCategoryAndBrand>().ReverseMap();
-
+            CreateMap<Product, EditProductWithCategoryAndBrand>().ReverseMap();
 
             //CategoryForProduct
             CreateMap<CategoryForProduct , CreateUpdateCategoryDto>().ReverseMap();
@@ -40,9 +43,9 @@ namespace DigitizingProjectCore.AutoMapper
 
 
             //News
-            CreateMap<News, CreateUpdateNewsDto>().ReverseMap();
+            CreateMap<News, CreateNewsDto>().ReverseMap();
+            CreateMap<News, UpdateNewsDto>().ReverseMap();
             CreateMap<News, NewsViewModel>().ReverseMap();
-            CreateMap<News, AddProductWithCategoryAndBrand>().ReverseMap();
 
 
             //PhotoGallery

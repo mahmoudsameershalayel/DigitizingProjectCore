@@ -16,10 +16,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _photoGalleryService = photoGalleryService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context , string? key , bool? isActive )
+        public async Task<IActionResult> Index(string? key , bool? isActive )
         {
             var _Categories = await _photoGalleryService.GetAll(key , isActive);
-            ViewBag.db = _context;
             return View(_Categories);
         }
         [HttpPost]

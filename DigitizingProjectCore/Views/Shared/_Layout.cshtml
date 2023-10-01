@@ -1,19 +1,20 @@
-﻿@using DigitizingProjectCore.Services.LocalizationService;
+﻿@using DigitizingProjectCore.Data;
+@using DigitizingProjectCore.Services.LocalizationService;
 @using DigitizingProjectCore.Resources;
 @using Microsoft.AspNetCore.Localization
 @using System.Globalization;
+@inject ApplicationDbContext _context;
 @{
-    var db = ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
     var controller = ViewContext.RouteData.Values["controller"].ToString().ToLower();
     var action = ViewContext.RouteData.Values["action"].ToString().ToLower();
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
     var lang = currentCulture.Name;
     var ltrValue = lang == "en" ? "ltr" : "rtl";
-    var productsCategory = db.CategoryForProducts.Where(x => x.IsDelete == false && x.IsActive == true && x._Products.Count(x => x.IsActive == true) > 0).OrderBy(x => x.SortId).ToList();
-    var servicesCategory = db.CategoryForServices.Where(x => x.IsDelete == false && x.IsActive == true && x._Services.Count(x => x.IsActive == true) > 0).OrderBy(x => x.SortId).ToList();
-    var dcount = db.Distributors.Count(x => x.IsDelete == false && x.IsActive == true);
-    var pages = db.Pages.Where(x => x.IsDelete == false && x.IsActive == true).ToList();
-    var setting = db.Configurations.FirstOrDefault();
+    var productsCategory = _context.CategoryForProducts.Where(x => x.IsDelete == false && x.IsActive == true && x._Products.Count(x => x.IsActive == true) > 0).OrderBy(x => x.SortId).ToList();
+    var servicesCategory = _context.CategoryForServices.Where(x => x.IsDelete == false && x.IsActive == true && x._Services.Count(x => x.IsActive == true) > 0).OrderBy(x => x.SortId).ToList();
+    var dcount = _context.Distributors.Count(x => x.IsDelete == false && x.IsActive == true);
+    var pages = _context.Pages.Where(x => x.IsDelete == false && x.IsActive == true).ToList();
+    var setting = _context.Configurations.FirstOrDefault();
     var supportedCultures = new[]
     {
         new CultureInfo("en"),
@@ -419,7 +420,7 @@
                                         @foreach (var item in productsCategory)
                                         {
                                             <li class="nav-item">
-                                                <a href="/Solution/Index?categoryId=@item.Id" class="nav-link">
+                                                <a href="/Solution/Index?id=@item.Id" class="nav-link">
                                                     @(lang == "ar" ? item.NameAr : item.NameEn)
                                                 </a>
                                             </li>
@@ -436,7 +437,7 @@
                                         @foreach (var item in servicesCategory)
                                         {
                                             <li class="nav-item">
-                                                <a href="/Service/Index?CategoryId=@item.Id" class="nav-link">
+                                                <a href="/Service/Index?id=@item.Id" class="nav-link">
                                                     @(lang == "ar" ? item.NameAr : item.NameEn)
                                                 </a>
                                             </li>

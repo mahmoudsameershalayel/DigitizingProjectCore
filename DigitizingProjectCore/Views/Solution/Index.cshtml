@@ -1,11 +1,12 @@
-﻿@using DigitizingProjectCore.Services.LocalizationService;
+﻿@using DigitizingProjectCore.Data;
+@using DigitizingProjectCore.Services.LocalizationService;
 @model List<Solution>
+@inject ApplicationDbContext _context
 @{
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
     var lang = currentCulture.Name;
-    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
-    var _Categories = db.CategoryForProducts.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).ToList();
-    var _Brands = db.Brands.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).ToList();
+    var _Categories = _context.CategoryForProducts.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).ToList();
+    var _Brands = _context.Brands.Where(x => x.IsDelete == false && x.IsActive == true).OrderBy(x => x.SortId).ToList();
 }
 @inject LocalizationService _localization
 

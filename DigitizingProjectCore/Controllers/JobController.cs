@@ -13,17 +13,15 @@ namespace DigitizingProjectCore.Controllers
             _jobService = jobService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context)
+        public async Task<IActionResult> Index()
         {
             var _JobsVM = await _jobService.GetAllForPublic();
-            ViewBag.db = _context;
             return View(_JobsVM);
         }
         [HttpGet]
-        public async Task<IActionResult> Details([FromServices] ApplicationDbContext _context, int id)
+        public async Task<IActionResult> Details(int id)
         {
             var _JobsVM = await _jobService.GetVMById(id);
-            ViewBag.db = _context;
             return View(_JobsVM);
         }
     }

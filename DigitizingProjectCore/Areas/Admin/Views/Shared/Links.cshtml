@@ -1,0 +1,40 @@
+﻿@{
+    var queryStringDict = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(Context.Request.QueryString.ToString());
+    Layout = "~/Areas/Admin/Views/Shared/_PopUpLayout.cshtml";
+    string url = "https://localhost:44334" + @queryStringDict["route"] + "?id=" + @queryStringDict["id"];
+}
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <label class="control-label col-md-2">URL</label>
+        <div class="col-md-10">
+            <div class="input-group">
+                <input type="text" value="@url" class="form-control" readonly />
+                <span class="input-group-btn">
+                    <button title="Copy URL" class="btn green" onclick="return copy('@url')"><i class="fa fa-copy"></i></button>
+                    <a title="Open URL" target="_blank" class="btn blue" href="@url"><i class="fa fa-eye"></i></a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function copy(copyText) {
+        try {
+            navigator.clipboard.writeText(copyText);
+            ShowMssage("s: URL Copied to clipboard");
+            console.log('Content copied to clipboard');
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        }
+        return false;
+    }
+</script>

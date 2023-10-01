@@ -17,10 +17,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _ServiceService = serviceService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context , string? key , int? categoryId , bool? isActive)
+        public async Task<IActionResult> Index(string? key , int? categoryId , bool? isActive)
         {
             var _Services = await _ServiceService.GetAll(key , categoryId , isActive);
-            ViewBag.db = _context;
             return View(_Services);
         }
         [HttpGet]
@@ -67,7 +66,7 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             return View(dto);
         }
         [HttpPost]
-        public async Task<IActionResult> Delete(CreateUpdateProductDto dto)
+        public async Task<IActionResult> Delete(CreateUpdateServiceDto dto)
         {
             await _ServiceService.Delete(dto.Id);
             return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", await _ServiceService.GetAll()) });

@@ -11,7 +11,7 @@
                 </div>
             </div>
         </div>
-        <table class="table table-striped table-hover">
+        <table class="table table-striped table-hover" id="tbllist">
             <thead>
                 <tr>
                     <th>Name (English)</th>
@@ -39,7 +39,7 @@
                         <td>@((item.Category.IsActive == true && item.Category.IsDelete == false) ? @item.Category.NameEn : "UNKNOWN")</td>
                         <td>@item.Created_At.ToString("dddd, dd MMMM yyyy")</td>
                         <td>
-                            <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
+                            <a class='btn PopUp btn-xs btn-success' onclick="showInPopup('/Admin/Home/Links?route=/Service/Details&id=@item.Id')"><i class='glyphicon glyphicon-link'></i></a>
                             <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "Service" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Service');"><i class='glyphicon glyphicon-edit'></i></a>
                             <a class="btn btn-xs btn-danger PopUp" onclick="showInPopup('@Url.Action("Delete" , "Service" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Delete Service');"><i class='glyphicon glyphicon-trash'></i></a>
                         </td>

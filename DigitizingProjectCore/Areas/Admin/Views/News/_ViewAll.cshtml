@@ -11,7 +11,7 @@
                 </div>
             </div>
         </div>
-        <table class="table table-striped table-hover">
+        <table class="table table-striped table-hover" id="tbllist">
             <thead>
                 <tr>
                     <th>Title (English)</th>
@@ -39,7 +39,7 @@
                         }
                         <td>@item.Date.ToString("dddd, dd MMMM yyyy")</td>
                         <td>
-                            <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
+                            <a class='btn PopUp btn-xs btn-success' onclick="showInPopup('/Admin/Home/Links?route=/News/Index&id=@item.Id')"><i class='glyphicon glyphicon-link'></i></a>
                             <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "News" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Category Service');"><i class='glyphicon glyphicon-edit'></i></a>
                             <a class="btn btn-xs btn-danger PopUp" onclick="showInPopup('@Url.Action("Delete" , "News" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Delete Category Service');"><i class='glyphicon glyphicon-trash'></i></a>
                         </td>

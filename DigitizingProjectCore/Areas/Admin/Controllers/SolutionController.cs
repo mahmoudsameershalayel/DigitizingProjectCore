@@ -19,27 +19,24 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context , string? key)
+        public async Task<IActionResult> Index(string? key)
         {
             var _Solutions = await _solutionService.GetAll(key);
-            ViewBag.db = _context;
             return View(_Solutions);
         }
         [HttpGet]
-        public async Task<IActionResult> Add([FromServices] ApplicationDbContext _context)
+        public async Task<IActionResult> Add()
         {
             var _CreateUpdateSolution = await _solutionService.InjectCategoriesAndBrandsAndProducts();
-            ViewBag.db = _context;
             ViewBag.Products = _solutionService.GetAllProducts();
             return View(_CreateUpdateSolution);
         }
         [HttpPost]
-        public async Task<IActionResult> Add([FromServices] ApplicationDbContext _context,CreateUpdateSolutionDto dto)
+        public async Task<IActionResult> Add(CreateUpdateSolutionDto dto)
         {
             if (!ModelState.IsValid)
             {
                 var _CreateUpdateSolution = await _solutionService.InjectCategoriesAndBrandsAndProducts();
-                ViewBag.db = _context;
                 return View(_CreateUpdateSolution);
             }
             await _solutionService.Create(dto);
@@ -47,36 +44,34 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             }
 
         [HttpGet]
-        public async Task<IActionResult> Edit([FromServices] ApplicationDbContext _context , int id)
+        public async Task<IActionResult> Edit(int id)
         {
             var _Solution = await _solutionService.GetById(id);
             var _AddSolutionWithCBP = await _solutionService.InjectCategoriesAndBrandsAndProducts();
             _AddSolutionWithCBP = _mapper.Map(_Solution, _AddSolutionWithCBP);
-            ViewBag.db = _context;
             return View(_AddSolutionWithCBP);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit([FromServices] ApplicationDbContext _context , CreateUpdateSolutionDto dto)
+        public async Task<IActionResult> Edit(CreateUpdateSolutionDto dto)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.db = _context;
                 return View(dto);
             }
             await _solutionService.Update(dto);
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
             
         }
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            ViewBag.Id = id;
-            return View();
+            var _Solution = await _solutionService.GetById(id);
+            return View(_Solution);
         }
         [HttpPost]
-        public async Task<IActionResult> Delete(int id, int y)
+        public async Task<IActionResult> Delete(Solution item)
         {
-            await _solutionService.Delete(id);
+            await _solutionService.Delete(item.Id);
             return Json(new { html = Helper.RenderRazorViewToString(this, "_ViewAll", await _solutionService.GetAll()) });
         }
     }

@@ -15,10 +15,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _pageService = pageService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context, string? key, bool? isActive)
+        public async Task<IActionResult> Index(string? key, bool? isActive)
         {
             var _Pages = await _pageService.GetAll(key, isActive);
-            ViewBag.db = _context;
             return View(_Pages);
         }
 

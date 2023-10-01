@@ -1,8 +1,9 @@
 ﻿@model DigitizingProjectCore.Areas.Admin.Dto.CreateUserDto
 @{
     Layout = null;
-}
+    Layout = "~/Areas/Admin/Views/Shared/_PopUpLayout.cshtml";
 
+}
 <form asp-controller="User" asp-action="Add" method="POST" onsubmit="return jQueryAjaxPost(this);">
     <div class="row">
         <div class="col-md-6 form-group">
@@ -20,7 +21,7 @@
     <div class="row">
         <div class="col-md-6 form-group">
             <label for="password">Password</label>
-            <input type="text" class="form-control" id="password" asp-for="Password">
+            <input type="password" class="form-control" id="password" asp-for="Password">
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <div class="col-md-6 form-group">
@@ -34,4 +35,5 @@
         <input type="checkbox" id="active" checked asp-for="IsActive">
     </div>
     <input type="submit" class="btn btn-primary" value="Create" />
+    
 </form>

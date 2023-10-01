@@ -13,26 +13,23 @@ namespace DigitizingProjectCore.Controllers
             _contactUsService = contactUsService;
         }
         [HttpGet]
-        public IActionResult Index([FromServices] ApplicationDbContext _context)
+        public IActionResult Index()
         {
-            ViewBag.db = _context;
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Send([FromServices] ApplicationDbContext _context , CreateContactUsDto dto)
+        public async Task<IActionResult> Send(CreateContactUsDto dto)
         {
             if (ModelState.IsValid) {
                 await _contactUsService.Create(dto);
                 return RedirectToAction("Index");
             }
-            ViewBag.db = _context;
             return View("Index");
         }
         [HttpPost]
-        public async Task<IActionResult> SendFromHome([FromServices] ApplicationDbContext _context , CreateContactUsDto dto)
+        public async Task<IActionResult> SendFromHome(CreateContactUsDto dto)
         {
             await _contactUsService.Create(dto);
-            ViewBag.db = _context;
             return View("Views/Home/Index.cshtml");
         }
 

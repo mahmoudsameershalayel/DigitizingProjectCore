@@ -21,12 +21,9 @@ namespace DigitizingProjectCore.Areas.Admin.Dto
         public string DetailsAr { get; set; }
         [Required(ErrorMessage = "Details (English) is required.")]
         public string DetailsEn { get; set; }
-        [Required(ErrorMessage = "Logo Image is required.")]
-        public IFormFile LogoImage { get; set; }
-        [Required(ErrorMessage = "PDF File is required.")]
-        public IFormFile PDFFile { get; set; }
-        [Required(ErrorMessage = "Doc File is required.")]
-        public IFormFile DocFile { get; set; }
+        public IFormFile? LogoImage { get; set; }
+        public IFormFile? PDFFile { get; set; }
+        public IFormFile? DocFile { get; set; }
         public string? LogoImageName { get; set; }
         public string? PDFFileName { get; set; } 
         public string? DocFileName { get; set; }

@@ -1,4 +1,5 @@
-﻿@model DigitizingProjectCore.Areas.Admin.Dto.AddNewsWithCategory
+﻿@using DigitizingProjectCore.Areas.Admin.Dto.NewsDto;
+@model AddNewsWithCategory
 @{
     Layout = null;
 }
@@ -59,8 +60,10 @@
     </div>
     <div class="row">
         <div class="col-md-6 form-group">
-            <label for="logo">Logo</label>
+            <label for="logo">Image:</label>
             <input type="file" class="form-control" id="logo" asp-for="LogoImage">
+            <span asp-validation-for="LogoImage" class="text-danger"></span>
+
         </div>
         <div class="col-md-6 form-group">
             <label for="date-picker">Date</label>

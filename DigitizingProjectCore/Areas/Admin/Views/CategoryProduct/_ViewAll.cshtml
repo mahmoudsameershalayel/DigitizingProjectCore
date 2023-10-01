@@ -1,13 +1,4 @@
 ﻿@model List<CategoryViewModel>
-@{
-    Pager pager = new Pager();
-    int pageNo = 0;
-    if (ViewBag.Pager != null)
-    {
-        pager = ViewBag.Pager;
-        pageNo = pager.CurrentPage;
-    }
-}
 <body>
     <div class="table-responsive">
         <div class="table-wrapper">
@@ -21,7 +12,7 @@
                     </div>
                 </div>
             </div>
-            <table class="table table-striped table-hover" id="resultTable">
+            <table class="table table-striped table-hover" id="tbllist">
                 <thead>
                     <tr>
                         <th>Name (English)</th>
@@ -47,7 +38,7 @@
                             }
                             <td>@item.Created_At.ToString("dddd, dd MMMM yyyy")</td>
                             <td>
-                                <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
+                                <a class='btn PopUp btn-xs btn-success' onclick="showInPopup('/Admin/Home/Links?route=/Product/Index&id=@item.Id')"><i class='glyphicon glyphicon-link'></i></a>
                                 <a class='btn btn-xs btn-info PopUp' onclick="showInPopup('@Url.Action("Edit" , "CategoryProduct" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Edit Category Product');"><i class='glyphicon glyphicon-edit'></i></a>
                                 <a class="btn btn-xs btn-danger PopUp" onclick="showInPopup('@Url.Action("Delete" , "CategoryProduct" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Delete Category Product');"><i class='glyphicon glyphicon-trash'></i></a>
                             </td>
@@ -57,18 +48,5 @@
             </table>
 
         </div>
-    </div>
-    <div>
-        @if (pager.TotalPages > 0)
-        {
-            <ul class="pagination justify-content-end">
-                @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
-                {
-                    <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
-                        <a class="page-link btn-pge" asp-area="Admin" asp-controller="CategoryProduct" asp-action="Index" asp-route-pg="@pge" data-pg="@pge">@pge</a>
-                    </li>
-                }
-            </ul>
-        }
     </div>
 </body>

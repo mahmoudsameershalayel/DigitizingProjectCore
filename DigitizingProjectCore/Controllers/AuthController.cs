@@ -15,7 +15,8 @@ namespace DigitizingProjectCore.Controllers
             _authService = authService;
         }
         [HttpGet]
-        public IActionResult Login(string? ReturnUrl) {
+        public IActionResult Login(string? ReturnUrl)
+        {
             ViewData["ReturnUrl"] = ReturnUrl;
             return View();
 
@@ -23,26 +24,26 @@ namespace DigitizingProjectCore.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginDto dto)
         {
-            try {
-                var IsSuccess = await _authService.Login(dto);
-                if (IsSuccess)
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
+            var IsSuccess = await _authService.Login(dto);
+            if (IsSuccess)
+            {
+                if (dto.ReturnUrl != null)
                 {
-                    if (dto.ReturnUrl != null)
-                    {
-                        return LocalRedirect(dto.ReturnUrl);
-                    }
-                    else {
-                        return LocalRedirect("/Admin/Home/Index");
-                    }
+                    return LocalRedirect(dto.ReturnUrl);
+                }
+                else
+                {
+                    return LocalRedirect("/Admin/Home/Index");
                 }
             }
-            catch (Exception ex)
-            {
-                return View(ex.Message);
-            }
+            TempData["msg"] = "e: خطأ قي اسم المستخدم أو كلمة المرور";
             return View();
         }
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await _authService.Logout();

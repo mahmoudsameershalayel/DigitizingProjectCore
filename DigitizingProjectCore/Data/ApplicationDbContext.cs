@@ -20,7 +20,6 @@ namespace DigitizingProjectCore.Data
             Builder.ApplyConfiguration(new SolutionProductsConstrains());
             Builder.ApplyConfiguration(new AdminLinksConstrains());
 
-
             //GUID
             string Admin_Role_Id = "9a00de05-ab2c-4692-82b2-d33f0f50eb7e";
             string Admin_User_Id = "f1446937-109c-4e1a-97ce-0560442484f5";
@@ -46,11 +45,14 @@ namespace DigitizingProjectCore.Data
                 UserName = "System_Administrator",
                 Phone = "97259000000"
             };
+            
 
             //Password Hasher
             PasswordHasher<ApplicationUser> passwordHasher = new PasswordHasher<ApplicationUser>();
             adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "123456");
             Builder.Entity<ApplicationUser>().HasData(adminUser);
+
+
             //Add Role To AdminUser
             Builder.Entity<IdentityUserRole<string>>().HasData(
                 new IdentityUserRole<string>
@@ -61,6 +63,7 @@ namespace DigitizingProjectCore.Data
                 );
 
             base.OnModelCreating(Builder);
+
         }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -86,7 +89,5 @@ namespace DigitizingProjectCore.Data
         public DbSet<JobApplication> jobApplications { get; set; }
         public DbSet<DrivingLiscenceType> DrivingLiscenceTypes { get; set; } 
         public DbSet<MaritalStatu> MaritalStatus { get; set; }
-
-
     }
 }

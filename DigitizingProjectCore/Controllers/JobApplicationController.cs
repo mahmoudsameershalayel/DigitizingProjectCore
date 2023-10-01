@@ -17,17 +17,15 @@ namespace DigitizingProjectCore.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> Add([FromServices] ApplicationDbContext _context , int id)
+        public async Task<IActionResult> Add(int id)
         {
             var _CreateUpdateJob = await _jobApplicationService.InjectJMD(id);
-            ViewBag.db = _context;
             return View(_CreateUpdateJob);
         }
         [HttpPost]
-        public async Task<IActionResult> Add([FromServices] ApplicationDbContext _context , CreateJobApplicationDto dto)
+        public async Task<IActionResult> Add(CreateJobApplicationDto dto)
         {
             await _jobApplicationService.Create(dto);
-            ViewBag.db = _context;
             return View("Add");
         }
     }

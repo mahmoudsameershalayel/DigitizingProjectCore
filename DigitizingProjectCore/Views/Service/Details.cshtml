@@ -1,12 +1,13 @@
-﻿@model DigitizingProjectCore.Models.Service
+﻿@using DigitizingProjectCore.Data;
+@model DigitizingProjectCore.Models.Service
+@inject ApplicationDbContext _context
 @{
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
     var lang = currentCulture.Name;
-    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
-    var otherItems = db.Services.Where(x => x.IsDelete == false && x.IsActive == true
+    var otherItems = _context.Services.Where(x => x.IsDelete == false && x.IsActive == true
         && x.CategoryId == Model.CategoryId && x.Id != Model.Id)
         .OrderByDescending(x => x.SortId).Take(6);
-    var categores = db.CategoryForServices.Where(x => x.IsDelete == false && x.IsActive == true && x._Services.Count > 0)
+    var categores = _context.CategoryForServices.Where(x => x.IsDelete == false && x.IsActive == true && x._Services.Count > 0)
         .OrderBy(x => x.SortId)
         .ToList();
 }

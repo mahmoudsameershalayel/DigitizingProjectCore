@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DigitizingProjectCore.Areas.Admin.Dto;
+using DigitizingProjectCore.Areas.Admin.Dto.NewsDto;
 using DigitizingProjectCore.Data;
 using DigitizingProjectCore.Services.CategoryNewsService;
 using DigitizingProjectCore.Services.NewsService;
@@ -17,27 +18,26 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context , string? key , int? categoryId , bool? isActive)
+        public async Task<IActionResult> Index(string? key , int? categoryId , bool? isActive)
         {
             var _News = await _newsService.GetAll(key , categoryId , isActive);
-            ViewBag.db = _context;
             return View(_News);
         }
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            var _CreateUpdateNews = await _newsService.InjectCategories();
+            var _CreateUpdateNews = await _newsService.CreateInjectCategories();
             return View(_CreateUpdateNews);
         }
         [HttpPost]
-        public async Task<IActionResult> Add(CreateUpdateNewsDto dto)
+        public async Task<IActionResult> Add(CreateNewsDto dto)
         {
             if (ModelState.IsValid)
             {
                 await _newsService.Create(dto);
                 return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _newsService.GetAll()) });
             }
-            var _CreateUpdateNews = await _newsService.InjectCategories();
+            var _CreateUpdateNews = await _newsService.CreateInjectCategories();
             return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Add", _CreateUpdateNews) });
         }
 
@@ -45,12 +45,12 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var _News = await _newsService.GetNewsById(id);
-            var _AddNewsWithCategory = await _newsService.InjectCategories();
+            var _AddNewsWithCategory = await _newsService.UpdateInjectCategories();
             _AddNewsWithCategory = _mapper.Map(_News, _AddNewsWithCategory);
             return View(_AddNewsWithCategory);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(CreateUpdateNewsDto dto)
+        public async Task<IActionResult> Edit(UpdateNewsDto dto)
         {
             if (ModelState.IsValid)
             {

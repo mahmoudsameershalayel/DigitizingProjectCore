@@ -3,6 +3,7 @@ using DigitizingProjectCore.Areas.Admin.Dto;
 using DigitizingProjectCore.Areas.Admin.ViewModel;
 using DigitizingProjectCore.Data;
 using DigitizingProjectCore.Models;
+using Humanizer;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Azure.Documents;
@@ -76,12 +77,26 @@ namespace DigitizingProjectCore.Services.UserService
             var dto = _mapper.Map<ResetPasswordDto>(_User);
             return dto;
         }
+        public async Task<bool> IsExist(string username , string email)
+        {
+            var _users = await _context.Users.Where(x => x.IsDeleted == false).ToListAsync();
+            var isExist = false;
+            foreach (var user in _users)
+            {
+                if (username.Equals(user.UserName) || email.Equals(user.Email))
+                {
+                    isExist = true;
+                    break;
+                }
+            }
+            return isExist;
+        }
         public async Task<List<Link>> GetLinks()
         {
             var _Links = await _context.Links.ToListAsync();
             return _Links;
         }
-        public async Task<CreateUserDto> Create(CreateUserDto dto)
+        public async Task<int> Create(CreateUserDto dto)
         {
             ApplicationUser _User = new ApplicationUser();
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
@@ -94,12 +109,12 @@ namespace DigitizingProjectCore.Services.UserService
             _User.FullName = dto.FullName;
             _User.Phone = dto.Phone;
             var result = await _userManager.CreateAsync(_User, dto.Password);
-            if (!result.Succeeded)
-            {
-                throw new Exception("Username already exist!!");
-            }
             await _userManager.AddToRoleAsync(_User, "Administrator");
-            return dto;
+            if (result.Succeeded)
+            {
+                return 1;
+            }
+            return 0;
         }
         public async Task<UpdateUserDto> Update(UpdateUserDto dto)
         {
@@ -119,7 +134,8 @@ namespace DigitizingProjectCore.Services.UserService
         }
         public async Task<int> RestPassword(ResetPasswordDto dto)
         {
-            if (dto.Password.Equals(dto.ConfirmPassword)) {
+            if (dto.Password.Equals(dto.ConfirmPassword))
+            {
                 var _User = await _userManager.FindByIdAsync(dto.Id);
                 var token = await _userManager.GeneratePasswordResetTokenAsync(_User);
                 var result = await _userManager.ResetPasswordAsync(_User, token, dto.Password);
@@ -160,5 +176,7 @@ namespace DigitizingProjectCore.Services.UserService
             }
             return await _context.SaveChangesAsync();
         }
+
+
     }
 }

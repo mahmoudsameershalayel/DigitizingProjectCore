@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using DigitizingProjectCore.Areas.Admin.Dto;
+using DigitizingProjectCore.Areas.Admin.Dto.NewsDto;
 using DigitizingProjectCore.Areas.Admin.ViewModel;
 using DigitizingProjectCore.Data;
 using DigitizingProjectCore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using AddNewsWithCategory = DigitizingProjectCore.Areas.Admin.Dto.NewsDto.AddNewsWithCategory;
 
 namespace DigitizingProjectCore.Services.NewsService
 {
@@ -36,14 +38,14 @@ namespace DigitizingProjectCore.Services.NewsService
             var _NewsVM = _mapper.Map<List<NewsViewModel>>(_News);
             return _NewsVM;
         }
-        public async Task<CreateUpdateNewsDto> GetDtoById(int id)
+        public async Task<CreateNewsDto> GetDtoById(int id)
         {
             var _News = await _context.News.Where(x => x.Id == id).Include(c => c.Category).FirstOrDefaultAsync();
             if (_News == null)
             {
                 throw new Exception("Not Found!!");
             }
-            var _NewsDto = _mapper.Map<CreateUpdateNewsDto>(_News);
+            var _NewsDto = _mapper.Map<CreateNewsDto>(_News);
             return _NewsDto;
         }
 
@@ -57,17 +59,14 @@ namespace DigitizingProjectCore.Services.NewsService
             return _News;
         }
 
-        public async Task<CreateUpdateNewsDto> Create(CreateUpdateNewsDto dto)
+        public async Task<CreateNewsDto> Create(CreateNewsDto dto)
         {
             var _News = _mapper.Map<News>(dto);
-            if (dto.LogoImage != null)
-            {
-                var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
-                var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.LogoImage.FileName);
-                var filePath = Path.Combine(uploadFolder, uniqueName);
-                dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
-                _News.LogoImageName = uniqueName;
-            }
+            var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
+            var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.LogoImage.FileName);
+            var filePath = Path.Combine(uploadFolder, uniqueName);
+            dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
+            _News.LogoImageName = uniqueName;
             var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
             _News.Created_By = _UserId;
             _News.Created_At = DateTime.Now;
@@ -76,29 +75,28 @@ namespace DigitizingProjectCore.Services.NewsService
             await _context.SaveChangesAsync();
             return dto;
         }
-        public async Task<CreateUpdateNewsDto> Update(CreateUpdateNewsDto dto)
+        public async Task<UpdateNewsDto> Update(UpdateNewsDto dto)
         {
             var _News = await _context.News.Where(x => x.Id == dto.Id).FirstOrDefaultAsync();
-            if (_News == null)
+            if (_News != null)
             {
-                throw new Exception("Not Found!!");
-            }
-            var LogoImageName = _News.LogoImageName;
-            var _UpdateNews = _mapper.Map(dto, _News);
-            _UpdateNews.LogoImageName = LogoImageName;
-            if (dto.LogoImage != null)
-            {
-                var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
-                var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.LogoImage.FileName);
-                var filePath = Path.Combine(uploadFolder, uniqueName);
-                dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
-                _UpdateNews.LogoImageName = uniqueName;
-            }
-            var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
-            _UpdateNews.Updated_By = _UserId;
-            _UpdateNews.Updated_At = DateTime.Now;
-            _context.News.Update(_UpdateNews);
-            _context.SaveChanges();
+                var LogoImageName = _News.LogoImageName;
+                var _UpdateNews = _mapper.Map(dto, _News);
+                _UpdateNews.LogoImageName = LogoImageName;
+                if (dto.LogoImage != null)
+                {
+                    var uploadFolder = Path.Combine(_hostEnvironment.WebRootPath, "Images");
+                    var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(dto.LogoImage.FileName);
+                    var filePath = Path.Combine(uploadFolder, uniqueName);
+                    dto.LogoImage.CopyTo(new FileStream(filePath, FileMode.Create));
+                    _UpdateNews.LogoImageName = uniqueName;
+                }
+                var _UserId = _userManager.GetUserId(_contextAccessor.HttpContext.User);
+                _UpdateNews.Updated_By = _UserId;
+                _UpdateNews.Updated_At = DateTime.Now;
+                _context.News.Update(_UpdateNews);
+                _context.SaveChanges();
+            }           
             return dto;
         }
         public async Task<int> Delete(int id)
@@ -114,10 +112,17 @@ namespace DigitizingProjectCore.Services.NewsService
         }
 
 
-        public async Task<CreateUpdateNewsDto> InjectCategories()
+        public async Task<CreateNewsDto> CreateInjectCategories()
         {
             var _Categories = await _context.CategoryForNews.Where(x => x.IsDelete == false).ToListAsync();
             var dto = new AddNewsWithCategory();
+            dto.InjectCategories(_Categories);
+            return dto;
+        }
+        public async Task<UpdateNewsDto> UpdateInjectCategories()
+        {
+            var _Categories = await _context.CategoryForNews.Where(x => x.IsDelete == false).ToListAsync();
+            var dto = new EditNewsWithCategory();
             dto.InjectCategories(_Categories);
             return dto;
         }

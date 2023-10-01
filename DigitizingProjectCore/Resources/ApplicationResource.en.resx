@@ -147,6 +147,12 @@
   <data name="EndDate" xml:space="preserve">
     <value>End Date</value>
   </data>
+  <data name="Enter_Your_Password" xml:space="preserve">
+    <value>Enter your password</value>
+  </data>
+  <data name="Enter_Your_Username_Or_Email" xml:space="preserve">
+    <value>Enter your username or email</value>
+  </data>
   <data name="Followus" xml:space="preserve">
     <value>Follow us</value>
   </data>

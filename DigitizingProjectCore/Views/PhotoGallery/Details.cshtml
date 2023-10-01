@@ -1,9 +1,10 @@
-﻿@model DigitizingProjectCore.Models.PhotoGallery
+﻿@using DigitizingProjectCore.Data;
+@model DigitizingProjectCore.Models.PhotoGallery
+@inject ApplicationDbContext _context
 @{
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
     var lang = currentCulture.Name;
-    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
-    var last3Gallery = db.PhotoGalleries.Where(x => x.IsDelete == false && x.IsActive == true && x.Id != Model.Id)
+    var last3Gallery = _context.PhotoGalleries.Where(x => x.IsDelete == false && x.IsActive == true && x.Id != Model.Id)
         .OrderByDescending(x => x.Created_At).Take(3);
     var images = Model.ImagesName.Split(',');
 }

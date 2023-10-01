@@ -1,3 +1,4 @@
+using DigitizingProjectCore;
 using DigitizingProjectCore.AutoMapper;
 using DigitizingProjectCore.Data;
 using DigitizingProjectCore.Models;
@@ -132,6 +133,7 @@ builder.Services.AddSession(options =>
 
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

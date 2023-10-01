@@ -1,13 +1,14 @@
 ﻿@model DigitizingProjectCore.Areas.Admin.Dto.CreateContactUsDto
+@using DigitizingProjectCore.Data;
 @using DigitizingProjectCore.Resources;
 @using DigitizingProjectCore.Services.LocalizationService;
 @using Microsoft.AspNetCore.Mvc.Localization;
 @using Microsoft.Extensions.Localization
+@inject ApplicationDbContext _context
 @{
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
     var lang = currentCulture.Name;
-    var db = ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
-    var setting = db.Configurations.FirstOrDefault();
+    var setting = _context.Configurations.FirstOrDefault();
     if (setting == null)
     {
         setting = new DigitizingProjectCore.Models.Configuration();

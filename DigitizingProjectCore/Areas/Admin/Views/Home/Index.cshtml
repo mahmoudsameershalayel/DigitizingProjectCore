@@ -1,17 +1,17 @@
-﻿@{
-    var db = ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
-    var newsCount = db.News.Count(x => x.IsDelete == false && x.IsActive == true);
-    var productsCount = db.Products.Count(x => x.IsDelete == false && x.IsActive == true);
-    var servicesCount = db.Services.Count(x => x.IsDelete == false && x.IsActive == true);
-    var brandsCount = db.Brands.Count(x => x.IsDelete == false && x.IsActive == true);
-    var DistributorsCount = db.Distributors.Count(x => x.IsDelete == false && x.IsActive == true);
-    var servicesByCategory = db.CategoryForServices.Where(x => x.IsDelete == false && x.IsActive == true)
+﻿@using DigitizingProjectCore.Data;
+@inject ApplicationDbContext _context;
+@{
+    var newsCount = _context.News.Count(x => x.IsDelete == false && x.IsActive == true);
+    var productsCount = _context.Products.Count(x => x.IsDelete == false && x.IsActive == true);
+    var servicesCount = _context.Services.Count(x => x.IsDelete == false && x.IsActive == true);
+    var brandsCount = _context.Brands.Count(x => x.IsDelete == false && x.IsActive == true);
+    var DistributorsCount = _context.Distributors.Count(x => x.IsDelete == false && x.IsActive == true);
+    var servicesByCategory = _context.CategoryForServices.Where(x => x.IsDelete == false && x.IsActive == true)
         .Select(x => new { Title = x.NameEn, Count = x._Services.Count(y => y.IsDelete == false && y.IsActive == true) }).ToList();
-    var productsByCategory = db.CategoryForProducts.Where(x => x.IsDelete == false && x.IsActive == true)
+    var productsByCategory = _context.CategoryForProducts.Where(x => x.IsDelete == false && x.IsActive == true)
         .Select(x => new { Title = x.NameEn, Count = x._Products.Count(y => y.IsDelete == false && y.IsActive == true) }).ToList();
-    var newsByCategory = db.CategoryForNews.Where(x => x.IsDelete == false && x.IsActive == true)
+    var newsByCategory = _context.CategoryForNews.Where(x => x.IsDelete == false && x.IsActive == true)
         .Select(x => new { Title = x.NameEn, Count = x._News.Count(y => y.IsDelete == false && y.IsActive == true) }).ToList();
-
 }
 @section css{
     <style>
@@ -260,7 +260,7 @@
             if ($(this).prev().text() != "") {
                 var data = JSON.parse($(this).prev().text());
                 console.log(data);
-                var labels = [];
+                var labels = []; 
                 var colors = [];
                 var numbers = [];
                 var i = 0;

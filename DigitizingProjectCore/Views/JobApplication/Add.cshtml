@@ -3,7 +3,6 @@
 @{
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
     var lang = currentCulture.Name;
-    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
     string successUrl = "/" + lang + "/Jobs/ApplySuccess";
 }
 @inject LocalizationService _localization

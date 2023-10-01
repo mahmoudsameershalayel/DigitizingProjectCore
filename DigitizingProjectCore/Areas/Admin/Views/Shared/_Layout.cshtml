@@ -2,8 +2,8 @@
 @using DigitizingProjectCore.Data;
 @using Microsoft.AspNetCore.Mvc.Rendering
 @using System.Security.Claims;
+@inject ApplicationDbContext _context;
 @{
-    var db = @ViewBag.db as DigitizingProjectCore.Data.ApplicationDbContext;
     var action = ViewContext.RouteData.Values["action"].ToString().ToLower();
     var controller = ViewContext.RouteData.Values["controller"].ToString().ToLower();
     if (action == "index")
@@ -240,11 +240,11 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-default">
                                 <li><a class='PopUp' onclick="showInPopup('@Url.Action("ResetPassword" , "User" ,new{id = userId},Context.Request.Scheme)' , 'Reset Password');"><i class='fa fa-key'></i> Reset Password</a>  </li>
-                                <li title="Logout">
-                                    <form method="POST" asp-area="" asp-controller="Auth" asp-action="Logout">
+                                <li>
+                                    <a asp-area="" asp-controller="Auth" asp-action="Logout">
                                         <i class="icon-key"></i>
-                                        <button type="submit" class="btn btn-link">Signout</button>
-                                    </form>
+                                        Signout
+                                    </a>
                                 </li>
                             </ul>
                         </li>
@@ -269,13 +269,13 @@
                         @{
 
                             var i = 0;
-                            var links = db.Links.Where(x => x.ParentId == 0 && x.ShowInMenu == true).OrderBy(x => x.OrderId).ToList();
+                            var links = _context.Links.Where(x => x.ParentId == 0 && x.ShowInMenu == true).OrderBy(x => x.OrderId).ToList();
                             foreach (var link in links)
                             {
-                                var haveAdminThisLink = db.AdminLinks.Count(x => x.AdminId == userId && x.LinkId == link.Id) > 0;
+                                var haveAdminThisLink = _context.AdminLinks.Count(x => x.AdminId == userId && x.LinkId == link.Id) > 0;
                                 if (haveAdminThisLink)
                                 {
-                                    var sublinks = db.Links.Where(x => x.ParentId == link.Id && x.ShowInMenu == true).OrderBy(x => x.OrderId).ToList();
+                                    var sublinks = _context.Links.Where(x => x.ParentId == link.Id && x.ShowInMenu == true).OrderBy(x => x.OrderId).ToList();
                                     var isCurrent = link.URL.ToLower() == currentUrl;
                                     <li class="nav-item @(i++ == 0 ? "start" : "") ">
                                         <a href="@link.URL" class="nav-link nav-toggle">

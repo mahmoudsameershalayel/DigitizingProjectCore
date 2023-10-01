@@ -1,5 +1,7 @@
 ﻿@model List<DigitizingProjectCore.Areas.Admin.ViewModel.UserViewModel>
-
+@{
+    var hidden = TempData["msg"] == null ? "hidden" : "";
+}
 @section css{
     <style>
         .table-responsive {
@@ -22,6 +24,14 @@
         @await Html.PartialAsync("_ViewAll", Model)
     </div>
 </div>
+<div class="@hidden">
+
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        اسم المستخدم أو البريد الإلكتروني موجود مسبقا!!
+    </div>
+
+</div>
 <div class="modal" tabindex="-1" role="dialog" id="form-modal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -36,8 +46,19 @@
         </div>
     </div>
 </div>
+
 @section scripts{
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#tbllist").DataTable({
+                "bFilter": false,
+                "bDestroy": true,
+                "bSort": false,
+                "bStateSave": true,
+            });
+        })
+    </script>
 }

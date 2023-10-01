@@ -12,10 +12,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _jobApplicationService = jobApplicationService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context , string? key , int? jobId , bool? isChecked , bool? haveLiscence , bool? stillWork)
+        public async Task<IActionResult> Index(string? key , int? jobId , bool? isChecked , bool? haveLiscence , bool? stillWork)
         {
             var _JobApplications = await _jobApplicationService.GetAll(key , jobId , isChecked , haveLiscence , stillWork);
-            ViewBag.db = _context;
             return View(_JobApplications);
         }
     }

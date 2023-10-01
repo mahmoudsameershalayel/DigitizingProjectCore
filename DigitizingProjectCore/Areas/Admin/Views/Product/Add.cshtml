@@ -1,4 +1,5 @@
-﻿@model DigitizingProjectCore.Areas.Admin.Dto.AddProductWithCategoryAndBrand
+﻿@using DigitizingProjectCore.Areas.Admin.Dto.ProductDto;
+@model AddProductWithCategoryAndBrand
 @{
     Layout = null;
 }
@@ -57,6 +58,7 @@
         <div class="col-md-6 form-group">
             <label for="logo">Logo</label>
             <input type="file" class="form-control" id="logo" asp-for="LogoImage">
+            <span asp-validation-for="LogoImage" class="text-danger"></span>
         </div>
         <div class="col-md-6 form-group">
             <label for="sort">Sort(#)</label>

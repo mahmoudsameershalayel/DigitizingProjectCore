@@ -11,7 +11,7 @@
                 </div>
             </div>
         </div>
-        <table id="categoryService" class="table table-striped table-hover">
+        <table class="table table-striped table-hover" id="tbllist">
             <thead>
                 <tr>
                     <th>Title (English)</th>
@@ -41,7 +41,7 @@
                         }
                         <td>@item.Created_At.ToString("dddd, dd MMMM yyyy")</td>
                         <td>
-                            <a href="#" class='btn PopUp btn-xs btn-success'><i class='glyphicon glyphicon-link'></i></a>
+                            <a class='btn PopUp btn-xs btn-success' onclick="showInPopup('/Admin/Home/Links?route=/Job/Details&id=@item.Id')"><i class='glyphicon glyphicon-link'></i></a>
                             <a class='btn btn-xs btn-info PopUp' asp-controller="Job" asp-action="Edit" asp-route-id="@item.Id"><i class='glyphicon glyphicon-edit'></i></a>
                             <a class="btn btn-xs btn-danger PopUp" onclick="showInPopup('@Url.Action("Delete" , "Job" ,new{id = item.Id} ,Context.Request.Scheme)' , 'Delete Job');"><i class='glyphicon glyphicon-trash'></i></a>
                         </td>

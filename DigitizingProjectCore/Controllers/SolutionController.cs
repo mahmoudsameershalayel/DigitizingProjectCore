@@ -15,7 +15,6 @@ namespace DigitizingProjectCore.Controllers
         public async Task<IActionResult> Index(string key, int? categoryId , int? brandId)
         {
             var _Solution = await _context.Solutions.Where(x => x.IsDelete == false && x.IsActive == true && (string.IsNullOrEmpty(key) || x.NameAr.Contains(key) && x.NameEN.Contains(key)) && (categoryId == null || x.CategoryId == categoryId)  && (brandId == null || x.BrandId == brandId)).Include(x => x.Category).Include(x => x.Brand).OrderBy(x => x.SortId).ToListAsync();
-            ViewBag.db = _context;
             return View(_Solution);
         }
         [HttpGet]
@@ -26,7 +25,6 @@ namespace DigitizingProjectCore.Controllers
             {
                 throw new Exception("Not Found!!");
             }
-            ViewBag.db = _context;
             return View(_Solution);
         }
     }

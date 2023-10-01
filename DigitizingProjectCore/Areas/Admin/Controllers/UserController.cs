@@ -6,6 +6,7 @@ using DigitizingProjectCore.Services.DistributorService;
 using DigitizingProjectCore.Services.UserService;
 using Humanizer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Text;
 
 namespace DigitizingProjectCore.Areas.Admin.Controllers
@@ -18,10 +19,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             _userService = userService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromServices] ApplicationDbContext _context , string? key)
+        public async Task<IActionResult> Index(string? key)
         {
             var _Users = await _userService.GetAll(key);
-            ViewBag.db = _context;
             return View(_Users);
         }
         [HttpGet]
@@ -30,12 +30,20 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Add(CreateUserDto dto)
+        public async Task<IActionResult> Add([FromServices] ApplicationDbContext _context , CreateUserDto dto)
         {
             dto.Id = "0";
-            await _userService.Create(dto);
-            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _userService.GetAll()) });
-
+            var isExist = await _userService.IsExist(dto.FullName , dto.Email);
+            if (!isExist)
+            {
+                var result = await _userService.Create(dto);
+                if (result == 1)
+                {
+                    return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _userService.GetAll()) });
+                }
+            }
+            TempData["msg"] = "e: اسم المستخدم موجود مسبقا";
+            return Add();
         }
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
@@ -62,8 +70,9 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordDto dto)
         {
-           var result =  await _userService.RestPassword(dto);
-            if (result != 0) {
+            var result = await _userService.RestPassword(dto);
+            if (result != 0)
+            {
                 return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _userService.GetAll()) });
             }
             return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "ResetPassword", dto) });
@@ -71,18 +80,18 @@ namespace DigitizingProjectCore.Areas.Admin.Controllers
 
         }
         [HttpGet]
-        public async Task<IActionResult> UserPremissions([FromServices] ApplicationDbContext _context , string id)
+        public async Task<IActionResult> UserPremissions([FromServices] ApplicationDbContext _context, string id)
         {
             var item = await _userService.GetUserById(id);
             ViewBag.db = _context;
             return View(item);
         }
         [HttpPost]
-        public async Task<IActionResult> UserPremissions(string userId , int[] linkIds)
+        public async Task<IActionResult> UserPremissions(string userId, int[] linkIds)
         {
             var _User = await _userService.GetUserById(userId);
             int result = await _userService.UserPremissions(userId, linkIds);
-            if(result != 0)
+            if (result != 0)
             {
                 return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", await _userService.GetAll()) });
             }

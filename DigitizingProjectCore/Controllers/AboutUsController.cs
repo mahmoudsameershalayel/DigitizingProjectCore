@@ -38,7 +38,6 @@ namespace DigitizingProjectCore.Controllers
                 }
                 catch { }
             }
-            ViewBag.db = _context;
             return View(dto);
         }
     }

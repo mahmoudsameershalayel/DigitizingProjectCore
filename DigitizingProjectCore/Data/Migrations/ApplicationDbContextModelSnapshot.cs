@@ -110,7 +110,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AboutUs", (string)null);
+                    b.ToTable("AboutUs");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.AdminLinks", b =>
@@ -134,7 +134,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasIndex("LinkId");
 
-                    b.ToTable("AdminLinks", (string)null);
+                    b.ToTable("AdminLinks");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.ApplicationUser", b =>
@@ -235,8 +235,8 @@ namespace DigitizingProjectCore.Data.Migrations
                         {
                             Id = "f1446937-109c-4e1a-97ce-0560442484f5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "48458799-9b1b-45e4-909f-c8d6319507b8",
-                            Created_At = new DateTime(2023, 7, 24, 11, 10, 16, 43, DateTimeKind.Local).AddTicks(4818),
+                            ConcurrencyStamp = "751e6d51-df5b-4240-afac-159944b90bb6",
+                            Created_At = new DateTime(2023, 8, 4, 15, 50, 5, 147, DateTimeKind.Local).AddTicks(6301),
                             Email = "Administrator@admin.com",
                             EmailConfirmed = false,
                             FullName = "System Administrator",
@@ -245,12 +245,12 @@ namespace DigitizingProjectCore.Data.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMINISTRATOR@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOvwooCidltVHYDsyQkwU8NYSu8Csu1kuNvcnkKBn0SbJWePM2jyHvv97NPqLLrLqQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMhb9mMK7O/WpqwK1mgSf59niETRtDsX2ruMpnWeya/Ms9msy4B9ZPAuXsHhFYtgMw==",
                             Phone = "97259000000",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "08e3c8cc-f435-46a1-9563-2aaf245c867f",
+                            SecurityStamp = "c2c6c75a-80b1-46c3-8e40-e15442edbf9b",
                             TwoFactorEnabled = false,
-                            Updated_at = new DateTime(2023, 7, 24, 11, 10, 16, 43, DateTimeKind.Local).AddTicks(4878),
+                            Updated_at = new DateTime(2023, 8, 4, 15, 50, 5, 147, DateTimeKind.Local).AddTicks(6354),
                             UserName = "System_Administrator"
                         });
                 });
@@ -304,7 +304,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brands", (string)null);
+                    b.ToTable("Brands");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.CategoryForNews", b =>
@@ -346,7 +346,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CategoryForNews", (string)null);
+                    b.ToTable("CategoryForNews");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.CategoryForProduct", b =>
@@ -388,7 +388,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CategoryForProducts", (string)null);
+                    b.ToTable("CategoryForProducts");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.CategoryForService", b =>
@@ -433,7 +433,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CategoryForServices", (string)null);
+                    b.ToTable("CategoryForServices");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.City", b =>
@@ -475,7 +475,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Configuration", b =>
@@ -582,7 +582,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Configurations", (string)null);
+                    b.ToTable("Configurations");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.ContactUs", b =>
@@ -642,7 +642,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ContactUs", (string)null);
+                    b.ToTable("ContactUs");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Distributor", b =>
@@ -701,7 +701,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Distributors", (string)null);
+                    b.ToTable("Distributors");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.DrivingLiscenceType", b =>
@@ -722,7 +722,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DrivingLiscenceTypes", (string)null);
+                    b.ToTable("DrivingLiscenceTypes");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.HomePageBanner", b =>
@@ -798,7 +798,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("HomePageBanners", (string)null);
+                    b.ToTable("HomePageBanners");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Job", b =>
@@ -854,7 +854,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Jobs", (string)null);
+                    b.ToTable("Jobs");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.JobApplication", b =>
@@ -1015,7 +1015,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasIndex("MaritalStatuId");
 
-                    b.ToTable("jobApplications", (string)null);
+                    b.ToTable("jobApplications");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Link", b =>
@@ -1056,7 +1056,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Links", (string)null);
+                    b.ToTable("Links");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.MaritalStatu", b =>
@@ -1077,7 +1077,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MaritalStatus", (string)null);
+                    b.ToTable("MaritalStatus");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.News", b =>
@@ -1152,7 +1152,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("News", (string)null);
+                    b.ToTable("News");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Page", b =>
@@ -1210,7 +1210,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pages", (string)null);
+                    b.ToTable("Pages");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.PhotoGallery", b =>
@@ -1268,7 +1268,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PhotoGalleries", (string)null);
+                    b.ToTable("PhotoGalleries");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Product", b =>
@@ -1345,7 +1345,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Service", b =>
@@ -1417,7 +1417,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Services", (string)null);
+                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Setting", b =>
@@ -1448,7 +1448,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Settings", (string)null);
+                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.Solution", b =>
@@ -1520,7 +1520,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Solutions", (string)null);
+                    b.ToTable("Solutions");
                 });
 
             modelBuilder.Entity("DigitizingProjectCore.Models.SolutionProducts", b =>
@@ -1548,7 +1548,7 @@ namespace DigitizingProjectCore.Data.Migrations
 
                     b.HasIndex("SolutionId");
 
-                    b.ToTable("SolutionProducts", (string)null);
+                    b.ToTable("SolutionProducts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
